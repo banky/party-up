@@ -11,9 +11,5 @@ export const configure = () => {
 };
 
 export const authorize = () => {
-  MusicKit.getInstance()
-    .authorize()
-    .catch((error: any) => {
-      console.log(error);
-    });
+  return MusicKit.getInstance().authorize();
 };

@@ -13,5 +13,12 @@ export const configure = (provider: Provider) => {
 };
 
 export const authorize = (provider: Provider) => {
-  return getLib(provider).authorize();
+  return getLib(provider)
+    .authorize()
+    .then(() => {
+      // TODO: Navigate to the name page
+    })
+    .catch((error: any) => {
+      console.log(error);
+    });
 };
