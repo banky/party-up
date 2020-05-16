@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { configure } from "./lib/music-interface";
 import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
 import { RoomPage } from "./pages/room-page/room-page";
 
-import "./App.css";
-
 function App() {
+  useEffect(() => {
+    configure("apple");
+  }, []);
+
   return (
     <div>
       <Switch>
