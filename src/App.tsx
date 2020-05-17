@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import store from "./store";
 
 import { configure } from "./lib/music-interface";
@@ -15,17 +15,19 @@ function App() {
 
   return (
     <Provider store={store}>
-      <Switch>
-        <Route path="/landing">
-          <LandingPage />
-        </Route>
-        <Route path="/name">
-          <NamePage />
-        </Route>
-        <Route path="/">
-          <RoomPage />
-        </Route>
-      </Switch>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/landing">
+            <LandingPage />
+          </Route>
+          <Route path="/name">
+            <NamePage />
+          </Route>
+          <Route path="/">
+            <RoomPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </Provider>
   );
 }

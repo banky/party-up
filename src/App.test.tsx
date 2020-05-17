@@ -1,9 +1,19 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import { render } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+declare var global: any;
+
+describe("apple music", () => {
+  beforeAll(() => {
+    global.MusicKit = {
+      configure: jest.fn(),
+    };
+
+    render(<App />);
+  });
+
+  test("is configured properly", () => {
+    expect(global.MusicKit.configure).toHaveBeenCalled();
+  });
 });

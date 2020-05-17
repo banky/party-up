@@ -1,5 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/reducers";
+import { getRoomName } from "./helpers";
 
 export const RoomPage = () => {
-  return <h2>Room Page</h2>;
+  const name = useSelector((state: RootState) => state.name);
+
+  const roomName = getRoomName(name);
+
+  return <h2>{roomName}</h2>;
 };
