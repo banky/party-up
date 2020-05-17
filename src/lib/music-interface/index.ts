@@ -12,13 +12,26 @@ export const configure = (provider: Provider) => {
   return getLib(provider).configure();
 };
 
-export const authorize = (provider: Provider) => {
-  return getLib(provider)
-    .authorize()
-    .then(() => {
-      // TODO: Navigate to the name page
-    })
-    .catch((error: any) => {
-      console.log(error);
-    });
+/**
+ * @param provider The music provider being used
+ * @param cb Callback function that is called with the response from music provider
+ */
+export const authorize = async (
+  provider: Provider,
+  cb: (response: string) => void
+) => {
+  try {
+    const response = await getLib(provider).authorize();
+    cb(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unauthorize = (provider: Provider) => {
+  return getLib(provider).unauthorize();
+};
+
+export const isAuthorized = (provider: Provider) => {
+  return getLib(provider).isAuthorized();
 };

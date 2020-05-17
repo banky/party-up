@@ -10,6 +10,14 @@ export const configure = () => {
   });
 };
 
-export const authorize = () => {
+export const authorize = (): Promise<string> => {
   return MusicKit.getInstance().authorize();
+};
+
+export const unauthorize = (): void => {
+  return MusicKit.getInstance().unauthorize();
+};
+
+export const isAuthorized = (): Boolean => {
+  return MusicKit.getInstance().isAuthorized();
 };

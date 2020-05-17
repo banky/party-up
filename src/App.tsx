@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Provider } from "react-redux";
+import { Switch, Route } from "react-router-dom";
+import store from "./store";
+
 import { configure } from "./lib/music-interface";
 import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
@@ -11,7 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <Provider store={store}>
       <Switch>
         <Route path="/landing">
           <LandingPage />
@@ -23,7 +26,7 @@ function App() {
           <RoomPage />
         </Route>
       </Switch>
-    </div>
+    </Provider>
   );
 }
 
