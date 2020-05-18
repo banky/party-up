@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import store from "./store";
-
+import Firebase, { FirebaseContext } from "./lib/firebase";
 import { configure } from "./lib/music-interface";
 import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
@@ -16,22 +16,24 @@ function App() {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/landing">
-            <LandingPage />
-          </Route>
-          <Route path="/name">
-            <NamePage />
-          </Route>
-          <Route path="/spotify-callback">
-            <SpotifyCallback />
-          </Route>
-          <Route path="/">
-            <RoomPage />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <FirebaseContext.Provider value={new Firebase()}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/landing">
+              <LandingPage />
+            </Route>
+            <Route path="/name">
+              <NamePage />
+            </Route>
+            <Route path="/spotify-callback">
+              <SpotifyCallback />
+            </Route>
+            <Route path="/">
+              <RoomPage />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </FirebaseContext.Provider>
     </Provider>
   );
 }
