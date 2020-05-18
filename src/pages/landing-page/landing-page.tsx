@@ -22,6 +22,12 @@ export const LandingPage = () => {
       >
         Apple Music Sign Out
       </button>
+      <button
+        onClick={() => {
+          authorize("spotify", (res) => { console.log("spotify response", res)});
+        }}
+      >Spotify Sign In</button>
+      <button>Spotify Sign Out</button>
     </div>
   );
 };
