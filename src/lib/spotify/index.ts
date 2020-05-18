@@ -1,5 +1,3 @@
-export const axios = require("axios").default;
-
 export const authorize = (): void => {
   const client_id = "46a4013a359b407a833bb4909c8d792c";
   const response_type = "token";
