@@ -4,8 +4,8 @@ import { updateName, updateSpotifyData } from "./actions";
 const initialState = {
   name: "",
   spotifyData: {
-    access_token: ""
-  }
+    access_token: "",
+  },
 };
 
 export const rootReducer = createReducer(initialState, {
@@ -14,7 +14,7 @@ export const rootReducer = createReducer(initialState, {
   },
   [updateSpotifyData.type]: (state, action) => {
     state.spotifyData = action.payload;
-  }
+  },
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -24,9 +24,13 @@ export const LandingPage = () => {
       </button>
       <button
         onClick={() => {
-          authorize("spotify", (res) => { console.log("spotify response", res)});
+          authorize("spotify", (res) => {
+            console.log("spotify response", res);
+          });
         }}
-      >Spotify Sign In</button>
+      >
+        Spotify Sign In
+      </button>
       <button>Spotify Sign Out</button>
     </div>
   );

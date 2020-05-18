@@ -6,7 +6,7 @@ type Provider = "apple" | "spotify";
 const getLib = (provider: Provider) => {
   return {
     apple: AppleMusic,
-    spotify: Spotify
+    spotify: Spotify,
   }[provider];
 };
 
