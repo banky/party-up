@@ -1,10 +1,12 @@
 import * as AppleMusic from "../apple-music";
+import * as Spotify from "../spotify";
 
-type Provider = "apple";
+type Provider = "apple" | "spotify";
 
 const getLib = (provider: Provider) => {
   return {
     apple: AppleMusic,
+    spotify: Spotify,
   }[provider];
 };
 
@@ -18,7 +20,7 @@ export const configure = (provider: Provider) => {
  */
 export const authorize = async (
   provider: Provider,
-  cb: (response: string) => void
+  cb: (response: string | void) => void
 ) => {
   try {
     const response = await getLib(provider).authorize();

@@ -7,6 +7,7 @@ import { configure } from "./lib/music-interface";
 import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
 import { RoomPage } from "./pages/room-page/room-page";
+import { SpotifyCallback } from "./pages/spotify-callback-page";
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/name">
             <NamePage />
+          </Route>
+          <Route path="/spotify-callback">
+            <SpotifyCallback />
           </Route>
           <Route path="/">
             <RoomPage />
