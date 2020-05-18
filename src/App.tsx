@@ -19,8 +19,8 @@ function App() {
       <FirebaseContext.Provider value={new Firebase()}>
         <BrowserRouter>
           <Switch>
-            <Route path="/landing">
-              <LandingPage />
+            <Route path="/room">
+              <RoomPage />
             </Route>
             <Route path="/name">
               <NamePage />
@@ -29,7 +29,7 @@ function App() {
               <SpotifyCallback />
             </Route>
             <Route path="/">
-              <RoomPage />
+              <LandingPage />
             </Route>
           </Switch>
         </BrowserRouter>

@@ -1,12 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/reducers";
-import { getRoomName } from "./helpers";
 
 export const RoomPage = () => {
   const name = useSelector((state: RootState) => state.name);
 
-  const roomName = getRoomName(name);
-
-  return <h2>{roomName}</h2>;
+  return <h2>This is a test room for {name}</h2>;
 };

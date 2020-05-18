@@ -4,19 +4,18 @@ import { useHistory } from "react-router-dom";
 import { FirebaseContext } from "../../lib/firebase";
 import { RootState } from "../../store/reducers";
 import { updateName } from "../../store/actions";
+import { createRoom } from "./helpers.ts";
 
 export const NamePage = () => {
   const name = useSelector((state: RootState) => state.name);
-  const res = useSelector((state: RootState) => state.spotifyData);
+  const platform = useSelector((state: RootState) => state.platform);
   const dispatch = useDispatch();
   const history = useHistory();
   const firebase = useContext(FirebaseContext);
 
   const handleButtonClick = () => {
-    history.push("/room");
-    firebase?.database.ref("rooms/" + "1").set({
-      roomOwner: name,
-    });
+    const roomKey = createRoom(firebase!, name, platform);
+    history.push(`/room/${roomKey}`);
   };
 
   return (
@@ -26,8 +25,7 @@ export const NamePage = () => {
         value={name}
         onChange={(e) => dispatch(updateName(e.target.value))}
       />
-      <p>{res.access_token}</p>
-      <button onClick={handleButtonClick}>Continue</button>
+      <button onClick={handleButtonClick}>Create Room</button>
     </div>
   );
 };
