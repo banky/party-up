@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { FirebaseContext } from "../../lib/firebase";
-import { search } from "../../lib/music-interface";
+import { useFirebase } from "../../lib/firebase/hooks";
+import { search } from "../../lib/music-interface/music";
 import { RootState } from "../../store/reducers";
 import { Song } from "../../lib/constants";
 
 export const RoomPage = () => {
-  const firebase = useContext(FirebaseContext);
+  const firebase = useFirebase();
   const { roomId } = useParams();
   const platform = useSelector((state: RootState) => state.platform);
 
@@ -15,7 +15,7 @@ export const RoomPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
-  firebase?.database
+  firebase.database
     .ref("/rooms/" + roomId)
     .once("value")
     .then((snapshot) => {
