@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
-import { search } from "../../lib/music-interface/music";
-import { RootState } from "../../store/reducers";
 import { Song } from "../../lib/constants";
+import { useMusic } from "../../lib/music-interface/hook";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
   const { roomId } = useParams();
-  const platform = useSelector((state: RootState) => state.platform);
+  const music = useMusic();
 
   const [roomName, setRoomName] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -32,9 +30,9 @@ export const RoomPage = () => {
       />
       <button
         onClick={() =>
-          search(platform, searchInput, ["track"]).then((searchResults) =>
-            setSearchResults(searchResults)
-          )
+          music
+            .search(searchInput, ["track"])
+            .then((searchResults) => setSearchResults(searchResults))
         }
       >
         Search

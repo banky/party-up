@@ -1,21 +1,20 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { authorize, unauthorize } from "../../lib/music-interface";
-import { updatePlatform } from "../../store/actions";
+import { useMusic } from "../../lib/music-interface/hook";
 
 export const LandingPage = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const music = useMusic();
 
   return (
     <div>
       <h2>Landing Page</h2>
       <button
         onClick={() => {
-          authorize("apple", (res) => {
+          music.platform = "apple";
+          music.authorize().then((res) => {
+            music.authToken = res;
             history.push("/name");
-            dispatch(updatePlatform("apple"));
           });
         }}
       >
@@ -23,14 +22,18 @@ export const LandingPage = () => {
       </button>
       <button
         onClick={() => {
-          unauthorize("apple");
+          music.unauthorize();
         }}
       >
         Apple Music Sign Out
       </button>
       <button
         onClick={() => {
-          authorize("spotify");
+          music.platform = "spotify";
+          music.authorize().then((res) => {
+            music.authToken = res;
+            history.push("/name");
+          });
         }}
       >
         Spotify Sign In

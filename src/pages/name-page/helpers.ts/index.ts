@@ -1,5 +1,5 @@
 import Firebase from "../../../lib/firebase";
-import { Platform } from "../../../lib/music-interface";
+import { Platform } from "../../../lib/music-interface/music";
 
 export const roomNameFromOwner = (ownerName: string) => {
   const endsWithS = ownerName[ownerName.length - 1] === "s";
