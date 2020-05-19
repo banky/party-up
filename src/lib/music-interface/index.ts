@@ -1,5 +1,6 @@
 import * as AppleMusic from "../apple-music";
 import * as Spotify from "../spotify";
+import { SearchType } from "../constants";
 
 export type Platform = "apple" | "spotify";
 
@@ -20,7 +21,7 @@ export const configure = (platform: Platform) => {
  */
 export const authorize = async (
   platform: Platform,
-  cb?: (response: string | void) => void
+  cb?: (response: string) => void
 ) => {
   try {
     const response = await getLib(platform).authorize();
@@ -36,4 +37,18 @@ export const unauthorize = (platform: Platform) => {
 
 export const isAuthorized = (platform: Platform) => {
   return getLib(platform).isAuthorized();
+};
+
+/**
+ *
+ * @param platform Music platform
+ * @param query The search term that the user wants
+ * @param searchTypes The types of things the user is searching for
+ */
+export const search = (
+  platform: Platform,
+  query: string,
+  searchTypes: SearchType[]
+) => {
+  return getLib(platform).search(query, searchTypes);
 };

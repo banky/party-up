@@ -11,7 +11,7 @@ import { SpotifyCallback } from "./pages/spotify-callback-page";
 
 function App() {
   useEffect(() => {
-    configure("apple");
+    configure("apple"); // TODO: React context would be really nice for music interface 🤯
   }, []);
 
   return (
@@ -19,6 +19,9 @@ function App() {
       <FirebaseContext.Provider value={new Firebase()}>
         <BrowserRouter>
           <Switch>
+            <Route path="/room/:roomId">
+              <RoomPage />
+            </Route>
             <Route path="/room">
               <RoomPage />
             </Route>
