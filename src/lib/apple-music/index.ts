@@ -70,3 +70,7 @@ export const search = async (
 
   return Promise.resolve(songs);
 };
+
+export const play = (uri: string): Promise<any> => {
+  return Promise.reject("Not Implemented");
+};
