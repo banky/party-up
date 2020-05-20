@@ -17,6 +17,7 @@ class Music {
 
   constructor(defaultPlatform: Platform) {
     AppleMusic.configure();
+    Spotify.configure();
 
     this.authToken = "";
     this.platform = defaultPlatform;
@@ -36,6 +37,10 @@ class Music {
 
   search = (query: string, searchTypes: SearchType[]) => {
     return getLib(this.platform).search(query, searchTypes);
+  };
+
+  play = (uri: string) => {
+    return getLib(this.platform).play(uri);
   };
 }
 

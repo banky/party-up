@@ -38,6 +38,12 @@ export const RoomPage = () => {
         Search
       </button>
 
+      <button
+        onClick={() => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")}
+      >
+        Play
+      </button>
+
       <ul>
         {searchResults.map((result) => {
           return <li>{result.name}</li>;
