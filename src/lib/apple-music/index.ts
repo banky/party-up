@@ -1,4 +1,4 @@
-import { SearchType, Song } from "../constants";
+import { SearchType, Song, SEARCH_LIMIT } from "../constants";
 import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
 
 declare var MusicKit: any;
@@ -33,7 +33,7 @@ export const search = async (
 
   const response = await MusicKit.getInstance().api.search(query, {
     types: supportedSearchTypes.join(),
-    limit: 25,
+    limit: SEARCH_LIMIT,
     offset: 0,
   });
 

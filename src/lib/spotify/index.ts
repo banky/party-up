@@ -1,10 +1,11 @@
-import { SearchType } from "../constants";
+import { SearchType, Song, SEARCH_LIMIT } from "../constants";
 import {
   getPlayerOptions,
   initializePlayer,
   openSpotifyLoginWindow,
   getAuthTokenFromChildWindow,
   loadSpotifyWebPlayer,
+  transformSongs,
 } from "./helpers";
 
 export const configure = () => {};
@@ -21,16 +22,35 @@ export const authorize = async (): Promise<string> => {
 
 export const unauthorize = (): void => {};
 
-export const isAuthorized = (): boolean => {
-  return getPlayerOptions().authToken !== null;
+export const isAuthorized = (authToken: string): boolean => {
+  return authToken !== "";
 };
 
-export const search = (query: string, searchTypes: SearchType[]) => {
-  return Promise.reject("Not implemented");
+export const search = async (
+  query: string,
+  searchTypes: SearchType[],
+  authToken: string
+): Promise<Song[]> => {
+  const fetchUrl =
+    "https://api.spotify.com/v1/search" +
+    `?q=${encodeURIComponent(query)}` +
+    `&type=${searchTypes.join()}` +
+    `&limit=${SEARCH_LIMIT}`;
+
+  const response = await fetch(fetchUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  const responseJson = await response.json();
+  return Promise.resolve(transformSongs(responseJson.tracks.items));
 };
 
-export const play = (url: string): Promise<any> => {
-  const { authToken, playerId } = getPlayerOptions();
+export const play = (url: string, authToken: string): Promise<any> => {
+  const { playerId } = getPlayerOptions();
 
   return fetch(
     `https://api.spotify.com/v1/me/player/play?device_id=${playerId}`,
@@ -45,6 +65,6 @@ export const play = (url: string): Promise<any> => {
   );
 };
 
-export const pause = (): Promise<any> => {
+export const pause = (authToken: string): Promise<any> => {
   return Promise.reject("Not implemented");
 };

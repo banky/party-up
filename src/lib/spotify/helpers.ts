@@ -1,3 +1,5 @@
+import { Song } from "../constants";
+
 type ScriptAttributes = {
   async?: boolean;
   defer?: boolean;
@@ -70,23 +72,15 @@ export const initializePlayer = async (authToken: string) => {
   });
 };
 
-export const getPlayerOptions = () => {
+export const getPlayerOptions = (): { playerId: string | null } => {
   if (!window.spotifyPlayer) {
     return {
       playerId: null,
-      authToken: null,
     };
   }
 
-  const playerId: string = window.spotifyPlayer._options.id;
-  let authToken = "";
-  window.spotifyPlayer._options.getOAuthToken(
-    (token: string) => (authToken = token)
-  );
-
   return {
-    playerId,
-    authToken,
+    playerId: window.spotifyPlayer._options.id,
   };
 };
 
@@ -148,4 +142,20 @@ export const loadSpotifyWebPlayer = () => {
     // This promise resolves when the spotify web player has been loaded
     window.onSpotifyWebPlaybackSDKReady = resolve;
   });
+};
+
+export const transformSongs = (items: any): Song[] => {
+  const formatArtists = (item: any, delimiter: string): string => {
+    return item.artists
+      .reduce((acc: string, curr: any) => acc + curr.name + delimiter, "")
+      .slice(0, -delimiter.length);
+  };
+
+  return items.map((item: any) => ({
+    album: item.album.name,
+    artist: formatArtists(item, ", "),
+    name: item.name,
+    isrc: item.external_ids.isrc,
+    url: item.uri,
+  }));
 };

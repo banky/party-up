@@ -1,4 +1,4 @@
-import { SearchType } from "../constants";
+import { SearchType, Song } from "../constants";
 
 type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
 

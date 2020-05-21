@@ -32,19 +32,19 @@ class Music {
   };
 
   isAuthorized = () => {
-    return getLib(this.platform).isAuthorized();
+    return getLib(this.platform).isAuthorized(this.authToken);
   };
 
   search = (query: string, searchTypes: SearchType[]) => {
-    return getLib(this.platform).search(query, searchTypes);
+    return getLib(this.platform).search(query, searchTypes, this.authToken);
   };
 
   play = (url: string) => {
-    return getLib(this.platform).play(url);
+    return getLib(this.platform).play(url, this.authToken);
   };
 
   pause = () => {
-    return getLib(this.platform).pause();
+    return getLib(this.platform).pause(this.authToken);
   };
 }
 

@@ -13,3 +13,5 @@ export type Song = {
   isrc: string;
   url: string; // This is a url for apple music but a "spotify uri" for spotify
 };
+
+export const SEARCH_LIMIT = 25;
