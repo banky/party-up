@@ -1,8 +1,7 @@
 import { SearchType, Song } from "../constants";
+import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
 
 declare var MusicKit: any;
-
-type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
 
 export const configure = () => {
   MusicKit.configure({
@@ -26,32 +25,6 @@ export const isAuthorized = (): Boolean => {
   return MusicKit.getInstance().isAuthorized();
 };
 
-const supportedAppleMusicSearchTypes = (
-  searchTypes: SearchType[]
-): AppleMusicSearchType[] => {
-  // Apple music calls search types by different names than spotify 🙃
-  const appleMusicSearchTypes = searchTypes.map((searchType) => {
-    if (searchType === "artist") return "artists";
-    if (searchType === "track") return "songs";
-    if (searchType === "playlist") return "playlists";
-    if (searchType === "album") return "albums";
-    return "songs";
-  });
-
-  return appleMusicSearchTypes.filter(
-    (searchType) => !["show", "episode"].includes(searchType)
-  );
-};
-
-const transformSongs = (songs: any): Song[] =>
-  songs.map((song: any) => ({
-    album: song.attributes.albumName,
-    artist: song.attributes.artistName,
-    name: song.attributes.name,
-    isrc: song.attributes.isrc,
-    url: song.attributes.url,
-  }));
-
 export const search = async (
   query: string,
   searchTypes: SearchType[]
@@ -71,6 +44,12 @@ export const search = async (
   return Promise.resolve(songs);
 };
 
-export const play = (uri: string): Promise<any> => {
-  return Promise.reject("Not Implemented");
+export const play = async (url: string): Promise<any> => {
+  await MusicKit.getInstance().setQueue({ url: url });
+
+  return MusicKit.getInstance().play();
+};
+
+export const pause = (): Promise<any> => {
+  return Promise.reject("Not implemented");
 };

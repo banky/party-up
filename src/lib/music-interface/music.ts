@@ -39,8 +39,12 @@ class Music {
     return getLib(this.platform).search(query, searchTypes);
   };
 
-  play = (uri: string) => {
-    return getLib(this.platform).play(uri);
+  play = (url: string) => {
+    return getLib(this.platform).play(url);
+  };
+
+  pause = () => {
+    return getLib(this.platform).pause();
   };
 }
 

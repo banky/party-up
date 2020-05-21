@@ -11,11 +11,9 @@ export const configure = () => {};
 
 export const authorize = async (): Promise<string> => {
   const childWindow = openSpotifyLoginWindow();
-
   const authToken = await getAuthTokenFromChildWindow(childWindow);
 
   await loadSpotifyWebPlayer();
-
   initializePlayer(authToken);
 
   return Promise.resolve(authToken);
@@ -45,4 +43,8 @@ export const play = (url: string): Promise<any> => {
       },
     }
   );
+};
+
+export const pause = (): Promise<any> => {
+  return Promise.reject("Not implemented");
 };

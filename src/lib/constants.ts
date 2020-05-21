@@ -11,5 +11,5 @@ export type Song = {
   artist: string;
   name: string;
   isrc: string;
-  url: string;
+  url: string; // This is a url for apple music but a "spotify uri" for spotify
 };
