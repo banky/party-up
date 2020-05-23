@@ -22,7 +22,7 @@ export const RoomPage = () => {
 
   return (
     <div>
-      <h2>{`Welcome to ${roomName}`}</h2>
+      <h1>{`Welcome to ${roomName}`}</h1>
       <input
         placeholder="Search for a song! "
         value={searchInput}
