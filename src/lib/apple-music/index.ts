@@ -44,6 +44,10 @@ export const search = async (
   return Promise.resolve(songs);
 };
 
+export const findSongByIsrc = (query: string): Promise<Song> => {
+  return Promise.reject("Not Implemented");
+};
+
 export const play = async (url: string): Promise<any> => {
   await MusicKit.getInstance().setQueue({ url: url });
 

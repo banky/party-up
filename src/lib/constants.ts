@@ -1,3 +1,4 @@
+// Defined by spotify search
 export type SearchType =
   | "album"
   | "artist"

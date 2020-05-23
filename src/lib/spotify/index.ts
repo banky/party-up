@@ -49,6 +49,13 @@ export const search = async (
   return Promise.resolve(transformSongs(responseJson.tracks.items));
 };
 
+export const findSongByIsrc = (
+  query: string,
+  authToken: string
+): Promise<Song> => {
+  return Promise.reject("Not Implemented");
+};
+
 export const play = (url: string, authToken: string): Promise<any> => {
   const { playerId } = getPlayerOptions();
 

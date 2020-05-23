@@ -54,6 +54,11 @@ declare global {
   }
 }
 
+/**
+ * Initializes the spotify web playbak sdk which is used for playing music in the browser
+ * https://developer.spotify.com/documentation/web-playback-sdk/quick-start/
+ * @param authToken
+ */
 export const initializePlayer = async (authToken: string) => {
   const player = new Spotify.Player({
     name: "Web Playback SDK Quick Start Player",
@@ -62,9 +67,9 @@ export const initializePlayer = async (authToken: string) => {
     },
   });
 
-  // TODO: Is there a better place to put this than the global scope?
   window.spotifyPlayer = player;
 
+  // TODO: perhaps jsut reject here if connect fails
   player.connect().then((success: boolean) => {
     if (success) {
       console.log("The Web Playback SDK successfully connected to Spotify!");
@@ -72,6 +77,9 @@ export const initializePlayer = async (authToken: string) => {
   });
 };
 
+/**
+ * We sometimes need to know specific info about the web player
+ */
 export const getPlayerOptions = (): { playerId: string | null } => {
   if (!window.spotifyPlayer) {
     return {
@@ -84,6 +92,9 @@ export const getPlayerOptions = (): { playerId: string | null } => {
   };
 };
 
+/**
+ * It looks a bit nicer to log the user in in a separate window
+ */
 export const openSpotifyLoginWindow = () => {
   const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
   const response_type = "token";
@@ -110,6 +121,10 @@ export const openSpotifyLoginWindow = () => {
   );
 };
 
+/**
+ * The child window used for login gives us the auth token
+ * @param childWindow
+ */
 export const getAuthTokenFromChildWindow = async (
   childWindow: Window | null
 ) => {
@@ -133,6 +148,9 @@ export const getAuthTokenFromChildWindow = async (
   return authToken;
 };
 
+/**
+ * Loads the psotify web player sdk. Promise resolves when the player is ready
+ */
 export const loadSpotifyWebPlayer = () => {
   return new Promise((resolve) => {
     loadScript({
@@ -146,6 +164,11 @@ export const loadSpotifyWebPlayer = () => {
   });
 };
 
+/**
+ * Transforms spotify tracks into Party-Up songs
+ * Track objet structure can be viewed here: https://developer.spotify.com/documentation/web-api/reference/search/search/
+ * @param items
+ */
 export const transformSongs = (items: any): Song[] => {
   const formatArtists = (item: any, delimiter: string): string => {
     return item.artists

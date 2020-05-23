@@ -11,6 +11,9 @@ const getLib = (platform: Platform) => {
   }[platform];
 };
 
+/**
+ * This provides a uniform interface to hide platform specific implementation details
+ */
 class Music {
   authToken: string;
   platform: Platform;
@@ -37,6 +40,10 @@ class Music {
 
   search = (query: string, searchTypes: SearchType[]) => {
     return getLib(this.platform).search(query, searchTypes, this.authToken);
+  };
+
+  findSongByIsrc = (query: string) => {
+    return getLib(this.platform).findSongByIsrc(query, this.authToken);
   };
 
   play = (url: string) => {

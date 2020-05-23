@@ -39,12 +39,15 @@ export const RoomPage = () => {
       </button>
 
       <button
-        onClick={() => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")}
-        // onClick={() =>
-        //   music.play(
-        //     "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
-        //   )
-        // }
+        // TODO: This is just for now to show that play works
+        onClick={
+          music.platform === "apple"
+            ? () =>
+                music.play(
+                  "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
+                )
+            : () => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
+        }
       >
         Play
       </button>
