@@ -1,0 +1,23 @@
+.name-input {
+  border: 1px solid #ebcfb2;
+  border-radius: 20px;
+  width: 50%;
+  height: 2em;
+  font-size: 22px;
+  font-family: "Quattrocento";
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.create-room-button {
+  margin-top: 1em;
+  background-color: #9bc1bc;
+  font-size: 22px;
+  font-family: "Quattrocento";
+  border: none;
+  height: 2em;
+}
+
+.create-room-button:hover {
+  opacity: 0.7;
+}

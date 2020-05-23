@@ -5,6 +5,7 @@ import { RootState } from "../../store/reducers";
 import { updateName } from "../../store/actions";
 import { createRoom } from "./helpers.ts";
 import { useFirebase } from "../../lib/firebase/hooks";
+import "./name-page.css";
 
 export const NamePage = () => {
   const name = useSelector((state: RootState) => state.name);
@@ -20,12 +21,17 @@ export const NamePage = () => {
 
   return (
     <div>
-      <h2>Name Page</h2>
-      <input
-        value={name}
-        onChange={(e) => dispatch(updateName(e.target.value))}
-      />
-      <button onClick={handleButtonClick}>Create Room</button>
+      <h1>What is your name?</h1>
+      <div>
+        <input
+          className="name-input"
+          value={name}
+          onChange={(e) => dispatch(updateName(e.target.value))}
+        />
+      </div>
+      <button className="create-room-button" onClick={handleButtonClick}>
+        Create Room
+      </button>
     </div>
   );
 };
