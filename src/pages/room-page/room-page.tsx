@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
+import { SongCard } from "../../components/SongCard/SongCard";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -43,18 +44,23 @@ export const RoomPage = () => {
         onClick={
           music.platform === "apple"
             ? () =>
-                music.play(
-                  "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
-                )
+              music.play(
+                "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
+              )
             : () => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
         }
       >
         Play
       </button>
 
-      <ul>
+      <ul className="song-card">
         {searchResults.map((result) => {
-          return <li>{result.name}</li>;
+          console.log("result", result);
+          return <SongCard
+            songName={result.name}
+            artists={result.artist}
+            imgUrl={result.imgUrl}
+          />
         })}
       </ul>
     </div>

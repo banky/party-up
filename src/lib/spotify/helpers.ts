@@ -182,5 +182,6 @@ export const transformSongs = (items: any): Song[] => {
     name: item.name,
     isrc: item.external_ids.isrc,
     url: item.uri,
+    imgUrl: item.album.images[2].url
   }));
 };
