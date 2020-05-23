@@ -13,14 +13,14 @@ const firebaseConfig = {
 };
 
 class Firebase {
-  database: app.database.Database;
+  database: () => app.database.Database;
 
   constructor() {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
 
-    this.database = app.database();
+    this.database = app.database;
   }
 }
 

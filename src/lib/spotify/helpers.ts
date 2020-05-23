@@ -61,7 +61,7 @@ declare global {
  */
 export const initializePlayer = async (authToken: string) => {
   const player = new Spotify.Player({
-    name: "Web Playback SDK Quick Start Player",
+    name: "Party Up",
     getOAuthToken: (cb: Function) => {
       cb(authToken);
     },

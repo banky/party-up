@@ -14,7 +14,8 @@ export const RoomPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
-  firebase.database
+  firebase
+    .database()
     .ref("/rooms/" + roomId)
     .once("value")
     .then((snapshot) => {
@@ -23,7 +24,7 @@ export const RoomPage = () => {
 
   return (
     <div>
-      <h2>{`Welcome to ${roomName}`}</h2>
+      <h1>{`Welcome to ${roomName}`}</h1>
       <input
         placeholder="Search for a song! "
         value={searchInput}

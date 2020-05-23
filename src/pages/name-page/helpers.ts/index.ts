@@ -16,7 +16,7 @@ export const createRoom = (
 ) => {
   const roomName = roomNameFromOwner(name);
 
-  const newUserKey = firebase.database.ref().child("users").push({
+  const newUserKey = firebase.database().ref().child("users").push({
     name: name,
     platform: platform,
   }).key;
@@ -25,7 +25,8 @@ export const createRoom = (
     return; // TODO: Show user an error state
   }
 
-  const newRoomKey = firebase.database
+  const newRoomKey = firebase
+    .database()
     .ref()
     .child("rooms")
     .push({
