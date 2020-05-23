@@ -1,3 +1,5 @@
+![Firebase Continuous Deployment](https://github.com/bankya/party-up/workflows/Firebase%20Continuous%20Deployment/badge.svg)
+
 # Party Up
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

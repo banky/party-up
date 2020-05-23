@@ -87,7 +87,9 @@ export const getPlayerOptions = (): { playerId: string | null } => {
 export const openSpotifyLoginWindow = () => {
   const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
   const response_type = "token";
-  const redirect_uri = "http:%2F%2Flocalhost:3000%2Fspotify-callback";
+  const redirect_uri = encodeURIComponent(
+    process.env.REACT_APP_BASE_URL + "/spotify-callback"
+  );
   const scopes = "streaming user-modify-playback-state";
 
   const spotify_auth_url =

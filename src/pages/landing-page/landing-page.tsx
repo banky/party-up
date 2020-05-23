@@ -10,7 +10,12 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <h1>Party Up 🎉</h1>
+      <h1>
+        Party Up{" "}
+        <span role="img" aria-labelledby="party">
+          🎉
+        </span>
+      </h1>
       <p>
         Create a room, start the party. But first, what platform do you use?
       </p>
