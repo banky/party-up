@@ -8,6 +8,7 @@ import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
 import { RoomPage } from "./pages/room-page/room-page";
 import { SpotifyCallback } from "./pages/spotify-callback-page";
+import "./App.css";
 
 function App() {
   return (
