@@ -19,11 +19,22 @@ export const supportedAppleMusicSearchTypes = (
   );
 };
 
-export const transformSongs = (songs: any): Song[] =>
-  songs.map((song: any) => ({
+export const transformSongs = (songs: any): Song[] => {
+  const formatImgUrl = (url: string) => {
+    const IMAGE_HEIGHT = "100";
+    const IMAGE_WIDTH = IMAGE_HEIGHT;
+
+    url = url.replace("{h}", IMAGE_HEIGHT);
+    url = url.replace("{w}", IMAGE_WIDTH);
+    return url;
+  };
+
+  return songs.map((song: any) => ({
     album: song.attributes.albumName,
     artist: song.attributes.artistName,
     name: song.attributes.name,
     isrc: song.attributes.isrc,
     url: song.attributes.url,
+    imgUrl: formatImgUrl(song.attributes.artwork.url),
   }));
+};
