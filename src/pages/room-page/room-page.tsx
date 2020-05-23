@@ -7,16 +7,26 @@ import { SongCard } from "../../components/SongCard/SongCard";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
-  const { roomId } = useParams();
+  const { roomKey } = useParams();
   const music = useMusic();
 
   const [roomName, setRoomName] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
+  const queueSong = (song: Song) =>
+    firebase.database().ref("/rooms").child(roomKey).child("queue").push(song)
+      .key;
+
+  const setSongStartTime = () => {
+    const time = Date.now();
+    // TODO: This ignores in flight time. Sorry people with shitty internet
+    firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
+  };
+
   firebase
     .database()
-    .ref("/rooms/" + roomId)
+    .ref("/rooms/" + roomKey)
     .once("value")
     .then((snapshot) => {
       setRoomName(snapshot.val().name);
@@ -45,10 +55,15 @@ export const RoomPage = () => {
         onClick={
           music.platform === "apple"
             ? () =>
-                music.play(
-                  "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
-                )
-            : () => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
+                music
+                  .play(
+                    "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
+                  )
+                  .then(() => setSongStartTime())
+            : () =>
+                music
+                  .play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
+                  .then(() => setSongStartTime())
         }
       >
         Play
@@ -61,7 +76,7 @@ export const RoomPage = () => {
               songName={result.name}
               artists={result.artist}
               imgUrl={result.imgUrl}
-              onClick={() => console.log(result)}
+              onClick={() => queueSong(result)}
             />
           );
         })}
