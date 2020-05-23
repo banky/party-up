@@ -17,7 +17,7 @@ function App() {
         <MusicContext.Provider value={new Music("apple")}>
           <BrowserRouter>
             <Switch>
-              <Route path="/room/:roomId">
+              <Route path="/room/:roomKey">
                 <RoomPage />
               </Route>
               <Route path="/room">
