@@ -13,7 +13,8 @@ export const RoomPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
-  firebase.database
+  firebase
+    .database()
     .ref("/rooms/" + roomId)
     .once("value")
     .then((snapshot) => {
