@@ -45,9 +45,9 @@ export const RoomPage = () => {
         onClick={
           music.platform === "apple"
             ? () =>
-              music.play(
-                "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
-              )
+                music.play(
+                  "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
+                )
             : () => music.play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
         }
       >
@@ -56,12 +56,14 @@ export const RoomPage = () => {
 
       <ul className="song-card">
         {searchResults.map((result) => {
-          console.log("result", result);
-          return <SongCard
-            songName={result.name}
-            artists={result.artist}
-            imgUrl={result.imgUrl}
-          />
+          return (
+            <SongCard
+              songName={result.name}
+              artists={result.artist}
+              imgUrl={result.imgUrl}
+              onClick={() => console.log(result)}
+            />
+          );
         })}
       </ul>
     </div>
