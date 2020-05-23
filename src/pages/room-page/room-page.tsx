@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
@@ -13,6 +13,33 @@ export const RoomPage = () => {
   const [roomName, setRoomName] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const [playQueue, setPlayQueue] = useState<Song[]>([]);
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/queue`)
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) {
+          setPlayQueue([]);
+          return;
+        }
+
+        const snapshotValueArray = Object.keys(snapshot.val()).map(
+          (key) => snapshot.val()[key]
+        );
+        setPlayQueue(snapshotValueArray);
+      });
+
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}`)
+      .once("value")
+      .then((snapshot) => {
+        // TODO: Check for null val() here and return a 404 page if null
+        setRoomName(snapshot.val().name);
+      });
+  }, [firebase, roomKey]);
 
   const queueSong = (song: Song) =>
     firebase.database().ref("/rooms").child(roomKey).child("queue").push(song)
