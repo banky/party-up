@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
-import { SongCard } from "../../components/song-card/song-card.component";
 import { Search } from "./components/search.component";
 import "./room-page.css";
+import { Queue } from "./components/queue.component";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -14,30 +14,13 @@ export const RoomPage = () => {
 
   const [roomName, setRoomName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [playQueue, setPlayQueue] = useState<Song[]>([]);
 
   useEffect(() => {
-    firebase
-      .database()
-      .ref(`rooms/${roomKey}/queue`)
-      .on("value", (snapshot) => {
-        if (!snapshot.exists()) {
-          setPlayQueue([]);
-          return;
-        }
-
-        const snapshotAsArray = Object.keys(snapshot.val()).map(
-          (key) => snapshot.val()[key]
-        );
-        setPlayQueue(snapshotAsArray);
-      });
-
     firebase
       .database()
       .ref(`rooms/${roomKey}`)
       .once("value")
       .then((snapshot) => {
-        // TODO: Check for null val() here and return a 404 page if null
         setRoomName(snapshot.val().name);
       });
   }, [firebase, roomKey]);
@@ -48,7 +31,6 @@ export const RoomPage = () => {
 
   const setSongStartTime = () => {
     const time = Date.now();
-    // TODO: This ignores in flight time. Sorry people with shitty internet
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
   };
 
@@ -59,8 +41,6 @@ export const RoomPage = () => {
     .then((snapshot) => {
       setRoomName(snapshot.val().name);
     });
-
-  console.log("rendering");
 
   return (
     <div>
@@ -85,15 +65,7 @@ export const RoomPage = () => {
         Play
       </button>
 
-      <ul className="song-queue">
-        {playQueue.map((result) => {
-          return (
-            <li className="song-queue-item" key={result.url}>
-              <SongCard song={result} actionIcon="minus" />
-            </li>
-          );
-        })}
-      </ul>
+      <Queue roomKey={roomKey} />
 
       {showSearch && (
         <Search
