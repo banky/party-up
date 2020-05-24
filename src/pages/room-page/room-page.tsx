@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
-import { SongCard } from "../../components/song-card/song-card";
+import { SongCard } from "../../components/song-card/song-card.component";
 import { Search } from "./components/search.component";
 import "./room-page.css";
 
@@ -89,11 +89,7 @@ export const RoomPage = () => {
         {playQueue.map((result) => {
           return (
             <li className="song-queue-item" key={result.url}>
-              <SongCard
-                songName={result.name}
-                artists={result.artist}
-                imgUrl={result.imgUrl}
-              />
+              <SongCard song={result} actionIcon="minus" />
             </li>
           );
         })}
