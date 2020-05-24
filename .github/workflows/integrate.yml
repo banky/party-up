@@ -12,5 +12,6 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 14
+      - run: yarn install
       - run: yarn test
       - run: yarn build
