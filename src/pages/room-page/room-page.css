@@ -1,4 +1,8 @@
-.song-card {
+.song-queue {
   display: flex;
   justify-content: center;
+}
+
+.song-queue-item {
+  list-style-type: none;
 }
