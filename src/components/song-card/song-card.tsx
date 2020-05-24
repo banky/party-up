@@ -15,16 +15,16 @@ export const SongCard = ({
   onClick,
 }: SongCardProps) => {
   return (
-    <div className="song-item" onClick={onClick}>
+    <div className="song-card-wrapper" onClick={onClick}>
       <img
-        className="song-image"
+        className="song-card-image"
         src={imgUrl}
         alt={`${songName} album art`}
       ></img>
-      <div className="song-info-wrapper">
-        <span className="song-text">{songName}</span>
+      <div className="song-card-info-wrapper">
+        <span className="song-card-text">{songName}</span>
         <br />
-        <span className="song-text">{artists}</span>
+        <span className="song-card-text">{artists}</span>
       </div>
     </div>
   );
