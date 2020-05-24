@@ -7,14 +7,18 @@ import { Song } from "../../lib/constants";
 type SongCardProps = {
   song: Song;
   actionIcon: "plus" | "minus";
-  onClick?: VoidFunction;
+  onClickActionIcon?: VoidFunction;
 };
 
-export const SongCard = ({ song, actionIcon, onClick }: SongCardProps) => {
+export const SongCard = ({
+  song,
+  actionIcon,
+  onClickActionIcon,
+}: SongCardProps) => {
   const { name, artist, imgUrl } = song;
 
   return (
-    <div className="song-card-wrapper" onClick={onClick}>
+    <div className="song-card-wrapper">
       <img
         className="song-card-image"
         src={imgUrl}
@@ -26,7 +30,17 @@ export const SongCard = ({ song, actionIcon, onClick }: SongCardProps) => {
       <div className="song-artist">
         <span className="song-card-text">{artist}</span>
       </div>
-      {actionIcon === "plus" ? <PlusIcon /> : <MinusIcon />}
+      {actionIcon === "plus" ? (
+        <PlusIcon
+          className="song-card-action-icon"
+          onClick={onClickActionIcon}
+        />
+      ) : (
+        <MinusIcon
+          className="song-card-action-icon"
+          onClick={onClickActionIcon}
+        />
+      )}
     </div>
   );
 };
