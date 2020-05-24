@@ -1,4 +1,5 @@
-![Firebase Continuous Deployment](https://github.com/bankya/party-up/workflows/Firebase%20Continuous%20Deployment/badge.svg)
+![Continuous Deployment](https://github.com/bankya/party-up/workflows/Continuous%20Deployment/badge.svg)
+![Continuous Integration](https://github.com/bankya/party-up/workflows/Continuous%20Integration/badge.svg)
 
 # Party Up
 
