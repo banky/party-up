@@ -1,4 +1,12 @@
-.song-card {
-  display: flex;
-  justify-content: center;
+.song-queue {
+  /* justify-content: center; */
+  padding: 0;
+}
+
+.song-queue-item {
+  list-style-type: none;
+  margin: 0 auto;
+  max-width: 700px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

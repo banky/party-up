@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
-import { SongCard } from "../../components/SongCard/SongCard";
+import { SongCard } from "../../components/song-card/song-card.component";
+import { Search } from "./components/search.component";
+import "./room-page.css";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -99,12 +101,9 @@ export const RoomPage = () => {
       <ul className="song-card">
         {searchResults.map((result) => {
           return (
-            <SongCard
-              songName={result.name}
-              artists={result.artist}
-              imgUrl={result.imgUrl}
-              onClick={() => queueSong(result)}
-            />
+            <li className="song-queue-item" key={result.url}>
+              <SongCard song={result} actionIcon="minus" />
+            </li>
           );
         })}
       </ul>

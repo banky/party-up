@@ -1,20 +1,30 @@
-.song-item{
-  width: 800px;
+.song-card-wrapper {
   height: 80px;
-  border: 1px solid black;
-  border-radius: 8px;
+  border-radius: 15px;
   background-color: white;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  box-shadow: 4px 5px 10px #a3a3a3;
+  position: relative;
+  text-align: left;
 }
 
-.song-image {
-  float: left;
-  height: 78px;
-  border-radius: 8px;
+.song-card-image {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1%;
+  height: 60px;
+  margin-left: 2%;
+  border-radius: 5px;
 }
 
-.song-text {
-  display: inline-block;
-  margin-top: 10px;
+.song-name {
+  position: absolute;
+  left: 90px;
+  top: 10px;
+}
+
+.song-artist {
+  position: absolute;
+  left: 90px;
+  top: 43px;
 }
