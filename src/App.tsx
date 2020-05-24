@@ -10,34 +10,32 @@ import { RoomPage } from "./pages/room-page/room-page";
 import { SpotifyCallback } from "./pages/spotify-callback-page";
 import "./App.css";
 
-function App() {
-  return (
-    <Provider store={store}>
-      <FirebaseContext.Provider value={new Firebase()}>
-        <MusicContext.Provider value={new Music("apple")}>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/room/:roomKey">
-                <RoomPage />
-              </Route>
-              <Route path="/room">
-                <RoomPage />
-              </Route>
-              <Route path="/name">
-                <NamePage />
-              </Route>
-              <Route path="/spotify-callback">
-                <SpotifyCallback />
-              </Route>
-              <Route path="/">
-                <LandingPage />
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </MusicContext.Provider>
-      </FirebaseContext.Provider>
-    </Provider>
-  );
-}
+const App = () => (
+  <Provider store={store}>
+    <FirebaseContext.Provider value={new Firebase()}>
+      <MusicContext.Provider value={new Music("apple")}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/room/:roomKey">
+              <RoomPage />
+            </Route>
+            <Route path="/room">
+              <RoomPage />
+            </Route>
+            <Route path="/name">
+              <NamePage />
+            </Route>
+            <Route path="/spotify-callback">
+              <SpotifyCallback />
+            </Route>
+            <Route path="/">
+              <LandingPage />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </MusicContext.Provider>
+    </FirebaseContext.Provider>
+  </Provider>
+);
 
 export default App;
