@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
-import { SongCard } from "../../components/song-card/song-card.component";
+import { SongCard } from "../../components/song-card/song-card";
 import { Search } from "./components/search.component";
 import "./room-page.css";
 
@@ -13,8 +13,7 @@ export const RoomPage = () => {
   const music = useMusic();
 
   const [roomName, setRoomName] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const [showSearch, setShowSearch] = useState(false);
   const [playQueue, setPlayQueue] = useState<Song[]>([]);
 
   useEffect(() => {
@@ -27,10 +26,10 @@ export const RoomPage = () => {
           return;
         }
 
-        const snapshotValueArray = Object.keys(snapshot.val()).map(
+        const snapshotAsArray = Object.keys(snapshot.val()).map(
           (key) => snapshot.val()[key]
         );
-        setPlayQueue(snapshotValueArray);
+        setPlayQueue(snapshotAsArray);
       });
 
     firebase
@@ -61,24 +60,12 @@ export const RoomPage = () => {
       setRoomName(snapshot.val().name);
     });
 
+  console.log("rendering");
+
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <input
-        placeholder="Search for a song! "
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-      />
-      <button
-        onClick={() =>
-          music
-            .search(searchInput, ["track"])
-            .then((searchResults) => setSearchResults(searchResults))
-        }
-      >
-        Search
-      </button>
-
+      <button onClick={() => setShowSearch(true)}>Search</button>
       <button
         // TODO: This is just for now to show that play works
         onClick={
@@ -98,15 +85,29 @@ export const RoomPage = () => {
         Play
       </button>
 
-      <ul className="song-card">
-        {searchResults.map((result) => {
+      <ul className="song-queue">
+        {playQueue.map((result) => {
           return (
             <li className="song-queue-item" key={result.url}>
-              <SongCard song={result} actionIcon="minus" />
+              <SongCard
+                songName={result.name}
+                artists={result.artist}
+                imgUrl={result.imgUrl}
+              />
             </li>
           );
         })}
       </ul>
+
+      {showSearch && (
+        <Search
+          cancelSearch={() => setShowSearch(false)}
+          onSelectSong={(song) => {
+            queueSong(song);
+            setShowSearch(false);
+          }}
+        />
+      )}
     </div>
   );
 };

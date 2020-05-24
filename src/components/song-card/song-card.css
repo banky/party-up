@@ -1,0 +1,20 @@
+.song-card-wrapper {
+  width: 800px;
+  height: 80px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: white;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.song-card-image {
+  float: left;
+  height: 78px;
+  border-radius: 8px;
+}
+
+.song-text {
+  display: inline-block;
+  margin-top: 10px;
+}

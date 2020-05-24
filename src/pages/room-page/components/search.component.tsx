@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./search.css";
 import { useMusic } from "../../../lib/music-interface/hook";
 import { Song } from "../../../lib/constants";
-import { SongCard } from "../../../components/song-card/song-card.component";
+import { SongCard } from "../../../components/song-card/song-card";
 
 type SearchProps = {
   cancelSearch: VoidFunction;
@@ -36,8 +36,9 @@ export const Search = ({ cancelSearch, onSelectSong }: SearchProps) => {
         {searchResults.map((result) => {
           return (
             <SongCard
-              song={result}
-              actionIcon="plus"
+              songName={result.name}
+              artists={result.artist}
+              imgUrl={result.imgUrl}
               onClick={() => onSelectSong(result)}
             />
           );
