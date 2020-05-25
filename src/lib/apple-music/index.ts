@@ -37,8 +37,6 @@ export const search = async (
     offset: 0,
   });
 
-  // TODO: Maybe in future we could do more searches than just songs?
-  // response contains albums, artists, music-videos, playlists
   const songs = transformSongs(response.songs.data);
 
   return Promise.resolve(songs);
@@ -55,5 +53,11 @@ export const play = async (url: string): Promise<any> => {
 };
 
 export const pause = (): Promise<any> => {
-  return Promise.reject("Not implemented");
+  return MusicKit.getInstance().pause();
+};
+
+export const progress = (): Promise<number> => {
+  const progressInSeconds = MusicKit.getInstance().player.currentPlaybackTime;
+
+  return Promise.resolve(Math.floor(progressInSeconds * 1000));
 };

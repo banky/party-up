@@ -1,19 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
 import { Search } from "./components/search.component";
-import "./room-page.css";
 import { Queue } from "./components/queue.component";
+import "./room-page.css";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
   const { roomKey } = useParams();
   const music = useMusic();
+  const history = useHistory();
 
   const [roomName, setRoomName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+
+  const playFirstSongOnQueue = useCallback(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/queue`)
+      .once("value", async (snapshot) => {
+        if (!snapshot.exists()) return;
+
+        const songList = snapshot.val();
+        const songKeys = Object.keys(songList);
+
+        const currentSong: Song = songList[songKeys[0]];
+
+        await music.play(currentSong.url);
+      });
+  }, [firebase, music, roomKey]);
 
   useEffect(() => {
     firebase
@@ -21,49 +38,47 @@ export const RoomPage = () => {
       .ref(`rooms/${roomKey}`)
       .once("value")
       .then((snapshot) => {
+        if (!snapshot.exists()) return history.push("/not-found");
         setRoomName(snapshot.val().name);
       });
-  }, [firebase, roomKey]);
+  }, [firebase, history, roomKey]);
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/playing`)
+      .on("value", (snapshot) => {
+        if (snapshot.val()) playFirstSongOnQueue();
+        else music.pause();
+      });
+  }, [firebase, music, roomKey, playFirstSongOnQueue]);
 
   const queueSong = (song: Song) =>
     firebase.database().ref("/rooms").child(roomKey).child("queue").push(song)
       .key;
 
-  const setSongStartTime = () => {
-    const time = Date.now();
+  const setSongStartTime = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
+
+  const setRoomPlaying = (playing: boolean) =>
+    firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
+
+  const onClickPlay = async () => {
+    const progress = await music.progress();
+    setSongStartTime(Date.now() - progress);
+    setRoomPlaying(true);
   };
 
-  firebase
-    .database()
-    .ref("/rooms/" + roomKey)
-    .once("value")
-    .then((snapshot) => {
-      setRoomName(snapshot.val().name);
-    });
+  const onClickPause = () => {
+    setRoomPlaying(false);
+  };
 
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
       <button onClick={() => setShowSearch(true)}>Search</button>
-      <button
-        // TODO: This is just for now to show that play works
-        onClick={
-          music.platform === "apple"
-            ? () =>
-                music
-                  .play(
-                    "https://music.apple.com/us/album/say-so-feat-nicki-minaj/1510821672?i=1510821685"
-                  )
-                  .then(() => setSongStartTime())
-            : () =>
-                music
-                  .play("spotify:track:7xGfFoTpQ2E7fRF5lN10tr")
-                  .then(() => setSongStartTime())
-        }
-      >
-        Play
-      </button>
+      <button onClick={onClickPlay}>Play</button>
+      <button onClick={onClickPause}>Pause</button>
 
       <Queue roomKey={roomKey} />
 
