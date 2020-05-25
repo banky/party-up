@@ -53,6 +53,13 @@ class Music {
   pause = () => {
     return getLib(this.platform).pause(this.authToken);
   };
+
+  /**
+   * Get the playback progress in milliseconds
+   */
+  progress = () => {
+    return getLib(this.platform).progress(this.authToken);
+  };
 }
 
 export default Music;

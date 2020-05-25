@@ -75,3 +75,7 @@ export const play = (url: string, authToken: string): Promise<any> => {
 export const pause = (authToken: string): Promise<any> => {
   return Promise.reject("Not implemented");
 };
+
+export const progress = (authToken: string): Promise<number> => {
+  return Promise.reject("Not implemented");
+};

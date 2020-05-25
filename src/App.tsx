@@ -8,6 +8,7 @@ import { LandingPage } from "./pages/landing-page/landing-page";
 import { NamePage } from "./pages/name-page/name-page";
 import { RoomPage } from "./pages/room-page/room-page";
 import { SpotifyCallback } from "./pages/spotify-callback-page";
+import { NotFoundPage } from "./pages/not-found-page/not-found-page";
 import "./App.css";
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
               </Route>
               <Route path="/spotify-callback">
                 <SpotifyCallback />
+              </Route>
+              <Route path="/not-found">
+                <NotFoundPage />
               </Route>
               <Route path="/">
                 <LandingPage />
