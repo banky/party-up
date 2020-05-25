@@ -42,12 +42,19 @@ export const search = async (
   return Promise.resolve(songs);
 };
 
-export const findSongByIsrc = (query: string): Promise<Song> => {
+const findSongByIsrc = (song: Song): Promise<Song> => {
   return Promise.reject("Not Implemented");
 };
 
-export const play = async (url: string): Promise<any> => {
-  await MusicKit.getInstance().setQueue({ url: url });
+export const play = async (song: Song): Promise<any> => {
+  const APPLE_MUSIC_BASE_URL = "https://music.apple.com";
+  let appleMusicSong = song;
+
+  if (!song.url.includes(APPLE_MUSIC_BASE_URL)) {
+    appleMusicSong = await findSongByIsrc(song);
+  }
+
+  await MusicKit.getInstance().setQueue({ url: appleMusicSong.url });
 
   return MusicKit.getInstance().play();
 };

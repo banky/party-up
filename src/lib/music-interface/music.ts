@@ -1,6 +1,6 @@
 import * as AppleMusic from "../apple-music";
 import * as Spotify from "../spotify";
-import { SearchType } from "../constants";
+import { SearchType, Song } from "../constants";
 
 export type Platform = "apple" | "spotify";
 
@@ -42,12 +42,8 @@ class Music {
     return getLib(this.platform).search(query, searchTypes, this.authToken);
   };
 
-  findSongByIsrc = (query: string) => {
-    return getLib(this.platform).findSongByIsrc(query, this.authToken);
-  };
-
-  play = (url: string) => {
-    return getLib(this.platform).play(url, this.authToken);
+  play = (song: Song) => {
+    return getLib(this.platform).play(song, this.authToken);
   };
 
   pause = () => {

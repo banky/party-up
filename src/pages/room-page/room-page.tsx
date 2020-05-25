@@ -28,7 +28,7 @@ export const RoomPage = () => {
 
         const currentSong: Song = songList[songKeys[0]];
 
-        await music.play(currentSong.url);
+        await music.play(currentSong);
       });
   }, [firebase, music, roomKey]);
 
