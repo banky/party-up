@@ -42,8 +42,19 @@ export const search = async (
   return Promise.resolve(songs);
 };
 
-const findSongByIsrc = (song: Song): Promise<Song> => {
-  return Promise.reject("Not Implemented");
+const findSongByIsrc = async (song: Song): Promise<Song> => {
+  const results = await MusicKit.getInstance().api.songs({
+    filter: { isrc: song.isrc },
+  });
+
+  if (!results.length) {
+    return Promise.reject(
+      `Apple Music could not find song: ${song.name}. ISRC: ${song.isrc}`
+    );
+  }
+
+  const transformedResults = transformSongs(results);
+  return Promise.resolve(transformedResults[0]);
 };
 
 export const play = async (song: Song): Promise<any> => {
