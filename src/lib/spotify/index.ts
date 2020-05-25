@@ -49,21 +49,25 @@ export const search = async (
   return Promise.resolve(transformSongs(responseJson.tracks.items));
 };
 
-export const findSongByIsrc = (
-  query: string,
-  authToken: string
-): Promise<Song> => {
+const findSongByIsrc = (song: Song, authToken: string): Promise<Song> => {
   return Promise.reject("Not Implemented");
 };
 
-export const play = (url: string, authToken: string): Promise<any> => {
+export const play = async (song: Song, authToken: string): Promise<any> => {
   const { playerId } = getPlayerOptions();
+  const SPOTIFY_BASE_URL = "spotify";
+
+  let spotifySong = song;
+
+  if (!song.url.includes(SPOTIFY_BASE_URL)) {
+    spotifySong = await findSongByIsrc(song, authToken);
+  }
 
   return fetch(
     `https://api.spotify.com/v1/me/player/play?device_id=${playerId}`,
     {
       method: "PUT",
-      body: JSON.stringify({ uris: [url] }),
+      body: JSON.stringify({ uris: [spotifySong.url] }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
