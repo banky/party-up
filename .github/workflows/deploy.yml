@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: 14
       - run: yarn install
+      - run: yarn test
       - run: yarn build
         env:
           REACT_APP_APPLE_DEV_TOKEN: ${{ secrets.REACT_APP_APPLE_DEV_TOKEN }}
