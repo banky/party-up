@@ -25,10 +25,18 @@ export const RoomPage = () => {
 
         const songList = snapshot.val();
         const songKeys = Object.keys(songList);
-
         const currentSong: Song = songList[songKeys[0]];
 
+        // Synchronize the player with the room
+        const songStartTimeSnapshot = await firebase
+          .database()
+          .ref(`rooms/${roomKey}/songStartTime`)
+          .once("value");
+        const songStartTime = songStartTimeSnapshot.val();
+        const songCurrentTime = Date.now() - songStartTime;
+
         await music.play(currentSong);
+        music.seek(songCurrentTime);
       });
   }, [firebase, music, roomKey]);
 
@@ -54,8 +62,7 @@ export const RoomPage = () => {
   }, [firebase, music, roomKey, playFirstSongOnQueue]);
 
   const queueSong = (song: Song) =>
-    firebase.database().ref("/rooms").child(roomKey).child("queue").push(song)
-      .key;
+    firebase.database().ref("/rooms").child(roomKey).child("queue").push(song);
 
   const setSongStartTime = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
@@ -65,7 +72,7 @@ export const RoomPage = () => {
 
   const onClickPlay = async () => {
     const progress = await music.progress();
-    setSongStartTime(Date.now() - progress);
+    await setSongStartTime(Date.now() - progress);
     setRoomPlaying(true);
   };
 
