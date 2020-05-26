@@ -79,3 +79,7 @@ export const progress = (): Promise<number> => {
 
   return Promise.resolve(Math.floor(progressInSeconds * 1000));
 };
+
+export const seek = (time: number): Promise<any> => {
+  return MusicKit.getInstance().seekToTime(time / 1000);
+};

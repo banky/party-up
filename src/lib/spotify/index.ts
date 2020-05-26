@@ -50,7 +50,7 @@ export const search = async (
 };
 
 const findSongByIsrc = (song: Song, authToken: string): Promise<Song> => {
-  return Promise.reject("Not Implemented");
+  return Promise.reject("Spotify findSongByIsrc Not Implemented");
 };
 
 export const play = async (song: Song, authToken: string): Promise<any> => {
@@ -77,9 +77,13 @@ export const play = async (song: Song, authToken: string): Promise<any> => {
 };
 
 export const pause = (authToken: string): Promise<any> => {
-  return Promise.reject("Not implemented");
+  return Promise.reject("Spotify Pause Not implemented");
 };
 
 export const progress = (authToken: string): Promise<number> => {
-  return Promise.reject("Not implemented");
+  return Promise.reject("Spotify Progress Not implemented");
+};
+
+export const seek = (time: number, authToken: string): Promise<any> => {
+  return Promise.reject("Spotify Seek Not implemented");
 };

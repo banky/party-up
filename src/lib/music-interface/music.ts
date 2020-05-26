@@ -56,6 +56,13 @@ class Music {
   progress = () => {
     return getLib(this.platform).progress(this.authToken);
   };
+
+  /**
+   * Seek to a time in milliseconds
+   */
+  seek = (time: number) => {
+    return getLib(this.platform).seek(time, this.authToken);
+  };
 }
 
 export default Music;
