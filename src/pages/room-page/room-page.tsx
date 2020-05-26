@@ -35,9 +35,8 @@ export const RoomPage = () => {
         const songStartTime = songStartTimeSnapshot.val();
         const songCurrentTime = Date.now() - songStartTime;
 
-        console.log("songCurrentTime: ", songCurrentTime);
         await music.play(currentSong);
-        // music.seek(songCurrentTime);
+        music.seek(songCurrentTime);
       });
   }, [firebase, music, roomKey]);
 

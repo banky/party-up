@@ -67,7 +67,13 @@ export const play = async (song: Song): Promise<any> => {
 
   await MusicKit.getInstance().setQueue({ url: appleMusicSong.url });
 
-  return MusicKit.getInstance().play();
+  await MusicKit.getInstance().play();
+
+  // Hack to get around problems with seeking.
+  // If we play, and try to seek too early, MusicKitJS breaks
+  // Seeking right after playing also causes a ~5 second delay
+  // in when the song actually starts playing
+  return new Promise((r) => setTimeout(r, 1000));
 };
 
 export const pause = (): Promise<any> => {
