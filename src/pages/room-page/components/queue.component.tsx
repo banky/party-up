@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import { Song } from "../../../lib/constants";
 import { SongCard } from "../../../components/song-card/song-card.component";
 import { useFirebase } from "../../../lib/firebase/hooks";
+
+const SongQueue = styled.ul`
+  padding: 0;
+  margin: 0 auto;
+  max-width: 700px;
+`;
+
+const SongQueueItem = styled.ul`
+  list-style-type: none;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;
 
 type QueueProps = {
   roomKey: string;
@@ -26,12 +39,12 @@ export const Queue = ({ roomKey }: QueueProps) => {
   }, [firebase, roomKey]);
 
   return (
-    <ul className="song-queue">
+    <SongQueue>
       {Object.keys(playQueue).map((songKey) => {
         const song = playQueue[songKey];
 
         return (
-          <li className="song-queue-item" key={song.url}>
+          <SongQueueItem key={song.url}>
             <SongCard
               song={song}
               actionIcon="minus"
@@ -42,9 +55,9 @@ export const Queue = ({ roomKey }: QueueProps) => {
                   .remove();
               }}
             />
-          </li>
+          </SongQueueItem>
         );
       })}
-    </ul>
+    </SongQueue>
   );
 };

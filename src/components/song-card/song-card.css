@@ -1,8 +1,7 @@
 .song-card-wrapper {
   height: 80px;
   border-radius: 15px;
-  background-color: white;
-  box-shadow: 4px 5px 10px #a3a3a3;
+  background: rgba(255, 255, 255, 1);
   position: relative;
   text-align: left;
 }
@@ -22,6 +21,10 @@
   left: 90px;
   top: 4px;
   font-size: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 75%;
 }
 
 .song-artist {

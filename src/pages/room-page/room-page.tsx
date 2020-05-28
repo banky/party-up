@@ -5,7 +5,6 @@ import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
 import { Search } from "./components/search.component";
 import { Queue } from "./components/queue.component";
-import "./room-page.css";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -14,7 +13,7 @@ export const RoomPage = () => {
   const history = useHistory();
 
   const [roomName, setRoomName] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(true);
 
   const playFirstSongOnQueue = useCallback(() => {
     firebase

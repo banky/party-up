@@ -24,12 +24,8 @@ export const SongCard = ({
         src={imgUrl}
         alt={`${name} album art`}
       ></img>
-      <div className="song-name">
-        <span className="song-card-text">{name}</span>
-      </div>
-      <div className="song-artist">
-        <span className="song-card-text">{artist}</span>
-      </div>
+      <div className="song-name">{name}</div>
+      <div className="song-artist">{artist}</div>
       {actionIcon === "plus" ? (
         <PlusIcon
           className="song-card-action-icon"
