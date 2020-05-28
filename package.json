@@ -47,6 +47,13 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn pretty-quick --staged"
+    }
   }
 }
