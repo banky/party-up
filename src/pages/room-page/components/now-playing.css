@@ -1,0 +1,20 @@
+.next-button {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pause-button {
+  position: absolute;
+  right: 17%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.play-button {
+  position: absolute;
+  right: 17%;
+  top: 50%;
+  transform: translateY(-50%);
+}

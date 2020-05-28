@@ -5,6 +5,9 @@ import { Song } from "../../lib/constants";
 import { useMusic } from "../../lib/music-interface/hook";
 import { Search } from "./components/search.component";
 import { Queue } from "./components/queue.component";
+import { NowPlaying } from "./components/now-playing.component";
+import { PlusIcon } from "../../components/plus-icon/plus-icon.component";
+import "./room-page.css";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -13,7 +16,7 @@ export const RoomPage = () => {
   const history = useHistory();
 
   const [roomName, setRoomName] = useState("");
-  const [showSearch, setShowSearch] = useState(true);
+  const [showSearch, setShowSearch] = useState(false);
 
   const playFirstSongOnQueue = useCallback(() => {
     firebase
@@ -82,18 +85,31 @@ export const RoomPage = () => {
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <button onClick={() => setShowSearch(true)}>Search</button>
-      <button onClick={onClickPlay}>Play</button>
-      <button onClick={onClickPause}>Pause</button>
+      <PlusIcon onClick={() => setShowSearch(true)} />
 
       <Queue roomKey={roomKey} />
+
+      <NowPlaying
+        song={{
+          name: "song song",
+          artist: "artist artist",
+          album: "album album",
+          imgUrl:
+            "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/5f/5f/54/5f5f5492-bc5a-3a38-3bcf-ec5e59bb6c84/886447991824.jpg/100x100bb.jpeg",
+          url: "song.com",
+          isrc: "123123123",
+        }}
+        isPlaying={true}
+        onClickPlay={onClickPlay}
+        onClickPause={onClickPause}
+        onClickNext={() => {}}
+      />
 
       {showSearch && (
         <Search
           cancelSearch={() => setShowSearch(false)}
           onSelectSong={(song) => {
             queueSong(song);
-            setShowSearch(false);
           }}
         />
       )}
