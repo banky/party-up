@@ -1,4 +1,19 @@
 import React from "react";
+import styled from "styled-components";
+
+const StyledButton = styled.button`
+  background: none;
+  border: none;
+  min-height: 50px;
+  line {
+    stroke: #484d6d;
+  }
+  &:hover {
+    line {
+      stroke: #ee6352;
+    }
+  }
+`;
 
 type MinusIconProps = {
   className?: string;
@@ -6,23 +21,23 @@ type MinusIconProps = {
 };
 
 export const MinusIcon = ({ className, onClick }: MinusIconProps) => (
-  <svg
-    width="36"
-    height="6"
-    viewBox="0 0 36 6"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    onClick={onClick}
-  >
-    <line
-      x1="3"
-      y1="3"
-      x2="33"
-      y2="3"
-      stroke="#EE6352"
-      strokeWidth="6"
-      strokeLinecap="round"
-    />
-  </svg>
+  <StyledButton className={className} onClick={onClick}>
+    <svg
+      width="36"
+      height="6"
+      viewBox="0 0 36 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="3"
+        y1="3"
+        x2="33"
+        y2="3"
+        stroke="#EE6352"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
+    </svg>
+  </StyledButton>
 );
