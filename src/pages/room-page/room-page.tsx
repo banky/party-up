@@ -6,7 +6,7 @@ import { useMusic } from "../../lib/music-interface/hook";
 import { Search } from "./components/search.component";
 import { Queue } from "./components/queue.component";
 import { NowPlaying } from "./components/now-playing.component";
-import { PlusIcon } from "../../components/plus-icon/plus-icon.component";
+import { QueueTitle } from "./components/queue-title.component";
 import "./room-page.css";
 
 export const RoomPage = () => {
@@ -17,6 +17,7 @@ export const RoomPage = () => {
 
   const [roomName, setRoomName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [roomPlaying, setRoomPlaying] = useState(false);
 
   const playFirstSongOnQueue = useCallback(() => {
     firebase
@@ -58,8 +59,13 @@ export const RoomPage = () => {
       .database()
       .ref(`rooms/${roomKey}/playing`)
       .on("value", (snapshot) => {
-        if (snapshot.val()) playFirstSongOnQueue();
-        else music.pause();
+        if (snapshot.val()) {
+          playFirstSongOnQueue();
+          setRoomPlaying(true);
+        } else {
+          music.pause();
+          setRoomPlaying(false);
+        }
       });
   }, [firebase, music, roomKey, playFirstSongOnQueue]);
 
@@ -69,23 +75,23 @@ export const RoomPage = () => {
   const setSongStartTime = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
 
-  const setRoomPlaying = (playing: boolean) =>
+  const setFirebaseRoomPlaying = (playing: boolean) =>
     firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
 
   const onClickPlay = async () => {
     const progress = await music.progress();
     await setSongStartTime(Date.now() - progress);
-    setRoomPlaying(true);
+    setFirebaseRoomPlaying(true);
   };
 
   const onClickPause = () => {
-    setRoomPlaying(false);
+    setFirebaseRoomPlaying(false);
   };
 
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <PlusIcon onClick={() => setShowSearch(true)} />
+      <QueueTitle onClickSearch={() => setShowSearch(true)} />
 
       <Queue roomKey={roomKey} />
 
@@ -99,7 +105,7 @@ export const RoomPage = () => {
           url: "song.com",
           isrc: "123123123",
         }}
-        isPlaying={true}
+        isPlaying={roomPlaying}
         onClickPlay={onClickPlay}
         onClickPause={onClickPause}
         onClickNext={() => {}}

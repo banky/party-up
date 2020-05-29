@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import "./song-card.css";
 import { PlusIcon } from "../plus-icon/plus-icon.component";
 import { MinusIcon } from "../minus-icon/minus-icon.component";
@@ -9,6 +10,21 @@ type SongCardProps = {
   actionIcon: "plus" | "minus";
   onClickActionIcon?: VoidFunction;
 };
+
+const actionIconStyles = `
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 5%;
+`;
+
+const StyledPlusIcon = styled(PlusIcon)`
+  ${actionIconStyles}
+`;
+
+const StyledMinusIcon = styled(MinusIcon)`
+  ${actionIconStyles}
+`;
 
 export const SongCard = ({
   song,
@@ -27,15 +43,9 @@ export const SongCard = ({
       <div className="song-name">{name}</div>
       <div className="song-artist">{artist}</div>
       {actionIcon === "plus" ? (
-        <PlusIcon
-          className="song-card-action-icon"
-          onClick={onClickActionIcon}
-        />
+        <StyledPlusIcon onClick={onClickActionIcon} />
       ) : (
-        <MinusIcon
-          className="song-card-action-icon"
-          onClick={onClickActionIcon}
-        />
+        <StyledMinusIcon onClick={onClickActionIcon} />
       )}
     </div>
   );

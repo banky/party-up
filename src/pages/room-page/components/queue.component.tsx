@@ -8,10 +8,10 @@ const SongQueue = styled.ul`
   padding: 0;
   margin: 0 auto;
   max-width: 700px;
+  list-style-type: none;
 `;
 
-const SongQueueItem = styled.ul`
-  list-style-type: none;
+const SongQueueItem = styled.li`
   margin-top: 15px;
   margin-bottom: 15px;
 `;

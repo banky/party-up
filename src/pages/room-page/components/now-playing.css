@@ -1,3 +1,16 @@
+.now-playing-wrapper button {
+  background: none;
+  border: none;
+}
+
+.now-playing-wrapper svg {
+  fill: #484d6d;
+}
+
+.now-playing-wrapper svg:hover {
+  fill: #ee6352;
+}
+
 .next-button {
   position: absolute;
   right: 5%;
