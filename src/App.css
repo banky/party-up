@@ -9,3 +9,7 @@ h1 {
   font-family: "Bangers";
   font-size: 2em;
 }
+
+button {
+  cursor: pointer;
+}
