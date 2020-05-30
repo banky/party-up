@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
@@ -19,30 +19,6 @@ export const RoomPage = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [roomPlaying, setRoomPlaying] = useState(false);
 
-  const playFirstSongOnQueue = useCallback(() => {
-    firebase
-      .database()
-      .ref(`rooms/${roomKey}/queue`)
-      .once("value", async (snapshot) => {
-        if (!snapshot.exists()) return;
-
-        const songList = snapshot.val();
-        const songKeys = Object.keys(songList);
-        const currentSong: Song = songList[songKeys[0]];
-
-        // Synchronize the player with the room
-        const songStartTimeSnapshot = await firebase
-          .database()
-          .ref(`rooms/${roomKey}/songStartTime`)
-          .once("value");
-        const songStartTime = songStartTimeSnapshot.val();
-        const songCurrentTime = Date.now() - songStartTime;
-
-        await music.play(currentSong);
-        music.seek(songCurrentTime);
-      });
-  }, [firebase, music, roomKey]);
-
   useEffect(() => {
     firebase
       .database()
@@ -58,34 +34,70 @@ export const RoomPage = () => {
     firebase
       .database()
       .ref(`rooms/${roomKey}/playing`)
-      .on("value", (snapshot) => {
+      .on("value", async (snapshot) => {
         if (snapshot.val()) {
-          playFirstSongOnQueue();
+          music.play();
           setRoomPlaying(true);
         } else {
           music.pause();
           setRoomPlaying(false);
         }
       });
-  }, [firebase, music, roomKey, playFirstSongOnQueue]);
+  }, [firebase, music, roomKey]);
 
-  const queueSong = (song: Song) =>
-    firebase.database().ref("/rooms").child(roomKey).child("queue").push(song);
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
 
-  const setSongStartTime = (time: number) =>
+        // TODO: Only do this if the room is playing
+        music.queueAndPlay(snapshot.val());
+      });
+  }, [firebase, music, roomKey]);
+
+  const queueSongFB = (song: Song) =>
+    firebase.database().ref(`/rooms/${roomKey}/queue`).push(song);
+
+  const setSongStartTimeFB = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
 
-  const setFirebaseRoomPlaying = (playing: boolean) =>
+  const setRoomPlayingFB = (playing: boolean) =>
     firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
 
   const onClickPlay = async () => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .once("value")
+      .then((snapshot) => {
+        if (snapshot.exists()) return;
+
+        firebase
+          .database()
+          .ref(`rooms/${roomKey}/queue`)
+          .once("value", async (snapshot) => {
+            if (!snapshot.exists()) return;
+
+            const songList = snapshot.val();
+            const songKeys = Object.keys(songList);
+            const currentSong: Song = songList[songKeys[0]];
+
+            firebase
+              .database()
+              .ref(`rooms/${roomKey}/currentSong`)
+              .set(currentSong);
+          });
+      });
+
     const progress = await music.progress();
-    await setSongStartTime(Date.now() - progress);
-    setFirebaseRoomPlaying(true);
+    await setSongStartTimeFB(Date.now() - progress);
+    setRoomPlayingFB(true);
   };
 
   const onClickPause = () => {
-    setFirebaseRoomPlaying(false);
+    setRoomPlayingFB(false);
   };
 
   return (
@@ -115,7 +127,7 @@ export const RoomPage = () => {
         <Search
           cancelSearch={() => setShowSearch(false)}
           onSelectSong={(song) => {
-            queueSong(song);
+            queueSongFB(song);
           }}
         />
       )}

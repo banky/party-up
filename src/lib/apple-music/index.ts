@@ -57,7 +57,7 @@ const findSongByIsrc = async (song: Song): Promise<Song> => {
   return Promise.resolve(transformedResults[0]);
 };
 
-export const play = async (song: Song): Promise<any> => {
+export const queueAndPlay = async (song: Song): Promise<any> => {
   const APPLE_MUSIC_BASE_URL = "https://music.apple.com";
   let appleMusicSong = song;
 
@@ -74,6 +74,10 @@ export const play = async (song: Song): Promise<any> => {
   // Seeking right after playing also causes a ~5 second delay
   // in when the song actually starts playing
   return new Promise((r) => setTimeout(r, 1000));
+};
+
+export const play = async (): Promise<any> => {
+  await MusicKit.getInstance().play();
 };
 
 export const pause = (): Promise<any> => {
