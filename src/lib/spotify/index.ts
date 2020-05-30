@@ -53,7 +53,10 @@ const findSongByIsrc = (song: Song, authToken: string): Promise<Song> => {
   return Promise.reject("Spotify findSongByIsrc Not Implemented");
 };
 
-export const play = async (song: Song, authToken: string): Promise<any> => {
+export const queueAndPlay = async (
+  song: Song,
+  authToken: string
+): Promise<any> => {
   const { playerId } = getPlayerOptions();
   const SPOTIFY_BASE_URL = "spotify";
 
@@ -68,6 +71,21 @@ export const play = async (song: Song, authToken: string): Promise<any> => {
     {
       method: "PUT",
       body: JSON.stringify({ uris: [spotifySong.url] }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+};
+
+export const play = async (authToken: string): Promise<any> => {
+  const { playerId } = getPlayerOptions();
+
+  return fetch(
+    `https://api.spotify.com/v1/me/player/play?device_id=${playerId}`,
+    {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,

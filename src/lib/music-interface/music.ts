@@ -42,8 +42,12 @@ class Music {
     return getLib(this.platform).search(query, searchTypes, this.authToken);
   };
 
-  play = (song: Song) => {
-    return getLib(this.platform).play(song, this.authToken);
+  queueAndPlay = (song: Song) => {
+    return getLib(this.platform).queueAndPlay(song, this.authToken);
+  };
+
+  play = () => {
+    return getLib(this.platform).play(this.authToken);
   };
 
   pause = () => {

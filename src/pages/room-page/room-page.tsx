@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useFirebase } from "../../lib/firebase/hooks";
 import { Song } from "../../lib/constants";
@@ -18,30 +18,7 @@ export const RoomPage = () => {
   const [roomName, setRoomName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [roomPlaying, setRoomPlaying] = useState(false);
-
-  const playFirstSongOnQueue = useCallback(() => {
-    firebase
-      .database()
-      .ref(`rooms/${roomKey}/queue`)
-      .once("value", async (snapshot) => {
-        if (!snapshot.exists()) return;
-
-        const songList = snapshot.val();
-        const songKeys = Object.keys(songList);
-        const currentSong: Song = songList[songKeys[0]];
-
-        // Synchronize the player with the room
-        const songStartTimeSnapshot = await firebase
-          .database()
-          .ref(`rooms/${roomKey}/songStartTime`)
-          .once("value");
-        const songStartTime = songStartTimeSnapshot.val();
-        const songCurrentTime = Date.now() - songStartTime;
-
-        await music.play(currentSong);
-        music.seek(songCurrentTime);
-      });
-  }, [firebase, music, roomKey]);
+  const [currentSong, setCurrentSong] = useState<Song | undefined>();
 
   useEffect(() => {
     firebase
@@ -58,34 +35,88 @@ export const RoomPage = () => {
     firebase
       .database()
       .ref(`rooms/${roomKey}/playing`)
-      .on("value", (snapshot) => {
+      .on("value", async (snapshot) => {
         if (snapshot.val()) {
-          playFirstSongOnQueue();
+          music.play();
           setRoomPlaying(true);
         } else {
           music.pause();
           setRoomPlaying(false);
         }
       });
-  }, [firebase, music, roomKey, playFirstSongOnQueue]);
+  }, [firebase, music, roomKey]);
 
-  const queueSong = (song: Song) =>
-    firebase.database().ref("/rooms").child(roomKey).child("queue").push(song);
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
 
-  const setSongStartTime = (time: number) =>
+        // TODO: Need to prevent playback if the room is not playing
+        music.queueAndPlay(snapshot.val());
+        setCurrentSong(snapshot.val());
+      });
+  }, [firebase, music, roomKey]);
+
+  const queueSongFB = (song: Song) =>
+    firebase.database().ref(`/rooms/${roomKey}/queue`).push(song);
+
+  const setSongStartTimeFB = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
 
-  const setFirebaseRoomPlaying = (playing: boolean) =>
+  const setRoomPlayingFB = (playing: boolean) =>
     firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
 
+  const setCurrentSongFB = (song: Song) =>
+    firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
+
+  const dequeueFB = (): Promise<Song> =>
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/queue`)
+      .once("value")
+      .then((snapshot) => {
+        if (!snapshot.exists()) return;
+
+        const songList = snapshot.val();
+        const songKeys = Object.keys(songList);
+
+        const currentSong = songList[songKeys[0]];
+
+        firebase
+          .database()
+          .ref(`rooms/${roomKey}/queue/${songKeys[0]}`)
+          .remove();
+
+        return currentSong;
+      });
+
   const onClickPlay = async () => {
+    // Only set current song if one doesn't exist already
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .once("value")
+      .then(async (snapshot) => {
+        if (snapshot.exists()) return;
+
+        const currentSong = await dequeueFB();
+        setCurrentSongFB(currentSong);
+      });
+
     const progress = await music.progress();
-    await setSongStartTime(Date.now() - progress);
-    setFirebaseRoomPlaying(true);
+    await setSongStartTimeFB(Date.now() - progress);
+    setRoomPlayingFB(true);
   };
 
   const onClickPause = () => {
-    setFirebaseRoomPlaying(false);
+    setRoomPlayingFB(false);
+  };
+
+  const onClickNext = async () => {
+    const currentSong = await dequeueFB();
+    setCurrentSongFB(currentSong);
   };
 
   return (
@@ -96,26 +127,18 @@ export const RoomPage = () => {
       <Queue roomKey={roomKey} />
 
       <NowPlaying
-        song={{
-          name: "song song",
-          artist: "artist artist",
-          album: "album album",
-          imgUrl:
-            "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/5f/5f/54/5f5f5492-bc5a-3a38-3bcf-ec5e59bb6c84/886447991824.jpg/100x100bb.jpeg",
-          url: "song.com",
-          isrc: "123123123",
-        }}
+        song={currentSong}
         isPlaying={roomPlaying}
         onClickPlay={onClickPlay}
         onClickPause={onClickPause}
-        onClickNext={() => {}}
+        onClickNext={onClickNext}
       />
 
       {showSearch && (
         <Search
           cancelSearch={() => setShowSearch(false)}
           onSelectSong={(song) => {
-            queueSong(song);
+            queueSongFB(song);
           }}
         />
       )}
