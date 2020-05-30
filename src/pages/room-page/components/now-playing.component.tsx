@@ -3,7 +3,7 @@ import { Song } from "../../../lib/constants";
 import "./now-playing.css";
 
 type NowPlayingProps = {
-  song: Song;
+  song?: Song;
   isPlaying: boolean;
   onClickPlay: VoidFunction;
   onClickPause: VoidFunction;
@@ -22,11 +22,11 @@ export const NowPlaying = ({
       <div className="now-playing-wrapper">
         <img
           className="now-playing-image"
-          src={song.imgUrl}
-          alt={`${song.name} album art`}
+          src={song?.imgUrl}
+          alt={`${song?.name} album art`}
         ></img>
-        <div className="song-name">{song.name}</div>
-        <div className="song-artist">{song.artist}</div>
+        <div className="song-name">{song?.name}</div>
+        <div className="song-artist">{song?.artist}</div>
         {!isPlaying ? (
           <PlayButton onClick={onClickPlay} />
         ) : (
