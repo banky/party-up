@@ -6,7 +6,8 @@ import { useFirebase } from "../../../lib/firebase/hooks";
 
 const SongQueue = styled.ul`
   padding: 0;
-  margin: 0 auto;
+  margin: auto;
+  margin-bottom: 100px;
   max-width: 700px;
   list-style-type: none;
 `;
