@@ -8,15 +8,16 @@ import {
   transformSongs,
 } from "./helpers";
 
-export const configure = () => {};
+export const configure = async (authToken: string) => {
+  await loadSpotifyWebPlayer();
+  initializePlayer(authToken);
+};
 
 export const authorize = async (): Promise<string> => {
   const childWindow = openSpotifyLoginWindow();
   const authToken = await getAuthTokenFromChildWindow(childWindow);
 
-  await loadSpotifyWebPlayer();
   initializePlayer(authToken);
-
   return Promise.resolve(authToken);
 };
 

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useFirebase, useFirebaseState } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hooks";
 import { Song } from "lib/constants";
 import { useMusic } from "lib/music-interface/hook";
 import { Search } from "./components/search.component";
@@ -15,39 +15,58 @@ export const RoomPage = () => {
   const music = useMusic();
   const history = useHistory();
 
+  const [roomName, setRoomName] = useState("");
+  const [roomPlaying, setRoomPlaying] = useState(false);
+  const [currentSong, setCurrentSong] = useState<Song | undefined>();
   const [showSearch, setShowSearch] = useState(false);
 
-  const [roomName] = useFirebaseState<string | null>(
-    null,
-    `rooms/${roomKey}/name`,
-    (snapshot) => {
-      if (!snapshot.exists()) return history.push("/not-found");
-    }
-  );
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/name`)
+      .once("value")
+      .then((snapshot) => {
+        if (!snapshot.exists()) return history.push("/not-found");
+        setRoomName(snapshot.val());
+      });
+  }, [firebase, history, roomKey]);
 
-  const [roomPlaying, setRoomPlaying] = useFirebaseState(
-    false,
-    `rooms/${roomKey}/playing`,
-    (snapshot) => {
-      if (!snapshot.exists()) return;
-      snapshot.val() ? music.play() : music.pause();
-    }
-  );
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/playing`)
+      .on("value", async (snapshot) => {
+        console.log("hit 1");
+        if (snapshot.val()) {
+          music.play();
+          setRoomPlaying(true);
+        } else {
+          music.pause();
+          setRoomPlaying(false);
+        }
+      });
+  }, [firebase, music, roomKey]);
 
-  const [currentSong, setCurrentSong] = useFirebaseState<Song | null>(
-    null,
-    `rooms/${roomKey}/currentSong`,
-    (snapshot) => {
-      if (!snapshot.exists()) return;
-      // TODO: Prevent queue and play when the room is not playing somehow
-      // Hard to do because if we don't queue the song, we can't play it later when user presses play
-
-      music.queueAndPlay(snapshot.val());
-    }
-  );
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
+        // TODO: Need to prevent playback if the room is not playing
+        music.queueAndPlay(snapshot.val());
+        setCurrentSong(snapshot.val());
+      });
+  }, [firebase, music, roomKey]);
 
   const setSongStartTimeFB = (time: number) =>
     firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
+
+  const setRoomPlayingFB = (playing: boolean) =>
+    firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
+
+  const setCurrentSongFB = (song: Song) =>
+    firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
 
   const enqueueSongFB = (song: Song) =>
     firebase.database().ref(`/rooms/${roomKey}/queue`).push(song);
@@ -75,23 +94,29 @@ export const RoomPage = () => {
 
   const onClickPlay = async () => {
     // Only set current song if one doesn't exist already
-    if (!currentSong) {
-      const currentSong = await dequeueSongFB();
-      setCurrentSong(currentSong);
-    }
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/currentSong`)
+      .once("value")
+      .then(async (snapshot) => {
+        if (snapshot.exists()) return;
+
+        const currentSong = await dequeueSongFB();
+        setCurrentSongFB(currentSong);
+      });
 
     const progress = await music.progress();
     await setSongStartTimeFB(Date.now() - progress);
-    setRoomPlaying(true);
+    setRoomPlayingFB(true);
   };
 
   const onClickPause = () => {
-    setRoomPlaying(false);
+    setRoomPlayingFB(false);
   };
 
   const onClickNext = async () => {
     const currentSong = await dequeueSongFB();
-    setCurrentSong(currentSong);
+    setCurrentSongFB(currentSong);
   };
 
   return (

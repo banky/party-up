@@ -20,7 +20,7 @@ class Music {
 
   constructor(platform: Platform, authToken: string) {
     AppleMusic.configure();
-    Spotify.configure();
+    Spotify.configure(authToken);
 
     this.authToken = authToken;
     this.platform = platform;
