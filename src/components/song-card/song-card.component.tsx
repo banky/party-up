@@ -3,7 +3,7 @@ import styled from "styled-components";
 import "./song-card.css";
 import { PlusIcon } from "../plus-icon/plus-icon.component";
 import { MinusIcon } from "../minus-icon/minus-icon.component";
-import { Song } from "../../lib/constants";
+import { Song } from "lib/constants";
 
 type SongCardProps = {
   song: Song;

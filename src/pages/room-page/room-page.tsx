@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useFirebase, useFirebaseState } from "../../lib/firebase/hooks";
-import { Song } from "../../lib/constants";
-import { useMusic } from "../../lib/music-interface/hook";
+import { useFirebase, useFirebaseState } from "lib/firebase/hooks";
+import { Song } from "lib/constants";
+import { useMusic } from "lib/music-interface/hook";
 import { Search } from "./components/search.component";
 import { Queue } from "./components/queue.component";
 import { NowPlaying } from "./components/now-playing.component";
@@ -17,8 +17,8 @@ export const RoomPage = () => {
 
   const [showSearch, setShowSearch] = useState(false);
 
-  const [roomName] = useFirebaseState(
-    "",
+  const [roomName] = useFirebaseState<string | null>(
+    null,
     `rooms/${roomKey}/name`,
     (snapshot) => {
       if (!snapshot.exists()) return history.push("/not-found");

@@ -13,7 +13,7 @@ export const useFirebase = () => {
 
 /**
  * Wrapper around React useState to rerender with firebase realtime database updates
- * @param defaultValue Default state
+ * @param defaultValue Overwrites data in firebase. Set to null to not overwrite
  * @param reference Firebase database reference
  * @param callback Called on every update of Firebase state
  */
@@ -31,10 +31,10 @@ export const useFirebaseState = <T>(
       .database()
       .ref(reference)
       .on("value", (snapshot) => {
-        // Reset to firebase state if data exists
         !snapshot.exists()
           ? setState(defaultValue)
           : setState(snapshot.val() as T);
+
         memoizedCallback(snapshot);
       });
   }, [firebase, reference, memoizedCallback, defaultValue]);

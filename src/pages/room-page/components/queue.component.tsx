@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Song } from "../../../lib/constants";
-import { SongCard } from "../../../components/song-card/song-card.component";
-import { useFirebase } from "../../../lib/firebase/hooks";
+import { Song } from "lib/constants";
+import { SongCard } from "components/song-card/song-card.component";
+import { useFirebase } from "lib/firebase/hooks";
 
 const SongQueue = styled.ul`
   padding: 0;
