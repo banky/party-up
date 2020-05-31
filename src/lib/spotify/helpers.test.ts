@@ -72,8 +72,9 @@ describe("getPlayerOptions", () => {
 
 test("openSpotifyLoginWindow", () => {
   window.open = jest.fn();
+
   const expectedUrl =
-    "https://accounts.spotify.com/authorize?client_id=fake-spotify-client-id&response_type=token&redirect_uri=http%3A%2F%2Ffake-base-url%2Fspotify-callback&scope=streaming%20user-modify-playback-state";
+    "https://accounts.spotify.com/authorize?client_id=fake-spotify-client-id&response_type=token&redirect_uri=http%3A%2F%2Ffake-base-url%2Fspotify-callback&scope=streaming%20user-read-email%20user-read-private%20user-modify-playback-state%20user-read-playback-state";
 
   openSpotifyLoginWindow();
   expect(window.open).toHaveBeenCalledWith(
