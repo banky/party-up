@@ -18,12 +18,12 @@ class Music {
   authToken: string;
   platform: Platform;
 
-  constructor(defaultPlatform: Platform) {
+  constructor(platform: Platform, authToken: string) {
     AppleMusic.configure();
     Spotify.configure();
 
-    this.authToken = "";
-    this.platform = defaultPlatform;
+    this.authToken = authToken;
+    this.platform = platform;
   }
 
   authorize = () => {

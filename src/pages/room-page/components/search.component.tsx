@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useMusic } from "../../../lib/music-interface/hook";
-import { Song } from "../../../lib/constants";
-import { SongCard } from "../../../components/song-card/song-card.component";
+import { useMusic } from "lib/music-interface/hook";
+import { Song } from "lib/constants";
+import { SongCard } from "components/song-card/song-card.component";
 import searchIcon from "./images/search-icon.png";
 import cancelIcon from "./images/cancel-icon.png";
 

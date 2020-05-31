@@ -1,5 +1,5 @@
 import React from "react";
-import { Song } from "../../../lib/constants";
+import { Song } from "lib/constants";
 import "./now-playing.css";
 
 type NowPlayingProps = {

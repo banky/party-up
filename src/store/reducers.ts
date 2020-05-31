@@ -1,28 +1,40 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { updateName, updateSpotifyData } from "./actions";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import {
+  updateName,
+  updateMusicPlatform,
+  updateMusicAuthToken,
+} from "./actions";
 import { Platform } from "../lib/music-interface/music";
 
 const initialState: {
   name: string;
-  platform: Platform;
-  spotifyData: {
-    access_token: string;
-  };
+  musicPlatform: Platform;
+  musicAuthToken: string;
 } = {
   name: "",
-  platform: "apple",
-  spotifyData: {
-    access_token: "",
-  },
+  musicPlatform: "apple",
+  musicAuthToken: "",
 };
 
-export const rootReducer = createReducer(initialState, {
+const rootReducer = createReducer(initialState, {
   [updateName.type]: (state, action) => {
     state.name = action.payload;
   },
-  [updateSpotifyData.type]: (state, action) => {
-    state.spotifyData = action.payload;
+  [updateMusicPlatform.type]: (state, action) => {
+    state.musicPlatform = action.payload;
+  },
+  [updateMusicAuthToken.type]: (state, action) => {
+    state.musicAuthToken = action.payload;
   },
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+export const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export type RootState = ReturnType<typeof persistedReducer>;

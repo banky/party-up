@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "../../../lib/music-interface/music";
+import { Platform } from "lib/music-interface/music";
 import appleLogo from "./apple.png";
 import spotifyLogo from "./spotify.png";
 import "./platform-icon.css";
