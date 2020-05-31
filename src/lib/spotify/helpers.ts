@@ -69,7 +69,7 @@ export const initializePlayer = async (authToken: string) => {
 
   window.spotifyPlayer = player;
 
-  // TODO: perhaps jsut reject here if connect fails
+  // TODO: perhaps just reject here if connect fails
   player.connect().then((success: boolean) => {
     if (success) {
       console.log("The Web Playback SDK successfully connected to Spotify!");
@@ -101,7 +101,14 @@ export const openSpotifyLoginWindow = () => {
   const redirect_uri = encodeURIComponent(
     process.env.REACT_APP_BASE_URL + "/spotify-callback"
   );
-  const scopes = "streaming user-modify-playback-state";
+
+  const scopes = [
+    "streaming",
+    "user-read-email",
+    "user-read-private",
+    "user-modify-playback-state",
+    "user-read-playback-state",
+  ].join(" ");
 
   const spotify_auth_url =
     "https://accounts.spotify.com/authorize" +
@@ -149,7 +156,7 @@ export const getAuthTokenFromChildWindow = async (
 };
 
 /**
- * Loads the psotify web player sdk. Promise resolves when the player is ready
+ * Loads the spotify web player sdk. Promise resolves when the player is ready
  */
 export const loadSpotifyWebPlayer = () => {
   return new Promise((resolve) => {

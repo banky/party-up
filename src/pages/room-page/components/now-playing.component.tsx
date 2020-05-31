@@ -3,7 +3,7 @@ import { Song } from "lib/constants";
 import "./now-playing.css";
 
 type NowPlayingProps = {
-  song: Song | null;
+  song?: Song;
   isPlaying: boolean;
   onClickPlay: VoidFunction;
   onClickPause: VoidFunction;
