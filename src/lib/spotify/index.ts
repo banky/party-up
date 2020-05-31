@@ -46,11 +46,32 @@ export const search = async (
   });
 
   const responseJson = await response.json();
-  return Promise.resolve(transformSongs(responseJson.tracks.items));
+  return transformSongs(responseJson.tracks.items);
 };
 
-const findSongByIsrc = (song: Song, authToken: string): Promise<Song> => {
-  return Promise.reject("Spotify findSongByIsrc Not Implemented");
+const findSongByIsrc = async (song: Song, authToken: string): Promise<Song> => {
+  "search?type=track&q=isrc:USEE10001993";
+
+  const response = await fetch(
+    `https://api.spotify.com/v1/search?type=track&q=isrc:${song.isrc}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  const responseJson = await response.json();
+  if (!responseJson.tracks.items.length) {
+    return Promise.reject(
+      `Spotify could not find song: ${song.name}. ISRC: ${song.isrc}`
+    );
+  }
+
+  const transformedResults = transformSongs(responseJson.tracks.items);
+  return transformedResults[0];
 };
 
 export const queueAndPlay = async (
@@ -95,13 +116,47 @@ export const play = async (authToken: string): Promise<any> => {
 };
 
 export const pause = (authToken: string): Promise<any> => {
-  return Promise.reject("Spotify Pause Not implemented");
+  const { playerId } = getPlayerOptions();
+
+  return fetch(
+    `https://api.spotify.com/v1/me/player/pause?device_id=${playerId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 };
 
-export const progress = (authToken: string): Promise<number> => {
-  return Promise.reject("Spotify Progress Not implemented");
+export const progress = async (authToken: string): Promise<number> => {
+  const response = await fetch(
+    `https://api.spotify.com/v1/me/player/currently-playing`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  const responseJson = await response.json();
+  return responseJson.progress_ms;
 };
 
 export const seek = (time: number, authToken: string): Promise<any> => {
-  return Promise.reject("Spotify Seek Not implemented");
+  const { playerId } = getPlayerOptions();
+
+  return fetch(
+    `https://api.spotify.com/v1/me/player/seek?position_ms=${time}&device_id=${playerId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 };
