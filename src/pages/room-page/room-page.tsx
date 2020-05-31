@@ -17,8 +17,8 @@ export const RoomPage = () => {
 
   const [showSearch, setShowSearch] = useState(false);
 
-  const [roomName] = useFirebaseState(
-    "",
+  const [roomName] = useFirebaseState<string | null>(
+    null,
     `rooms/${roomKey}/name`,
     (snapshot) => {
       if (!snapshot.exists()) return history.push("/not-found");
