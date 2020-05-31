@@ -35,8 +35,7 @@ export const RoomPage = () => {
     firebase
       .database()
       .ref(`rooms/${roomKey}/playing`)
-      .on("value", async (snapshot) => {
-        console.log("hit 1");
+      .on("value", (snapshot) => {
         if (snapshot.val()) {
           music.play();
           setRoomPlaying(true);
