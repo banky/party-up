@@ -39,6 +39,9 @@ export const RoomPage = () => {
     `rooms/${roomKey}/currentSong`,
     (snapshot) => {
       if (!snapshot.exists()) return;
+      // TODO: Prevent queue and play when the room is not playing somehow
+      // Hard to do because if we don't queue the song, we can't play it later when user presses play
+
       music.queueAndPlay(snapshot.val());
     }
   );

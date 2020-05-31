@@ -31,10 +31,13 @@ export const useFirebaseState = <T>(
       .database()
       .ref(reference)
       .on("value", (snapshot) => {
-        setState(snapshot.val() as T);
+        // Reset to firebase state if data exists
+        !snapshot.exists()
+          ? setState(defaultValue)
+          : setState(snapshot.val() as T);
         memoizedCallback(snapshot);
       });
-  }, [firebase, reference, memoizedCallback]);
+  }, [firebase, reference, memoizedCallback, defaultValue]);
 
   useEffect(() => {
     if (state === null) return;
