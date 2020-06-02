@@ -9,6 +9,12 @@ export const roomNameFromOwner = (ownerName: string) => {
   return `${ownerName}'s Room`;
 };
 
+/**
+ * Create a room in Firebase
+ * @param firebase
+ * @param name
+ * @param platform
+ */
 export const createRoom = (
   firebase: Firebase,
   name: string,

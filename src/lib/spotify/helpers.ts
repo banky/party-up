@@ -69,12 +69,7 @@ export const initializePlayer = async (authToken: string) => {
 
   window.spotifyPlayer = player;
 
-  // TODO: perhaps just reject here if connect fails
-  player.connect().then((success: boolean) => {
-    if (success) {
-      console.log("The Web Playback SDK successfully connected to Spotify!");
-    }
-  });
+  await player.connect();
 };
 
 /**
@@ -172,11 +167,12 @@ export const loadSpotifyWebPlayer = () => {
 };
 
 /**
- * Transforms spotify tracks into Party-Up songs
+ * Transforms spotify tracks into Party-Up Song objects
  * Track objet structure can be viewed here: https://developer.spotify.com/documentation/web-api/reference/search/search/
  * @param items
  */
 export const transformSongs = (items: any): Song[] => {
+  // Format array of artists to a list separated by delimiter
   const formatArtists = (item: any, delimiter: string): string => {
     return item.artists
       .reduce((acc: string, curr: any) => acc + curr.name + delimiter, "")
