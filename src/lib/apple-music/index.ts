@@ -37,19 +37,26 @@ export const search = async (
     offset: 0,
   });
 
+  if (response.songs === undefined)
+    return Promise.reject(
+      "Apple Music search was unable to find the song. Query: " + query
+    );
+
   const songs = transformSongs(response.songs.data);
 
   return Promise.resolve(songs);
 };
 
 const findSongByIsrc = async (song: Song): Promise<Song> => {
-  const results = await MusicKit.getInstance().api.songs({
-    filter: { isrc: song.isrc },
-  });
+  let results;
 
-  if (!results.length) {
+  try {
+    results = await MusicKit.getInstance().api.songs({
+      filter: { isrc: song.isrc },
+    });
+  } catch (error) {
     return Promise.reject(
-      `Apple Music could not find song: ${song.name}. ISRC: ${song.isrc}`
+      `Apple Music could not find song: ${song.name} by ISRC: ${song.isrc}. Error: ${error}`
     );
   }
 
@@ -61,19 +68,45 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
   const APPLE_MUSIC_BASE_URL = "https://music.apple.com";
   let appleMusicSong = song;
 
-  if (!song.url.includes(APPLE_MUSIC_BASE_URL)) {
-    appleMusicSong = await findSongByIsrc(song);
+  try {
+    if (!appleMusicSong.url.includes(APPLE_MUSIC_BASE_URL)) {
+      appleMusicSong = await findSongByIsrc(song);
+    }
+  } catch (error) {
+    console.warn(
+      "Apple music ISRC search failed. Falling back to manual search: ",
+      error
+    );
+  }
+
+  // If ISRC search failed, try to find the song with manual search
+  try {
+    if (!appleMusicSong.url.includes(APPLE_MUSIC_BASE_URL)) {
+      const songNameWithoutBrackets = song.name.split("(", 1)[0].trim();
+      const songName = songNameWithoutBrackets.replace(/[^a-z]/gi, " ");
+      const songArtist = song.artist.replace(/[^a-z]/gi, " ");
+      const query = `${songName} ${songArtist}`;
+
+      const searchResults = await search(query, ["track"]);
+      if (!searchResults.length) {
+        throw new Error("Manual search failed");
+      }
+
+      appleMusicSong = searchResults[0];
+    }
+  } catch (error) {
+    return Promise.reject(error);
   }
 
   await MusicKit.getInstance().setQueue({ url: appleMusicSong.url });
 
-  await MusicKit.getInstance().play();
+  return MusicKit.getInstance().play();
 
   // Hack to get around problems with seeking.
   // If we play, and try to seek too early, MusicKitJS breaks
   // Seeking right after playing also causes a ~5 second delay
   // in when the song actually starts playing
-  return new Promise((r) => setTimeout(r, 1000));
+  // return new Promise((r) => setTimeout(r, 1000));
 };
 
 export const play = async (): Promise<any> => {
