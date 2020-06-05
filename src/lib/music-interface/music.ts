@@ -19,7 +19,9 @@ class Music {
   platform: Platform;
 
   constructor(platform: Platform, authToken: string) {
-    if (platform === "apple") AppleMusic.configure();
+    AppleMusic.configure();
+
+    // If auth token is invalid, spotify configuration gives lots of errors
     if (platform === "spotify") Spotify.configure(authToken);
 
     this.authToken = authToken;
