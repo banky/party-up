@@ -12,13 +12,10 @@ export const LandingPage = () => {
   const music = useMusic();
   const dispatch = useDispatch();
 
-  const onAuthorize = (platform: Platform) => {
-    return (authToken: string) => {
-      music.authToken = authToken;
-      dispatch(updateMusicAuthToken(authToken));
-      dispatch(updateMusicPlatform(platform));
-      history.push("/name");
-    };
+  const onAuthorize = (platform: Platform) => (authToken: string) => {
+    dispatch(updateMusicPlatform(platform));
+    dispatch(updateMusicAuthToken(authToken));
+    history.push("/name");
   };
 
   return (

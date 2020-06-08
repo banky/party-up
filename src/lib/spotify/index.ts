@@ -1,3 +1,4 @@
+import SpotifyWebApi from "spotify-web-api-js";
 import { SearchType, Song, SEARCH_LIMIT } from "../constants";
 import {
   getPlayerOptions,
@@ -8,7 +9,12 @@ import {
   transformSongs,
 } from "./helpers";
 
+let spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
+
 export const configure = async (authToken: string) => {
+  spotifyWebApi = new SpotifyWebApi();
+  spotifyWebApi.setAccessToken(authToken);
+
   await loadSpotifyWebPlayer();
   initializePlayer(authToken);
 };
@@ -17,147 +23,102 @@ export const authorize = async (): Promise<string> => {
   const childWindow = openSpotifyLoginWindow();
   const authToken = await getAuthTokenFromChildWindow(childWindow);
 
+  spotifyWebApi.setAccessToken(authToken);
   initializePlayer(authToken);
   return Promise.resolve(authToken);
 };
 
 export const unauthorize = (): void => {};
 
-export const isAuthorized = (authToken: string): boolean => {
-  return authToken !== "";
+export const isAuthorized = (): boolean => {
+  return spotifyWebApi.getAccessToken() !== "";
 };
 
 export const search = async (
   query: string,
-  searchTypes: SearchType[],
-  authToken: string
+  searchTypes: SearchType[]
 ): Promise<Song[]> => {
-  const fetchUrl =
-    "https://api.spotify.com/v1/search" +
-    `?q=${encodeURIComponent(query)}` +
-    `&type=${searchTypes.join()}` +
-    `&limit=${SEARCH_LIMIT}`;
-
-  const response = await fetch(fetchUrl, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
-
-  const responseJson = await response.json();
-  return transformSongs(responseJson.tracks.items);
+  const response = await spotifyWebApi.search(query, searchTypes);
+  return transformSongs(response.tracks?.items);
 };
 
-const findSongByIsrc = async (song: Song, authToken: string): Promise<Song> => {
-  "search?type=track&q=isrc:USEE10001993";
+const findSongByIsrc = async (song: Song): Promise<Song> => {
+  const response = await spotifyWebApi.searchTracks(`isrc:${song.isrc}`);
 
-  const response = await fetch(
-    `https://api.spotify.com/v1/search?type=track&q=isrc:${song.isrc}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
-
-  const responseJson = await response.json();
-  if (!responseJson.tracks.items.length) {
+  if (!response.tracks.items.length) {
     return Promise.reject(
       `Spotify could not find song: ${song.name}. ISRC: ${song.isrc}`
     );
   }
 
-  const transformedResults = transformSongs(responseJson.tracks.items);
+  const transformedResults = transformSongs(response.tracks.items);
   return transformedResults[0];
 };
 
-export const queueAndPlay = async (
-  song: Song,
-  authToken: string
-): Promise<any> => {
+export const queueAndPlay = async (song: Song): Promise<any> => {
   const { playerId } = getPlayerOptions();
   const SPOTIFY_BASE_URL = "spotify";
 
   let spotifySong = song;
 
-  if (!song.url.includes(SPOTIFY_BASE_URL)) {
-    spotifySong = await findSongByIsrc(song, authToken);
+  try {
+    if (!spotifySong.url.includes(SPOTIFY_BASE_URL)) {
+      spotifySong = await findSongByIsrc(song);
+    }
+  } catch (error) {}
+
+  // If ISRC search failed, try to find the song with manual search
+  try {
+    if (!spotifySong.url.includes(SPOTIFY_BASE_URL)) {
+      const songNameWithoutBrackets = song.name.split("(", 1)[0].trim();
+      const songName = songNameWithoutBrackets.replace(/[^a-z]/gi, " ");
+      const songArtist = song.artist.replace(/[^a-z]/gi, " ");
+      const query = `${songName} ${songArtist}`;
+
+      const searchResults = await search(query, ["track"]);
+
+      if (!searchResults.length) {
+        throw new Error("Manual search failed");
+      }
+
+      spotifySong = searchResults[0];
+    }
+  } catch (error) {
+    return Promise.reject(error);
   }
 
-  return fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${playerId}`,
-    {
-      method: "PUT",
-      body: JSON.stringify({ uris: [spotifySong.url] }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
+  return spotifyWebApi.play({
+    device_id: playerId,
+    uris: [spotifySong.url],
+  });
 };
 
-export const play = async (authToken: string): Promise<any> => {
+export const play = (): Promise<any> => {
   const { playerId } = getPlayerOptions();
 
-  return fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${playerId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
+  return spotifyWebApi.play({
+    device_id: playerId,
+  });
 };
 
-export const pause = (authToken: string): Promise<any> => {
+export const pause = (): Promise<any> => {
   const { playerId } = getPlayerOptions();
 
-  return fetch(
-    `https://api.spotify.com/v1/me/player/pause?device_id=${playerId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
+  return spotifyWebApi.pause({
+    device_id: playerId,
+  });
 };
 
-export const progress = async (authToken: string): Promise<number> => {
-  const response = await fetch(
-    `https://api.spotify.com/v1/me/player/currently-playing`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
+export const progress = async (): Promise<number> => {
+  const response = await spotifyWebApi.getMyCurrentPlaybackState();
 
-  const responseJson = await response.json();
-  return responseJson.progress_ms;
+  return response.progress_ms || 0;
 };
 
-export const seek = (time: number, authToken: string): Promise<any> => {
+export const seek = (time: number): Promise<any> => {
   const { playerId } = getPlayerOptions();
 
-  return fetch(
-    `https://api.spotify.com/v1/me/player/seek?position_ms=${time}&device_id=${playerId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
+  return spotifyWebApi.seek(time, {
+    device_id: playerId,
+  });
 };

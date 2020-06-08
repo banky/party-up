@@ -75,10 +75,10 @@ export const initializePlayer = async (authToken: string) => {
 /**
  * We sometimes need to know specific info about the web player
  */
-export const getPlayerOptions = (): { playerId: string | null } => {
+export const getPlayerOptions = (): { playerId: string | undefined } => {
   if (!window.spotifyPlayer) {
     return {
-      playerId: null,
+      playerId: undefined,
     };
   }
 

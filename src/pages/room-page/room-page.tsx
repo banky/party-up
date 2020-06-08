@@ -60,9 +60,6 @@ export const RoomPage = () => {
       });
   }, [firebase, music, roomKey]);
 
-  const setSongStartTimeFB = (time: number) =>
-    firebase.database().ref(`rooms/${roomKey}/songStartTime`).set(time);
-
   const setRoomPlayingFB = (playing: boolean) =>
     firebase.database().ref(`rooms/${roomKey}/playing`).set(playing);
 
@@ -106,8 +103,6 @@ export const RoomPage = () => {
         setCurrentSongFB(currentSong);
       });
 
-    const progress = await music.progress();
-    await setSongStartTimeFB(Date.now() - progress);
     setRoomPlayingFB(true);
   };
 

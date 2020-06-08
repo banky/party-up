@@ -1,11 +1,5 @@
 // Defined by spotify search
-export type SearchType =
-  | "album"
-  | "artist"
-  | "playlist"
-  | "track"
-  | "show"
-  | "episode";
+export type SearchType = "album" | "artist" | "playlist" | "track";
 
 export type Song = {
   album: string;

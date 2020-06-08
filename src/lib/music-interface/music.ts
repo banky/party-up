@@ -21,8 +21,8 @@ class Music {
   constructor(platform: Platform, authToken: string) {
     AppleMusic.configure();
 
-    // If auth token is invalid, spotify configuration gives lots of errors
-    if (platform === "spotify") Spotify.configure(authToken);
+    // Spotify gives some errors if auth token is invalid, but let's ignore those for now
+    Spotify.configure(authToken);
 
     this.authToken = authToken;
     this.platform = platform;
@@ -37,37 +37,37 @@ class Music {
   };
 
   isAuthorized = () => {
-    return getLib(this.platform).isAuthorized(this.authToken);
+    return getLib(this.platform).isAuthorized();
   };
 
   search = (query: string, searchTypes: SearchType[]) => {
-    return getLib(this.platform).search(query, searchTypes, this.authToken);
+    return getLib(this.platform).search(query, searchTypes);
   };
 
   queueAndPlay = (song: Song) => {
-    return getLib(this.platform).queueAndPlay(song, this.authToken);
+    return getLib(this.platform).queueAndPlay(song);
   };
 
   play = () => {
-    return getLib(this.platform).play(this.authToken);
+    return getLib(this.platform).play();
   };
 
   pause = () => {
-    return getLib(this.platform).pause(this.authToken);
+    return getLib(this.platform).pause();
   };
 
   /**
    * Get the playback progress in milliseconds
    */
   progress = () => {
-    return getLib(this.platform).progress(this.authToken);
+    return getLib(this.platform).progress();
   };
 
   /**
    * Seek to a time in milliseconds
    */
   seek = (time: number) => {
-    return getLib(this.platform).seek(time, this.authToken);
+    return getLib(this.platform).seek(time);
   };
 }
 
