@@ -19,14 +19,16 @@ class Music {
   platform: Platform;
 
   constructor(platform: Platform, authToken: string) {
-    AppleMusic.configure();
-
-    // Spotify gives some errors if auth token is invalid, but let's ignore those for now
-    Spotify.configure(authToken);
-
     this.authToken = authToken;
     this.platform = platform;
   }
+
+  configure = async () => {
+    AppleMusic.configure();
+
+    // Spotify gives some errors if auth token is invalid, but let's ignore those for now
+    await Spotify.configure(this.authToken);
+  };
 
   authorize = () => {
     return getLib(this.platform).authorize();

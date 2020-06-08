@@ -37,10 +37,10 @@ export const RoomPage = () => {
       .ref(`rooms/${roomKey}/playing`)
       .on("value", (snapshot) => {
         if (snapshot.val()) {
-          music.play();
+          music.play().catch((error) => {});
           setRoomPlaying(true);
         } else {
-          music.pause();
+          music.pause().catch((error) => {});
           setRoomPlaying(false);
         }
       });

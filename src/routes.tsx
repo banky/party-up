@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Firebase, { FirebaseContext } from "./lib/firebase";
 import Music, { MusicContext } from "./lib/music-interface";
@@ -16,32 +16,46 @@ export const Routes = () => {
     (state: RootState) => state.musicAuthToken
   );
 
+  // TODO: Extract this into a separate context provider
+  const [musicConfigureLoading, setMusicConfigureLoading] = useState(true);
+  useEffect(() => {
+    musicInstance.configure().then(() => {
+      setMusicConfigureLoading(false);
+    });
+  }, []);
+
+  const musicInstance = new Music(musicPlatform, musicAuthToken);
+
   return (
     <FirebaseContext.Provider value={new Firebase()}>
-      <MusicContext.Provider value={new Music(musicPlatform, musicAuthToken)}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/room/:roomKey">
-              <RoomPage />
-            </Route>
-            <Route path="/room">
-              <RoomPage />
-            </Route>
-            <Route path="/name">
-              <NamePage />
-            </Route>
-            <Route path="/spotify-callback">
-              <SpotifyCallback />
-            </Route>
-            <Route path="/not-found">
-              <NotFoundPage />
-            </Route>
-            <Route path="/">
-              <LandingPage />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </MusicContext.Provider>
+      {musicConfigureLoading ? (
+        <div>Loading</div>
+      ) : (
+        <MusicContext.Provider value={musicInstance}>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/room/:roomKey">
+                <RoomPage />
+              </Route>
+              <Route path="/room">
+                <RoomPage />
+              </Route>
+              <Route path="/name">
+                <NamePage />
+              </Route>
+              <Route path="/spotify-callback">
+                <SpotifyCallback />
+              </Route>
+              <Route path="/not-found">
+                <NotFoundPage />
+              </Route>
+              <Route path="/">
+                <LandingPage />
+              </Route>
+            </Switch>
+          </BrowserRouter>
+        </MusicContext.Provider>
+      )}
     </FirebaseContext.Provider>
   );
 };

@@ -7,6 +7,7 @@ import {
   getAuthTokenFromChildWindow,
   loadSpotifyWebPlayer,
   transformSongs,
+  retryableFunc,
 } from "./helpers";
 
 let spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
@@ -16,7 +17,7 @@ export const configure = async (authToken: string) => {
   spotifyWebApi.setAccessToken(authToken);
 
   await loadSpotifyWebPlayer();
-  initializePlayer(authToken);
+  await initializePlayer(authToken);
 };
 
 export const authorize = async (): Promise<string> => {
@@ -24,8 +25,8 @@ export const authorize = async (): Promise<string> => {
   const authToken = await getAuthTokenFromChildWindow(childWindow);
 
   spotifyWebApi.setAccessToken(authToken);
-  initializePlayer(authToken);
-  return Promise.resolve(authToken);
+  await initializePlayer(authToken);
+  return authToken;
 };
 
 export const unauthorize = (): void => {};
@@ -38,7 +39,9 @@ export const search = async (
   query: string,
   searchTypes: SearchType[]
 ): Promise<Song[]> => {
-  const response = await spotifyWebApi.search(query, searchTypes);
+  const response = await spotifyWebApi.search(query, searchTypes, {
+    limit: SEARCH_LIMIT,
+  });
   return transformSongs(response.tracks?.items);
 };
 
@@ -87,10 +90,16 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     return Promise.reject(error);
   }
 
-  return spotifyWebApi.play({
-    device_id: playerId,
-    uris: [spotifySong.url],
-  });
+  // Playing sometimes fails if we just defined the player.
+  // Keep trying to queue up the song if it fails
+  return retryableFunc(
+    () =>
+      spotifyWebApi.play({
+        device_id: playerId,
+        uris: [spotifySong.url],
+      }),
+    5000
+  );
 };
 
 export const play = (): Promise<any> => {

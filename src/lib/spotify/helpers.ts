@@ -69,6 +69,7 @@ export const initializePlayer = async (authToken: string) => {
 
   window.spotifyPlayer = player;
 
+  // TODO: Show the user an error if this fails. Maybe retry?
   await player.connect();
 };
 
@@ -187,4 +188,52 @@ export const transformSongs = (items: any): Song[] => {
     url: item.uri,
     imgUrl: item.album.images.pop().url,
   }));
+};
+
+/**
+ * Retry a function with a timeout. Inspired by
+ * https://stackoverflow.com/questions/59854115/how-to-retry-api-calls-using-node-fetch
+ * @param func
+ * @param retries
+ * @param retryDelay
+ * @param timeout
+ */
+export const retryableFunc = (
+  func: () => Promise<any>,
+  timeout: number,
+  retries: number = 3,
+  retryDelay: number = 1000
+): Promise<any> => {
+  const delay = (ms: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
+  };
+
+  return new Promise((resolve, reject) => {
+    if (timeout) {
+      setTimeout(() => {
+        reject("error: timeout");
+      }, timeout);
+    }
+
+    const wrapper = (n: number) => {
+      func()
+        .then((res) => {
+          resolve(res);
+        })
+        .catch(async (err) => {
+          if (n > 0) {
+            await delay(retryDelay);
+            wrapper(--n);
+          } else {
+            reject(err);
+          }
+        });
+    };
+
+    wrapper(retries);
+  });
 };
