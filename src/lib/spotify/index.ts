@@ -131,3 +131,24 @@ export const seek = (time: number): Promise<any> => {
     device_id: playerId,
   });
 };
+
+export const songEnded = (): Promise<void> => {
+  return new Promise((resolve) => {
+    let previousPosition = 0;
+
+    window.spotifyPlayer.addListener(
+      "player_state_changed",
+      ({ position }: { position: number }) => {
+        console.log("position: ", position, "prevPosition: ", previousPosition);
+
+        if (position < previousPosition) {
+          window.spotifyPlayer.removeListener("player_state_changed");
+
+          resolve();
+        }
+
+        previousPosition = position;
+      }
+    );
+  });
+};

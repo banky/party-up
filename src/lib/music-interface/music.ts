@@ -71,6 +71,10 @@ class Music {
   seek = (time: number) => {
     return getLib(this.platform).seek(time);
   };
+
+  songEnded = (): Promise<void> => {
+    return getLib(this.platform).songEnded();
+  };
 }
 
 export default Music;

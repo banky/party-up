@@ -126,3 +126,7 @@ export const progress = (): Promise<number> => {
 export const seek = (time: number): Promise<any> => {
   return MusicKit.getInstance().seekToTime(time / 1000);
 };
+
+export const songEnded = (): Promise<void> => {
+  return Promise.reject("Apple music songEnded not implemented");
+};
