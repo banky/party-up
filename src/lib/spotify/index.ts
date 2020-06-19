@@ -138,10 +138,7 @@ export const songEnded = (callback: VoidFunction): void => {
   window.spotifyPlayer.addListener(
     "player_state_changed",
     ({ position }: { position: number }) => {
-      console.log("position: ", position, "prevPosition: ", previousPosition);
-
       if (position < previousPosition) {
-        // window.spotifyPlayer.removeListener("player_state_changed");
         previousPosition = 0;
         callback();
       }
