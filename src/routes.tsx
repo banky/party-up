@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Firebase, { FirebaseContext } from "./lib/firebase";
 import Music, { MusicContext } from "./lib/music-interface";
@@ -16,22 +16,21 @@ export const Routes = () => {
     (state: RootState) => state.musicAuthToken
   );
 
-  // TODO: Extract this into a separate context provider
   const [musicConfigureLoading, setMusicConfigureLoading] = useState(true);
+  const musicInstance = useRef(new Music(musicPlatform, musicAuthToken));
+
   useEffect(() => {
-    musicInstance.configure().then(() => {
+    musicInstance.current.configure().then(() => {
       setMusicConfigureLoading(false);
     });
-  }, []);
-
-  const musicInstance = new Music(musicPlatform, musicAuthToken);
+  }, [musicInstance]);
 
   return (
     <FirebaseContext.Provider value={new Firebase()}>
       {musicConfigureLoading ? (
         <div>Loading</div>
       ) : (
-        <MusicContext.Provider value={musicInstance}>
+        <MusicContext.Provider value={musicInstance.current}>
           <BrowserRouter>
             <Switch>
               <Route path="/room/:roomKey">

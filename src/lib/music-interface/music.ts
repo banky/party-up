@@ -71,6 +71,10 @@ class Music {
   seek = (time: number) => {
     return getLib(this.platform).seek(time);
   };
+
+  songEnded = (callback: VoidFunction): void => {
+    return getLib(this.platform).songEnded(callback);
+  };
 }
 
 export default Music;
