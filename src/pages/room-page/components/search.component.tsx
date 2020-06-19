@@ -93,7 +93,7 @@ export const Search = ({ cancelSearch, onSelectSong }: SearchProps) => {
       <SongQueue>
         {searchResults.map((song) => {
           return (
-            <SongQueueItem key={song.url}>
+            <SongQueueItem key={song.uri}>
               <SongCard
                 song={song}
                 actionIcon="plus"

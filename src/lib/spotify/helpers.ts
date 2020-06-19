@@ -180,14 +180,16 @@ export const transformSongs = (items: any): Song[] => {
       .slice(0, -delimiter.length);
   };
 
-  return items.map((item: any) => ({
-    album: item.album.name,
-    artist: formatArtists(item, ", "),
-    name: item.name,
-    isrc: item.external_ids.isrc,
-    url: item.uri,
-    imgUrl: item.album.images.pop().url,
-  }));
+  return items.map(
+    (item: any): Song => ({
+      album: item.album.name,
+      artist: formatArtists(item, ", "),
+      name: item.name,
+      isrc: item.external_ids.isrc,
+      uri: item.uri,
+      imgUrl: item.album.images.pop().url,
+    })
+  );
 };
 
 /**

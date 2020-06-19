@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Song } from "lib/constants";
 import { SongCard } from "components/song-card/song-card.component";
 import { useFirebase } from "lib/firebase/hooks";
+import { useMusic } from "lib/music-interface/hook";
 
 const SongQueue = styled.ul`
   padding: 0;
@@ -22,8 +23,15 @@ type QueueProps = {
 };
 
 export const Queue = ({ roomKey }: QueueProps) => {
-  const [playQueue, setPlayQueue] = useState<{ [key: string]: Song }>({});
+  const [displayQueue, setDisplayQueue] = useState<{ [key: string]: Song }>({});
   const firebase = useFirebase();
+  const music = useMusic();
+
+  useEffect(() => {
+    music.onSongEnd(() => {
+      setDisplayQueue(music.getQueue());
+    });
+  }, []);
 
   useEffect(() => {
     firebase
@@ -31,21 +39,22 @@ export const Queue = ({ roomKey }: QueueProps) => {
       .ref(`rooms/${roomKey}/queue`)
       .on("value", (snapshot) => {
         if (!snapshot.exists()) {
-          setPlayQueue({});
+          setDisplayQueue({});
           return;
         }
 
-        setPlayQueue(snapshot.val());
+        setDisplayQueue(snapshot.val());
+        music.setQueue(Object.values(snapshot.val()));
       });
   }, [firebase, roomKey]);
 
   return (
     <SongQueue>
-      {Object.keys(playQueue).map((songKey) => {
-        const song = playQueue[songKey];
+      {Object.keys(displayQueue).map((songKey) => {
+        const song = displayQueue[songKey];
 
         return (
-          <SongQueueItem key={song.url}>
+          <SongQueueItem key={song.uri}>
             <SongCard
               song={song}
               actionIcon="minus"

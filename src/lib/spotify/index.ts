@@ -65,14 +65,14 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
   let spotifySong = song;
 
   try {
-    if (!spotifySong.url.includes(SPOTIFY_BASE_URL)) {
+    if (!spotifySong.uri.includes(SPOTIFY_BASE_URL)) {
       spotifySong = await findSongByIsrc(song);
     }
   } catch (error) {}
 
   // If ISRC search failed, try to find the song with manual search
   try {
-    if (!spotifySong.url.includes(SPOTIFY_BASE_URL)) {
+    if (!spotifySong.uri.includes(SPOTIFY_BASE_URL)) {
       const songNameWithoutBrackets = song.name.split("(", 1)[0].trim();
       const songName = songNameWithoutBrackets.replace(/[^a-z]/gi, " ");
       const songArtist = song.artist.replace(/[^a-z]/gi, " ");
@@ -96,7 +96,7 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     () =>
       spotifyWebApi.play({
         device_id: playerId,
-        uris: [spotifySong.url],
+        uris: [spotifySong.uri],
       }),
     5000
   );
@@ -131,3 +131,13 @@ export const seek = (time: number): Promise<any> => {
     device_id: playerId,
   });
 };
+
+export const setQueue = (songs: Song[]): Promise<any> => {
+  return Promise.reject("Spotify set queue not implemented");
+};
+
+export const getQueue = (): Song[] => {
+  return [];
+};
+
+export const onSongEnd = (callback: VoidFunction): void => {};

@@ -29,12 +29,14 @@ export const transformSongs = (songs: any): Song[] => {
     return url;
   };
 
-  return songs.map((song: any) => ({
-    album: song.attributes.albumName,
-    artist: song.attributes.artistName,
-    name: song.attributes.name,
-    isrc: song.attributes.isrc,
-    url: song.attributes.url,
-    imgUrl: formatImgUrl(song.attributes.artwork.url),
-  }));
+  return songs.map(
+    (song: any): Song => ({
+      album: song.attributes.albumName,
+      artist: song.attributes.artistName,
+      name: song.attributes.name,
+      isrc: song.attributes.isrc,
+      uri: song.id,
+      imgUrl: formatImgUrl(song.attributes.artwork.url),
+    })
+  );
 };

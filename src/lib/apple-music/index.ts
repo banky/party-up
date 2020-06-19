@@ -69,7 +69,7 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
   let appleMusicSong = song;
 
   try {
-    if (!appleMusicSong.url.includes(APPLE_MUSIC_BASE_URL)) {
+    if (!appleMusicSong.uri.includes(APPLE_MUSIC_BASE_URL)) {
       appleMusicSong = await findSongByIsrc(song);
     }
   } catch (error) {
@@ -81,7 +81,7 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
 
   // If ISRC search failed, try to find the song with manual search
   try {
-    if (!appleMusicSong.url.includes(APPLE_MUSIC_BASE_URL)) {
+    if (!appleMusicSong.uri.includes(APPLE_MUSIC_BASE_URL)) {
       const songNameWithoutBrackets = song.name.split("(", 1)[0].trim();
       const songName = songNameWithoutBrackets.replace(/[^a-z]/gi, " ");
       const songArtist = song.artist.replace(/[^a-z]/gi, " ");
@@ -98,7 +98,7 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     return Promise.reject(error);
   }
 
-  await MusicKit.getInstance().setQueue({ url: appleMusicSong.url });
+  await MusicKit.getInstance().setQueue({ url: appleMusicSong.uri });
 
   return MusicKit.getInstance().play();
 
@@ -125,4 +125,20 @@ export const progress = (): Promise<number> => {
 
 export const seek = (time: number): Promise<any> => {
   return MusicKit.getInstance().seekToTime(time / 1000);
+};
+
+export const setQueue = (songs: Song[]): Promise<any> => {
+  return MusicKit.getInstance().setQueue({
+    songs: songs.map((song) => song.uri),
+  });
+};
+
+export const getQueue = (): Song[] => {
+  const songs = MusicKit.getInstance().player.queue.items;
+
+  return transformSongs(songs);
+};
+
+export const onSongEnd = (callback: VoidFunction): void => {
+  MusicKit.getInstance().addEventListener("queuePositionDidChange", callback);
 };

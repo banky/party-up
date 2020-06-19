@@ -71,6 +71,18 @@ class Music {
   seek = (time: number) => {
     return getLib(this.platform).seek(time);
   };
+
+  setQueue = (songs: Song[]) => {
+    return getLib(this.platform).setQueue(songs);
+  };
+
+  getQueue = () => {
+    return getLib(this.platform).getQueue();
+  };
+
+  onSongEnd = (callback: VoidFunction) => {
+    return getLib(this.platform).onSongEnd(callback);
+  };
 }
 
 export default Music;
