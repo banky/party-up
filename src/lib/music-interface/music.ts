@@ -72,8 +72,8 @@ class Music {
     return getLib(this.platform).seek(time);
   };
 
-  songEnded = (): Promise<void> => {
-    return getLib(this.platform).songEnded();
+  songEnded = (callback: VoidFunction): void => {
+    return getLib(this.platform).songEnded(callback);
   };
 }
 

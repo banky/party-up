@@ -132,23 +132,21 @@ export const seek = (time: number): Promise<any> => {
   });
 };
 
-export const songEnded = (): Promise<void> => {
-  return new Promise((resolve) => {
-    let previousPosition = 0;
+export const songEnded = (callback: VoidFunction): void => {
+  let previousPosition = 0;
 
-    window.spotifyPlayer.addListener(
-      "player_state_changed",
-      ({ position }: { position: number }) => {
-        console.log("position: ", position, "prevPosition: ", previousPosition);
+  window.spotifyPlayer.addListener(
+    "player_state_changed",
+    ({ position }: { position: number }) => {
+      console.log("position: ", position, "prevPosition: ", previousPosition);
 
-        if (position < previousPosition) {
-          window.spotifyPlayer.removeListener("player_state_changed");
-
-          resolve();
-        }
-
-        previousPosition = position;
+      if (position < previousPosition) {
+        // window.spotifyPlayer.removeListener("player_state_changed");
+        previousPosition = 0;
+        callback();
       }
-    );
-  });
+
+      previousPosition = position;
+    }
+  );
 };
