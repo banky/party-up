@@ -127,4 +127,15 @@ export const seek = (time: number): Promise<any> => {
   return MusicKit.getInstance().seekToTime(time / 1000);
 };
 
-export const songEnded = (callback: VoidFunction): void => {};
+export const songEnded = (callback: VoidFunction): void => {
+  MusicKit.getInstance().addEventListener(
+    "playbackStateDidChange",
+    ({ state }: { oldState: number; state: number }) => {
+      // These state values are not documented anywhere. Hopefully apple doesn't
+      // change them without notice. But right now, it looks like 10 is "song complete"
+      if (state === 10) {
+        callback();
+      }
+    }
+  );
+};
