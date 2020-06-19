@@ -141,9 +141,9 @@ export const songEnded = (callback: VoidFunction): void => {
       if (position < previousPosition) {
         previousPosition = 0;
         callback();
+      } else {
+        previousPosition = position;
       }
-
-      previousPosition = position;
     }
   );
 };

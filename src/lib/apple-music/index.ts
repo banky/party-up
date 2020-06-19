@@ -128,13 +128,16 @@ export const seek = (time: number): Promise<any> => {
 };
 
 export const songEnded = (callback: VoidFunction): void => {
+  let previousProgress = 0;
+
   MusicKit.getInstance().addEventListener(
-    "playbackStateDidChange",
-    ({ state }: { oldState: number; state: number }) => {
-      // These state values are not documented anywhere. Hopefully apple doesn't
-      // change them without notice. But right now, it looks like 10 is "song complete"
-      if (state === 10) {
+    "playbackProgressDidChange",
+    ({ progress }: { progress: number }) => {
+      if (progress < previousProgress || progress === 1) {
+        previousProgress = 0;
         callback();
+      } else {
+        previousProgress = progress;
       }
     }
   );
