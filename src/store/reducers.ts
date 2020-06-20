@@ -5,6 +5,7 @@ import {
   updateName,
   updateMusicPlatform,
   updateMusicAuthToken,
+  updateUserId,
 } from "./actions";
 import { Platform } from "../lib/music-interface/music";
 
@@ -12,10 +13,12 @@ const initialState: {
   name: string;
   musicPlatform: Platform;
   musicAuthToken: string;
+  userId: string;
 } = {
   name: "",
   musicPlatform: "apple",
   musicAuthToken: "",
+  userId: "",
 };
 
 const rootReducer = createReducer(initialState, {
@@ -27,6 +30,9 @@ const rootReducer = createReducer(initialState, {
   },
   [updateMusicAuthToken.type]: (state, action) => {
     state.musicAuthToken = action.payload;
+  },
+  [updateUserId.type]: (state, action) => {
+    state.userId = action.payload;
   },
 });
 

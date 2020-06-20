@@ -6,16 +6,28 @@ import { updateMusicAuthToken, updateMusicPlatform } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import "./landing-page.css";
 import { Platform } from "lib/music-interface/music";
+import { useFirebase } from "lib/firebase/hooks";
 
 export const LandingPage = () => {
   const history = useHistory();
   const music = useMusic();
+  const firebase = useFirebase();
   const dispatch = useDispatch();
 
-  const onAuthorize = (platform: Platform) => (authToken: string) => {
+  const onAuthorize = (platform: Platform) => async (authToken: string) => {
     dispatch(updateMusicPlatform(platform));
     dispatch(updateMusicAuthToken(authToken));
-    history.push("/name");
+    try {
+      await firebase.auth().signInAnonymously();
+      history.push("/name");
+    } catch (error) {
+      console.error(
+        "Error authenticating. Code:",
+        error.code,
+        ". Message:",
+        error.message
+      );
+    }
   };
 
   return (
