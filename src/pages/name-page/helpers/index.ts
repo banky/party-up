@@ -10,24 +10,36 @@ export const roomNameFromOwner = (ownerName: string) => {
 };
 
 /**
- * Create a room in Firebase
+ * Create a user in Firebase
  * @param firebase
+ * @param userId
  * @param name
  * @param platform
- * @param userId
  */
-export const createRoom = (
+export const createUserFB = (
   firebase: Firebase,
+  userId: string,
   name: string,
-  platform: Platform,
-  userId: string
+  platform: Platform
 ) => {
-  const roomName = roomNameFromOwner(name);
-
   firebase.database().ref("users").child(userId).set({
     name: name,
     platform: platform,
   });
+};
+
+/**
+ * Create a room in Firebase
+ * @param firebase
+ * @param userId
+ * @param name
+ */
+export const createRoomFB = (
+  firebase: Firebase,
+  userId: string,
+  name: string
+) => {
+  const roomName = roomNameFromOwner(name);
 
   const newRoomKey = firebase
     .database()

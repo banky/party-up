@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "store/reducers";
 import { updateName } from "store/actions";
-import { createRoom } from "./helpers";
+import { createUserFB, createRoomFB } from "./helpers";
 import { useFirebase } from "lib/firebase/hooks";
 import "./name-page.css";
 
@@ -16,7 +16,8 @@ export const NamePage = () => {
   const firebase = useFirebase();
 
   const handleButtonClick = () => {
-    const roomKey = createRoom(firebase, name, platform, userId);
+    createUserFB(firebase, userId, name, platform);
+    const roomKey = createRoomFB(firebase, userId, name);
     history.push(`/room/${roomKey}`);
   };
 
