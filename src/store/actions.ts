@@ -10,3 +10,5 @@ export const updateMusicPlatform = createAction<Platform>(
 export const updateMusicAuthToken = createAction<string>(
   "UPDATE_MUSIC_AUTH_TOKEN"
 );
+
+export const updateUserId = createAction<string>("UPDATE_USER_ID");

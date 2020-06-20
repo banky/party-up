@@ -3,19 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "store/reducers";
 import { updateName } from "store/actions";
-import { createRoom } from "./helpers.ts";
+import { createRoom } from "./helpers";
 import { useFirebase } from "lib/firebase/hooks";
 import "./name-page.css";
 
 export const NamePage = () => {
+  const dispatch = useDispatch();
   const name = useSelector((state: RootState) => state.name);
   const platform = useSelector((state: RootState) => state.musicPlatform);
-  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.userId);
   const history = useHistory();
   const firebase = useFirebase();
 
   const handleButtonClick = () => {
-    const roomKey = createRoom(firebase, name, platform);
+    const roomKey = createRoom(firebase, name, platform, userId);
     history.push(`/room/${roomKey}`);
   };
 

@@ -1,5 +1,6 @@
 import app from "firebase/app";
 import "firebase/database";
+import "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 class Firebase {
   database: () => app.database.Database;
+  auth: () => app.auth.Auth;
 
   constructor() {
     if (!app.apps.length) {
@@ -21,6 +23,7 @@ class Firebase {
     }
 
     this.database = app.database;
+    this.auth = app.auth;
   }
 }
 
