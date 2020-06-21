@@ -3,10 +3,10 @@ import { useParams, useHistory } from "react-router-dom";
 import { useFirebase } from "lib/firebase/hooks";
 import { Song } from "lib/constants";
 import { useMusic } from "lib/music-interface/hook";
-import { Search } from "./components/search.component";
-import { Queue } from "./components/queue.component";
-import { NowPlaying } from "./components/now-playing.component";
-import { QueueTitle } from "./components/queue-title.component";
+import { Search } from "./components/search";
+import { Queue } from "./components/queue";
+import { NowPlaying } from "./components/now-playing";
+import { QueueTitle } from "./components/queue-title";
 import "./room-page.css";
 
 export const RoomPage = () => {
@@ -19,6 +19,7 @@ export const RoomPage = () => {
   const [roomPlaying, setRoomPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song | undefined>();
   const [showSearch, setShowSearch] = useState(false);
+  const [userIsDj, setUserIsDj] = useState(false);
 
   const userPressedNext = useRef(false);
 
@@ -32,6 +33,23 @@ export const RoomPage = () => {
         setRoomName(snapshot.val());
       });
   }, [firebase, history, roomKey]);
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/djs`)
+      .once("value")
+      .then((snapshot) => {
+        const djs = snapshot.val();
+        const currentUser = firebase.auth().currentUser?.uid;
+
+        const isDj = Object.keys(djs).some(
+          (djId) => djId === currentUser && djs[djId]
+        );
+
+        setUserIsDj(isDj);
+      });
+  }, [firebase, roomKey]);
 
   useEffect(() => {
     firebase
@@ -145,13 +163,17 @@ export const RoomPage = () => {
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <QueueTitle onClickSearch={() => setShowSearch(true)} />
+      <QueueTitle
+        userIsDj={userIsDj}
+        onClickSearch={() => setShowSearch(true)}
+      />
 
-      <Queue roomKey={roomKey} />
+      <Queue roomKey={roomKey} userIsDj={userIsDj} />
 
       <NowPlaying
         song={currentSong}
         isPlaying={roomPlaying}
+        userIsDj={userIsDj}
         onClickPlay={onClickPlay}
         onClickPause={onClickPause}
         onClickNext={onClickNext}
@@ -159,6 +181,7 @@ export const RoomPage = () => {
 
       {showSearch && (
         <Search
+          userIsDj={userIsDj}
           cancelSearch={() => setShowSearch(false)}
           onSelectSong={(song) => {
             enqueueSongFB(song);

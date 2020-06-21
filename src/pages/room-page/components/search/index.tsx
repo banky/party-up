@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useMusic } from "lib/music-interface/hook";
 import { Song } from "lib/constants";
 import { SongCard } from "components/song-card/song-card.component";
-import searchIcon from "./images/search-icon.png";
-import cancelIcon from "./images/cancel-icon.png";
+import searchIcon from "../images/search-icon.png";
+import cancelIcon from "../images/cancel-icon.png";
 
 const SearchContainer = styled.div`
   background: rgba(0, 0, 0, 0.7);
@@ -57,11 +57,16 @@ const ButtonIcon = styled.img`
 `;
 
 type SearchProps = {
+  userIsDj: boolean;
   cancelSearch: VoidFunction;
   onSelectSong: (song: Song) => void;
 };
 
-export const Search = ({ cancelSearch, onSelectSong }: SearchProps) => {
+export const Search = ({
+  userIsDj,
+  cancelSearch,
+  onSelectSong,
+}: SearchProps) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
@@ -97,6 +102,7 @@ export const Search = ({ cancelSearch, onSelectSong }: SearchProps) => {
               <SongCard
                 song={song}
                 actionIcon="plus"
+                actionDisabled={!userIsDj}
                 onClickActionIcon={() => onSelectSong(song)}
               />
             </SongQueueItem>
