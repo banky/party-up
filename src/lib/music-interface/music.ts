@@ -72,6 +72,10 @@ class Music {
     return getLib(this.platform).seek(time);
   };
 
+  /**
+   * Callback is fired every time a song finishes
+   * @param callback
+   */
   songEnded = (callback: VoidFunction): void => {
     return getLib(this.platform).songEnded(callback);
   };

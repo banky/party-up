@@ -20,13 +20,18 @@ export const configure = async (authToken: string) => {
   await initializePlayer(authToken);
 };
 
-export const authorize = async (): Promise<string> => {
+export const authorize = async (): Promise<{
+  authToken: string;
+  expiresIn: number;
+}> => {
   const childWindow = openSpotifyLoginWindow();
-  const authToken = await getAuthTokenFromChildWindow(childWindow);
+  const { authToken, expiresIn } = await getAuthTokenFromChildWindow(
+    childWindow
+  );
 
   spotifyWebApi.setAccessToken(authToken);
   await initializePlayer(authToken);
-  return authToken;
+  return { authToken, expiresIn };
 };
 
 export const unauthorize = (): void => {};

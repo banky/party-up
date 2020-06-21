@@ -47,7 +47,7 @@ export const createRoomFB = (
     .child("rooms")
     .push({
       name: roomName,
-      creator: userId,
+      owner: userId,
       djs: {
         [userId]: true,
       },
