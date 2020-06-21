@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { PlusIcon } from "../../../components/plus-icon/plus-icon.component";
+import { PlusIcon } from "../../../../components/plus-icon/plus-icon.component";
 
 const QueueTitleWrapper = styled.div`
   width: 700px;
@@ -17,13 +17,14 @@ const StyledPlusIcon = styled(PlusIcon)`
 `;
 
 type QueueTitleProps = {
+  userIsDj: boolean;
   onClickSearch: VoidFunction;
 };
 
-export const QueueTitle = ({ onClickSearch }: QueueTitleProps) => {
+export const QueueTitle = ({ userIsDj, onClickSearch }: QueueTitleProps) => {
   return (
     <QueueTitleWrapper>
-      <StyledPlusIcon onClick={onClickSearch} />
+      <StyledPlusIcon disabled={!userIsDj} onClick={onClickSearch} />
     </QueueTitleWrapper>
   );
 };

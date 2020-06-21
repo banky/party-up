@@ -5,12 +5,6 @@ import { PlusIcon } from "../plus-icon/plus-icon.component";
 import { MinusIcon } from "../minus-icon/minus-icon.component";
 import { Song } from "lib/constants";
 
-type SongCardProps = {
-  song: Song;
-  actionIcon: "plus" | "minus";
-  onClickActionIcon?: VoidFunction;
-};
-
 const actionIconStyles = `
   position: absolute;
   top: 50%;
@@ -26,9 +20,17 @@ const StyledMinusIcon = styled(MinusIcon)`
   ${actionIconStyles}
 `;
 
+type SongCardProps = {
+  song: Song;
+  actionIcon: "plus" | "minus";
+  actionDisabled: boolean;
+  onClickActionIcon?: VoidFunction;
+};
+
 export const SongCard = ({
   song,
   actionIcon,
+  actionDisabled,
   onClickActionIcon,
 }: SongCardProps) => {
   const { name, artist, imgUrl } = song;
@@ -43,9 +45,12 @@ export const SongCard = ({
       <div className="song-name">{name}</div>
       <div className="song-artist">{artist}</div>
       {actionIcon === "plus" ? (
-        <StyledPlusIcon onClick={onClickActionIcon} />
+        <StyledPlusIcon disabled={actionDisabled} onClick={onClickActionIcon} />
       ) : (
-        <StyledMinusIcon onClick={onClickActionIcon} />
+        <StyledMinusIcon
+          disabled={actionDisabled}
+          onClick={onClickActionIcon}
+        />
       )}
     </div>
   );
