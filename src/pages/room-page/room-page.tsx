@@ -69,6 +69,9 @@ export const RoomPage = () => {
       .ref(`rooms/${roomKey}/owner`)
       .on("value", (snapshot) => {
         setUserIsOwner(userId === snapshot.val());
+        console.log("userIsOwner:", userId === snapshot.val());
+        console.log("userId:", userId);
+        console.log("snapshot:", snapshot.val());
       });
   }, [firebase, roomKey, userId]);
 
@@ -158,6 +161,10 @@ export const RoomPage = () => {
 
   useEffect(() => {
     music.songEnded(async () => {
+      console.log("song ended");
+      console.log({ userIsOwner });
+      console.log(userPressedNext.current);
+
       // Only do this if the song ended on its own
       if (userPressedNext.current) {
         userPressedNext.current = false;
@@ -196,6 +203,8 @@ export const RoomPage = () => {
   };
 
   const onClickNext = async () => {
+    console.log("onClickNext");
+
     userPressedNext.current = true;
     const currentSong = await dequeueSongFB();
     setCurrentSongFB(currentSong);

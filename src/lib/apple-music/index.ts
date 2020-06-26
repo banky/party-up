@@ -18,7 +18,7 @@ export const authorize = async (): Promise<{
   expiresIn: number;
 }> => {
   const authToken = await MusicKit.getInstance().authorize();
-  const expiresIn = Infinity; // Apple music auth tokens never expire :D
+  const expiresIn = 10000000000; // Apple music auth tokens never expire :D
   return { authToken, expiresIn };
 };
 
