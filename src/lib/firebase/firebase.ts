@@ -14,16 +14,18 @@ const firebaseConfig = {
 };
 
 class Firebase {
-  database: () => app.database.Database;
-  auth: () => app.auth.Auth;
-
   constructor() {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
+  }
 
-    this.database = app.database;
-    this.auth = app.auth;
+  database(): app.database.Database {
+    return app.database();
+  }
+
+  auth(): app.auth.Auth {
+    return app.auth();
   }
 }
 
