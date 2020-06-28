@@ -6,7 +6,7 @@ import {
   screen,
   mockStore,
   mockFirebaseInstance,
-} from "__tests__/test-utils";
+} from "utils/test-utils";
 import { NamePage } from "pages/name-page/name-page";
 import { updateUserId, updateMusicPlatform } from "store/actions";
 

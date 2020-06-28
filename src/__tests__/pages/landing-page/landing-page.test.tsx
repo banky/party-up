@@ -7,7 +7,7 @@ import {
   mockStore,
   mockFirebaseInstance,
   mockMusicInstance,
-} from "__tests__/test-utils";
+} from "utils/test-utils";
 import { LandingPage } from "pages/landing-page/landing-page";
 import { fireEvent } from "@testing-library/react";
 
