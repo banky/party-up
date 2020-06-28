@@ -21,7 +21,7 @@ const initialState: {
   userId: "",
 };
 
-const rootReducer = createReducer(initialState, {
+export const rootReducer = createReducer(initialState, {
   [updateName.type]: (state, action) => {
     state.name = action.payload;
   },
