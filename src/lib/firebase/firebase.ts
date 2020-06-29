@@ -13,17 +13,23 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-class Firebase {
-  database: () => app.database.Database;
-  auth: () => app.auth.Auth;
+if (window.location.hostname === "localhost") {
+  firebaseConfig.databaseURL = `http://localhost:9000?ns=${process.env.REACT_APP_FIREBASE_PROJECT_ID}`;
+}
 
+class Firebase {
   constructor() {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
+  }
 
-    this.database = app.database;
-    this.auth = app.auth;
+  database(): app.database.Database {
+    return app.database();
+  }
+
+  auth(): app.auth.Auth {
+    return app.auth();
   }
 }
 

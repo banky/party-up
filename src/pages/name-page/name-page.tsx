@@ -28,6 +28,7 @@ export const NamePage = () => {
         <input
           className="name-input"
           value={name}
+          aria-label={"name-input"}
           onChange={(e) => dispatch(updateName(e.target.value))}
         />
       </div>
