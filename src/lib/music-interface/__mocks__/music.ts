@@ -1,7 +1,22 @@
-export const authorize = jest.fn(() => Promise.resolve("fake-auth-token"));
+const authorize = jest.fn(() => Promise.resolve("fake-auth-token"));
+const pause = jest.fn(() => Promise.resolve());
+const queueAndPlay = jest.fn(() => Promise.resolve());
+const search = jest.fn(() =>
+  Promise.resolve([
+    {
+      album: "fake-album",
+      artist: "fake-song-artist",
+      name: "fake-song-name",
+      isrc: "fake-isrc",
+      url: "fake-url",
+      imgUrl: "fake-img-url",
+    },
+  ])
+);
+const songEnded = jest.fn(() => null);
 
 const mock = jest.fn().mockImplementation(() => {
-  return { authorize };
+  return { authorize, pause, queueAndPlay, search, songEnded };
 });
 
 export default mock;

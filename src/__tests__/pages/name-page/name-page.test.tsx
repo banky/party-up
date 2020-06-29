@@ -19,38 +19,46 @@ describe("Create Room", () => {
   mockStore.dispatch(updateMusicPlatform(mockPlatform));
 
   beforeAll(() => {
-    act(() => {
-      render(<NamePage />);
-    });
+    mockFirebaseInstance.database().ref().set(null);
+  });
+
+  afterAll(() => {
+    mockFirebaseInstance.database().ref().set(null);
+  });
+
+  it("creates the expected user in firebase", async () => {
+    render(<NamePage />);
 
     fireEvent.change(screen.getByLabelText("name-input"), {
       target: { value: mockName },
     });
-  });
 
-  it("creates the expected user in firebase", async () => {
     expect(mockStore.getState().name).toBe(mockName);
 
     fireEvent.click(screen.getByText("Create Room"));
 
-    expect(mockFirebaseInstance.database().ref).toHaveBeenCalledWith("users");
-    expect(mockFirebaseInstance.database().ref().child).toHaveBeenCalledWith(
-      mockUserId
-    );
+    const userSnapshot = await mockFirebaseInstance
+      .database()
+      .ref("users")
+      .child(mockUserId)
+      .once("value");
 
-    expect(
-      mockFirebaseInstance.database().ref().child(mockUserId).set
-    ).toHaveBeenCalledWith({ name: mockName, platform: mockPlatform });
+    expect(userSnapshot.val()).toStrictEqual({
+      name: mockName,
+      platform: mockPlatform,
+    });
   });
 
   it("creates the expected room in firebase", async () => {
-    expect(mockFirebaseInstance.database().ref().child).toHaveBeenCalledWith(
-      "rooms"
-    );
+    const roomsSnapshot = await mockFirebaseInstance
+      .database()
+      .ref("rooms")
+      .once("value");
 
-    expect(
-      mockFirebaseInstance.database().ref().child("rooms").push
-    ).toHaveBeenCalledWith({
+    const rooms = roomsSnapshot.val();
+    const lastRoom = rooms[Object.keys(rooms)[Object.keys(rooms).length - 1]];
+
+    expect(lastRoom).toStrictEqual({
       creator: mockUserId,
       djs: { [mockUserId]: true },
       name: "Mario's Room",

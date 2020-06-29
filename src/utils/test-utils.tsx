@@ -7,7 +7,6 @@ import Firebase, { FirebaseContext } from "lib/firebase";
 import Music, { MusicContext } from "lib/music-interface";
 import { rootReducer } from "store/reducers";
 
-jest.mock("lib/firebase/firebase");
 jest.mock("lib/music-interface/music");
 
 const mockStore = createStore(rootReducer, {

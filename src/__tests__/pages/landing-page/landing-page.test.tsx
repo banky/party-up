@@ -11,14 +11,17 @@ import {
 import { LandingPage } from "pages/landing-page/landing-page";
 import { fireEvent } from "@testing-library/react";
 
-describe("Music login", () => {
-  beforeEach(() => {
-    act(() => {
-      render(<LandingPage />);
-    });
-  });
+const mockAuth = {
+  signInAnonymously: jest.fn(() => Promise.resolve()),
+};
 
+// @ts-ignore
+mockFirebaseInstance.auth = jest.fn(() => mockAuth);
+
+describe("Music login", () => {
   it("logs in properly for apple music", async () => {
+    render(<LandingPage />);
+
     fireEvent.click(screen.getByAltText("apple logo"));
 
     expect(mockMusicInstance.authorize).toHaveBeenCalled();
@@ -36,6 +39,8 @@ describe("Music login", () => {
   });
 
   it("logs in properly for spotify", async () => {
+    render(<LandingPage />);
+
     fireEvent.click(screen.getByAltText("spotify logo"));
 
     expect(mockMusicInstance.authorize).toHaveBeenCalled();
