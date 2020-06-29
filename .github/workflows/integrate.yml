@@ -11,5 +11,5 @@ jobs:
         with:
           node-version: 14
       - run: yarn install
-      - run: yarn test
+      - run: firebase emulators:exec --only database "yarn test"
       - run: yarn build
