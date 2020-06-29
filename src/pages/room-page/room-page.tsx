@@ -32,7 +32,6 @@ export const RoomPage = () => {
         if (!snapshot.exists()) return history.push("/not-found");
         setRoomName(snapshot.val());
       });
-
     return () => firebase.database().ref(`rooms/${roomKey}/name`).off();
   }, [firebase, history, roomKey]);
 
