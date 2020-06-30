@@ -23,62 +23,62 @@ class Music {
     this.platform = platform;
   }
 
-  configure = async () => {
+  async configure() {
     AppleMusic.configure();
 
     // Spotify gives some errors if auth token is invalid, but let's ignore those for now
     await Spotify.configure(this.authToken);
-  };
+  }
 
-  authorize = () => {
+  authorize() {
     return getLib(this.platform).authorize();
-  };
+  }
 
-  unauthorize = () => {
+  unauthorize() {
     return getLib(this.platform).unauthorize();
-  };
+  }
 
-  isAuthorized = () => {
+  isAuthorized() {
     return getLib(this.platform).isAuthorized();
-  };
+  }
 
-  search = (query: string, searchTypes: SearchType[]) => {
+  search(query: string, searchTypes: SearchType[]) {
     return getLib(this.platform).search(query, searchTypes);
-  };
+  }
 
-  queueAndPlay = (song: Song) => {
+  queueAndPlay(song: Song) {
     return getLib(this.platform).queueAndPlay(song);
-  };
+  }
 
-  play = () => {
+  play() {
     return getLib(this.platform).play();
-  };
+  }
 
-  pause = () => {
+  pause() {
     return getLib(this.platform).pause();
-  };
+  }
 
   /**
    * Get the playback progress in milliseconds
    */
-  progress = () => {
+  progress() {
     return getLib(this.platform).progress();
-  };
+  }
 
   /**
    * Seek to a time in milliseconds
    */
-  seek = (time: number) => {
+  seek(time: number) {
     return getLib(this.platform).seek(time);
-  };
+  }
 
   /**
    * Callback is fired every time a song finishes
    * @param callback
    */
-  songEnded = (callback: VoidFunction): void => {
+  songEnded(callback: VoidFunction): void {
     return getLib(this.platform).songEnded(callback);
-  };
+  }
 }
 
 export default Music;

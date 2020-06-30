@@ -27,9 +27,12 @@ const initialState: {
   userId: "",
 };
 
-const rootReducer = createReducer(initialState, {
+export const rootReducer = createReducer(initialState, {
   [updateDestinationRoomKey.type]: (state, action) => {
     state.destinationRoomKey = action.payload;
+  },
+  [updateName.type]: (state, action) => {
+    state.name = action.payload;
   },
   [updateMusicPlatform.type]: (state, action) => {
     state.musicPlatform = action.payload;

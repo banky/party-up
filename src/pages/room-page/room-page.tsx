@@ -61,6 +61,7 @@ export const RoomPage = () => {
       .catch((error) => {
         console.warn(error);
       });
+    return () => firebase.database().ref(`rooms/${roomKey}/name`).off();
   }, [firebase, history, roomKey]);
 
   useEffect(() => {
@@ -83,6 +84,8 @@ export const RoomPage = () => {
         const djs = snapshot.val();
         setUserIsDj(!!djs[userId]);
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/djs`).off();
   }, [firebase, roomKey, userId]);
 
   useEffect(() => {
@@ -98,6 +101,8 @@ export const RoomPage = () => {
           setRoomPlaying(false);
         }
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/playing`).off();
   }, [firebase, music, roomKey]);
 
   useEffect(() => {
@@ -112,6 +117,8 @@ export const RoomPage = () => {
         });
         setCurrentSong(snapshot.val());
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/currentSong`).off();
   }, [firebase, music, roomKey]);
 
   const setRoomPlayingFB = useCallback(

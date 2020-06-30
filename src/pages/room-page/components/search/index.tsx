@@ -82,6 +82,7 @@ export const Search = ({
         />
         <StyledButton
           type="submit"
+          aria-label="search-button"
           onClick={() => {
             if (!searchInput.trim().length) return;
             music
@@ -91,7 +92,7 @@ export const Search = ({
         >
           <ButtonIcon src={searchIcon} alt="" />
         </StyledButton>
-        <StyledButton onClick={cancelSearch}>
+        <StyledButton aria-label="cancel-search-button" onClick={cancelSearch}>
           <ButtonIcon src={cancelIcon} alt="" />
         </StyledButton>
       </div>
