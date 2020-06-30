@@ -59,10 +59,10 @@ export const RoomPage = () => {
       .database()
       .ref(`rooms/${roomKey}/playing`)
       .on("value", (snapshot) => {
-        if (snapshot.val()) {
+        if (snapshot.val() === true) {
           music.play().catch((error) => {});
           setRoomPlaying(true);
-        } else {
+        } else if (snapshot.val() === false) {
           music.pause().catch((error) => {});
           setRoomPlaying(false);
         }
