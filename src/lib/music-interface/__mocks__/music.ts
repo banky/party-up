@@ -1,4 +1,8 @@
+const configure = jest.fn(() => Promise.resolve());
 const authorize = jest.fn(() => Promise.resolve("fake-auth-token"));
+const unauthorize = jest.fn();
+const isAuthorized = jest.fn(() => true);
+const play = jest.fn(() => Promise.resolve());
 const pause = jest.fn(() => Promise.resolve());
 const queueAndPlay = jest.fn(() => Promise.resolve());
 const search = jest.fn(() =>
@@ -13,10 +17,24 @@ const search = jest.fn(() =>
     },
   ])
 );
-const songEnded = jest.fn(() => null);
+const songEnded = jest.fn();
+const progress = jest.fn(() => Promise.resolve(1000));
+const seek = jest.fn(() => Promise.resolve());
 
 const mock = jest.fn().mockImplementation(() => {
-  return { authorize, pause, queueAndPlay, search, songEnded };
+  return {
+    configure,
+    authorize,
+    unauthorize,
+    isAuthorized,
+    play,
+    pause,
+    queueAndPlay,
+    search,
+    songEnded,
+    progress,
+    seek,
+  };
 });
 
 export default mock;
