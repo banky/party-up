@@ -7,6 +7,7 @@ import {
   waitFor,
   fireEvent,
   mockStore,
+  mockMusicInstance,
 } from "utils/test-utils";
 import { RoomPage } from "pages/room-page/room-page";
 import {
@@ -297,6 +298,8 @@ describe("Room page functionality for non-DJ", () => {
 
   it("screen looks as expected", async () => {
     render(<RoomPage />);
+
+    // screen.debug();
 
     // Title
     await waitFor(() =>
