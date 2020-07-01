@@ -25,6 +25,8 @@ export const LandingPage = () => {
     authToken: string;
     expiresIn: number;
   }) => {
+    if (!authToken) return;
+
     dispatch(updateMusicPlatform(platform));
     dispatch(updateMusicAuthToken(authToken));
     dispatch(updateMusicAuthTokenExpiry(Date.now() + expiresIn));

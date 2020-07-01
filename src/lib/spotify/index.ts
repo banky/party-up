@@ -14,9 +14,11 @@ let spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
 
 export const configure = async (authToken: string) => {
   spotifyWebApi = new SpotifyWebApi();
-  spotifyWebApi.setAccessToken(authToken);
-
   await loadSpotifyWebPlayer();
+
+  if (!authToken) return;
+
+  spotifyWebApi.setAccessToken(authToken);
   await initializePlayer(authToken);
 };
 
@@ -28,6 +30,8 @@ export const authorize = async (): Promise<{
   const { authToken, expiresIn } = await getAuthTokenFromChildWindow(
     childWindow
   );
+
+  if (!authToken) return { authToken, expiresIn };
 
   spotifyWebApi.setAccessToken(authToken);
   await initializePlayer(authToken);
