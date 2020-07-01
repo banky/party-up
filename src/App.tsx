@@ -4,7 +4,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
 import { Routes } from "./routes";
 import Firebase, { FirebaseContext } from "./lib/firebase";
-import { FirebaseSession } from "firebase-session";
+import { FirebaseSession } from "lib/firebase/session";
 import { MusicContextWrapper } from "components/music-context-wrapper/music-context-wrapper";
 import "./App.css";
 

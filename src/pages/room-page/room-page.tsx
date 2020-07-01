@@ -10,7 +10,6 @@ import { Search } from "./components/search";
 import { Queue } from "./components/queue";
 import { NowPlaying } from "./components/now-playing";
 import { QueueTitle } from "./components/queue-title";
-import "./room-page.css";
 
 // TODO: Break apart this "god" component with custom hooks
 export const RoomPage = () => {

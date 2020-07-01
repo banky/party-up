@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import { useMusic } from "lib/music-interface/hook";
 import {
   updateMusicAuthToken,
@@ -8,9 +9,12 @@ import {
   updateMusicAuthTokenExpiry,
 } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
-import "./landing-page.css";
 import { Platform } from "lib/music-interface/music";
 import { useFirebase } from "lib/firebase/hooks";
+
+const PlatformIconsContainer = styled.div`
+  display: flex;
+`;
 
 export const LandingPage = () => {
   const history = useHistory();
@@ -54,7 +58,7 @@ export const LandingPage = () => {
       <p>
         Create a room, start the party. But first, what platform do you use?
       </p>
-      <div className="platforms">
+      <PlatformIconsContainer>
         <PlatformIcon
           platform="apple"
           onClick={() => {
@@ -69,7 +73,7 @@ export const LandingPage = () => {
             music.authorize().then(onAuthorize("spotify"));
           }}
         />
-      </div>
+      </PlatformIconsContainer>
     </div>
   );
 };
