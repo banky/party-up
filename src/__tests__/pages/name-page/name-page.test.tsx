@@ -59,7 +59,7 @@ describe("Create Room", () => {
     const lastRoom = rooms[Object.keys(rooms)[Object.keys(rooms).length - 1]];
 
     expect(lastRoom).toStrictEqual({
-      creator: mockUserId,
+      owner: mockUserId,
       djs: { [mockUserId]: true },
       name: "Mario's Room",
     });

@@ -6,16 +6,21 @@ import {
   mockFirebaseInstance,
   waitFor,
   fireEvent,
-  mockMusicInstance,
+  mockStore,
 } from "utils/test-utils";
 import { RoomPage } from "pages/room-page/room-page";
+import {
+  updateMusicAuthToken,
+  updateMusicAuthTokenExpiry,
+  updateUserId,
+} from "store/actions";
 
 const mockUserId = "fake-user-id";
 const mockRoomKey = "fake-room-key";
 const mockDatabaseData = {
   rooms: {
     [mockRoomKey]: {
-      creator: mockUserId,
+      owner: mockUserId,
       currentSong: {
         album: "Hot Pink",
         artist: "Doja Cat",
@@ -33,6 +38,10 @@ const mockDatabaseData = {
     },
   },
 };
+
+mockStore.dispatch(updateMusicAuthToken("fake-auth-token"));
+mockStore.dispatch(updateMusicAuthTokenExpiry(Date.now() + 3600000));
+mockStore.dispatch(updateUserId(mockUserId));
 
 jest.mock("react-router-dom", () => ({
   // @ts-ignore: Type is unknown
