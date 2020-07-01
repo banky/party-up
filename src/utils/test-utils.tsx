@@ -10,9 +10,11 @@ import { rootReducer } from "store/reducers";
 jest.mock("lib/music-interface/music");
 
 const mockStore = createStore(rootReducer, {
+  destinationRoomKey: undefined,
   name: "",
   musicPlatform: "apple",
   musicAuthToken: "",
+  musicAuthTokenExpiry: 0,
   userId: "",
 });
 

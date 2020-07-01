@@ -13,8 +13,13 @@ export const configure = () => {
   });
 };
 
-export const authorize = (): Promise<string> => {
-  return MusicKit.getInstance().authorize();
+export const authorize = async (): Promise<{
+  authToken: string;
+  expiresIn: number;
+}> => {
+  const authToken = await MusicKit.getInstance().authorize();
+  const expiresIn = 10000000000; // Apple music auth tokens never expire :D
+  return { authToken, expiresIn };
 };
 
 export const unauthorize = (): void => {
@@ -42,9 +47,7 @@ export const search = async (
       "Apple Music search was unable to find the song. Query: " + query
     );
 
-  const songs = transformSongs(response.songs.data);
-
-  return Promise.resolve(songs);
+  return transformSongs(response.songs.data);
 };
 
 const findSongByIsrc = async (song: Song): Promise<Song> => {
@@ -61,7 +64,7 @@ const findSongByIsrc = async (song: Song): Promise<Song> => {
   }
 
   const transformedResults = transformSongs(results);
-  return Promise.resolve(transformedResults[0]);
+  return transformedResults[0];
 };
 
 export const queueAndPlay = async (song: Song): Promise<any> => {
@@ -74,7 +77,7 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     }
   } catch (error) {
     console.warn(
-      "Apple music ISRC search failed. Falling back to manual search: ",
+      "Apple music ISRC search failed. Falling back to manual search",
       error
     );
   }
@@ -101,12 +104,6 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
   await MusicKit.getInstance().setQueue({ url: appleMusicSong.url });
 
   return MusicKit.getInstance().play();
-
-  // Hack to get around problems with seeking.
-  // If we play, and try to seek too early, MusicKitJS breaks
-  // Seeking right after playing also causes a ~5 second delay
-  // in when the song actually starts playing
-  // return new Promise((r) => setTimeout(r, 1000));
 };
 
 export const play = async (): Promise<any> => {

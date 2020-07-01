@@ -131,11 +131,21 @@ export const openSpotifyLoginWindow = () => {
 export const getAuthTokenFromChildWindow = async (
   childWindow: Window | null
 ) => {
-  let authToken = "";
+  let spotifyData = {
+    authToken: "",
+    expiresIn: 0,
+  };
 
   // Set a function that can be called by the child window
-  window.setSpotifyAuthToken = (data: string) => {
-    authToken = data;
+  window.setSpotifyAuthToken = ({
+    authToken,
+    expiresIn,
+  }: {
+    authToken: string;
+    expiresIn: number;
+  }) => {
+    spotifyData.authToken = authToken;
+    spotifyData.expiresIn = expiresIn * 1000;
   };
 
   // Check if the child window has been closed every so often and resolve when it closes
@@ -148,7 +158,7 @@ export const getAuthTokenFromChildWindow = async (
     }, 500);
   });
 
-  return authToken;
+  return spotifyData;
 };
 
 /**
@@ -204,13 +214,12 @@ export const retryableFunc = (
   retries: number = 3,
   retryDelay: number = 1000
 ): Promise<any> => {
-  const delay = (ms: number) => {
-    return new Promise((resolve) => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, ms);
     });
-  };
 
   return new Promise((resolve, reject) => {
     if (timeout) {

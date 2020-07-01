@@ -2,7 +2,11 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useMusic } from "lib/music-interface/hook";
-import { updateMusicAuthToken, updateMusicPlatform } from "store/actions";
+import {
+  updateMusicAuthToken,
+  updateMusicPlatform,
+  updateMusicAuthTokenExpiry,
+} from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import "./landing-page.css";
 import { Platform } from "lib/music-interface/music";
@@ -14,9 +18,16 @@ export const LandingPage = () => {
   const firebase = useFirebase();
   const dispatch = useDispatch();
 
-  const onAuthorize = (platform: Platform) => async (authToken: string) => {
+  const onAuthorize = (platform: Platform) => async ({
+    authToken,
+    expiresIn,
+  }: {
+    authToken: string;
+    expiresIn: number;
+  }) => {
     dispatch(updateMusicPlatform(platform));
     dispatch(updateMusicAuthToken(authToken));
+    dispatch(updateMusicAuthTokenExpiry(Date.now() + expiresIn));
     try {
       await firebase.auth().signInAnonymously();
       history.push("/name");

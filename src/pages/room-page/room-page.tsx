@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useFirebase } from "lib/firebase/hooks";
 import { Song } from "lib/constants";
 import { useMusic } from "lib/music-interface/hook";
+import { RootState } from "store/reducers";
+import { updateDestinationRoomKey } from "store/actions";
 import { Search } from "./components/search";
 import { Queue } from "./components/queue";
 import { NowPlaying } from "./components/now-playing";
 import { QueueTitle } from "./components/queue-title";
 import "./room-page.css";
 
+// TODO: Break apart this "god" component with custom hooks
 export const RoomPage = () => {
   const firebase = useFirebase();
   const { roomKey } = useParams();
@@ -19,9 +23,31 @@ export const RoomPage = () => {
   const [roomPlaying, setRoomPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song | undefined>();
   const [showSearch, setShowSearch] = useState(false);
+  const [userIsOwner, setUserIsOwner] = useState(false);
   const [userIsDj, setUserIsDj] = useState(false);
 
   const userPressedNext = useRef(false);
+
+  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.userId);
+  const musicAuthToken = useSelector(
+    (state: RootState) => state.musicAuthToken
+  );
+  const musicAuthTokenExpiry = useSelector(
+    (state: RootState) => state.musicAuthTokenExpiry
+  );
+
+  useEffect(() => {
+    const userIsValid =
+      musicAuthToken.length > 0 && Date.now() < musicAuthTokenExpiry;
+
+    if (!userIsValid) {
+      dispatch(updateDestinationRoomKey(roomKey));
+      history.push("/");
+    } else {
+      dispatch(updateDestinationRoomKey());
+    }
+  }, [dispatch, history, musicAuthToken, musicAuthTokenExpiry, roomKey]);
 
   useEffect(() => {
     firebase
@@ -31,28 +57,37 @@ export const RoomPage = () => {
       .then((snapshot) => {
         if (!snapshot.exists()) return history.push("/not-found");
         setRoomName(snapshot.val());
+      })
+      .catch((error) => {
+        console.warn(error);
       });
+
     return () => firebase.database().ref(`rooms/${roomKey}/name`).off();
   }, [firebase, history, roomKey]);
 
   useEffect(() => {
     firebase
       .database()
+      .ref(`rooms/${roomKey}/owner`)
+      .on("value", (snapshot) => {
+        setUserIsOwner(userId === snapshot.val());
+      });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/owner`).off();
+  }, [firebase, roomKey, userId]);
+
+  useEffect(() => {
+    firebase
+      .database()
       .ref(`rooms/${roomKey}/djs`)
-      .once("value")
-      .then((snapshot) => {
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
         const djs = snapshot.val();
-        const currentUser = firebase.auth().currentUser?.uid;
-
-        const isDj = Object.keys(djs).some(
-          (djId) => djId === currentUser && djs[djId]
-        );
-
-        setUserIsDj(isDj);
+        setUserIsDj(!!djs[userId]);
       });
 
     return () => firebase.database().ref(`rooms/${roomKey}/djs`).off();
-  }, [firebase, roomKey]);
+  }, [firebase, roomKey, userId]);
 
   useEffect(() => {
     firebase
@@ -125,21 +160,31 @@ export const RoomPage = () => {
             .remove();
 
           return currentSong;
+        })
+        .catch((error) => {
+          console.warn(error);
         }),
     [firebase, roomKey]
   );
 
   useEffect(() => {
-    music.songEnded(async () => {
-      if (userPressedNext.current) {
-        userPressedNext.current = false;
-        return;
-      }
+    if (!userIsOwner) {
+      // Don't do anything if the user isn't
+      // or is no longer the owner
+      music.songEnded(() => {});
+    } else {
+      music.songEnded(async () => {
+        // Only do this if the song ended on its own
+        if (userPressedNext.current) {
+          userPressedNext.current = false;
+          return;
+        }
 
-      const currentSong = await dequeueSongFB();
-      setCurrentSongFB(currentSong);
-    });
-  }, [music, dequeueSongFB, setCurrentSongFB]);
+        const currentSong = await dequeueSongFB();
+        setCurrentSongFB(currentSong);
+      });
+    }
+  }, [music, userIsOwner, dequeueSongFB, setCurrentSongFB]);
 
   const onClickPlay = async () => {
     // Only set current song if one doesn't exist already
@@ -152,6 +197,9 @@ export const RoomPage = () => {
 
         const currentSong = await dequeueSongFB();
         setCurrentSongFB(currentSong);
+      })
+      .catch((error) => {
+        console.warn(error);
       });
 
     setRoomPlayingFB(true);

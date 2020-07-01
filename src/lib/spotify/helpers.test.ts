@@ -88,12 +88,18 @@ test("getAuthTokenFromChildWindow", async () => {
   const childWindow = { closed: false };
   setTimeout(() => {
     childWindow.closed = true;
-    window.setSpotifyAuthToken("fake-auth-token");
+    window.setSpotifyAuthToken({
+      authToken: "fake-auth-token",
+      expiresIn: 1000,
+    });
   }, 10);
 
   // @ts-ignore: Mocking window is hard
   const token = await getAuthTokenFromChildWindow(childWindow);
-  expect(token).toBe("fake-auth-token");
+  expect(token).toStrictEqual({
+    authToken: "fake-auth-token",
+    expiresIn: 1000000,
+  });
 });
 
 describe("loadSpotifyWebPlayer", () => {

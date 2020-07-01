@@ -1,5 +1,7 @@
+const authorize = jest.fn(() =>
+  Promise.resolve({ authToken: "fake-auth-token", expiresIn: 1000000 })
+);
 const configure = jest.fn(() => Promise.resolve());
-const authorize = jest.fn(() => Promise.resolve("fake-auth-token"));
 const unauthorize = jest.fn();
 const isAuthorized = jest.fn(() => true);
 const play = jest.fn(() => Promise.resolve());
