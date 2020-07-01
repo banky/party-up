@@ -10,26 +10,36 @@ export const roomNameFromOwner = (ownerName: string) => {
 };
 
 /**
- * Create a room in Firebase
+ * Create a user in Firebase
  * @param firebase
+ * @param userId
  * @param name
  * @param platform
  */
-export const createRoom = (
+export const createUserFB = (
   firebase: Firebase,
+  userId: string,
   name: string,
   platform: Platform
 ) => {
-  const roomName = roomNameFromOwner(name);
-
-  const newUserKey = firebase.database().ref().child("users").push({
+  firebase.database().ref("users").child(userId).set({
     name: name,
     platform: platform,
-  }).key;
+  });
+};
 
-  if (!newUserKey) {
-    return; // TODO: Show user an error state
-  }
+/**
+ * Create a room in Firebase
+ * @param firebase
+ * @param userId
+ * @param name
+ */
+export const createRoomFB = (
+  firebase: Firebase,
+  userId: string,
+  name: string
+) => {
+  const roomName = roomNameFromOwner(name);
 
   const newRoomKey = firebase
     .database()
@@ -37,12 +47,9 @@ export const createRoom = (
     .child("rooms")
     .push({
       name: roomName,
-      creator: newUserKey,
+      owner: userId,
       djs: {
-        [newUserKey]: true,
-      },
-      users: {
-        [newUserKey]: true,
+        [userId]: true,
       },
     }).key;
 

@@ -2,6 +2,10 @@ import { SearchType, Song } from "../constants";
 
 type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
 
+/**
+ * Convert Party Up search those supported by apple music
+ * @param searchTypes
+ */
 export const supportedAppleMusicSearchTypes = (
   searchTypes: SearchType[]
 ): AppleMusicSearchType[] => {
@@ -19,6 +23,10 @@ export const supportedAppleMusicSearchTypes = (
   );
 };
 
+/**
+ * Convert apple music song objects to Party Up Song objects
+ * @param songs
+ */
 export const transformSongs = (songs: any): Song[] => {
   const formatImgUrl = (url: string) => {
     const IMAGE_HEIGHT = "100";

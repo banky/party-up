@@ -69,16 +69,17 @@ export const initializePlayer = async (authToken: string) => {
 
   window.spotifyPlayer = player;
 
+  // TODO: Show the user an error if this fails. Maybe retry?
   await player.connect();
 };
 
 /**
  * We sometimes need to know specific info about the web player
  */
-export const getPlayerOptions = (): { playerId: string | null } => {
+export const getPlayerOptions = (): { playerId: string | undefined } => {
   if (!window.spotifyPlayer) {
     return {
-      playerId: null,
+      playerId: undefined,
     };
   }
 
@@ -130,11 +131,21 @@ export const openSpotifyLoginWindow = () => {
 export const getAuthTokenFromChildWindow = async (
   childWindow: Window | null
 ) => {
-  let authToken = "";
+  let spotifyData = {
+    authToken: "",
+    expiresIn: 0,
+  };
 
   // Set a function that can be called by the child window
-  window.setSpotifyAuthToken = (data: string) => {
-    authToken = data;
+  window.setSpotifyAuthToken = ({
+    authToken,
+    expiresIn,
+  }: {
+    authToken: string;
+    expiresIn: number;
+  }) => {
+    spotifyData.authToken = authToken;
+    spotifyData.expiresIn = expiresIn * 1000;
   };
 
   // Check if the child window has been closed every so often and resolve when it closes
@@ -147,7 +158,7 @@ export const getAuthTokenFromChildWindow = async (
     }, 500);
   });
 
-  return authToken;
+  return spotifyData;
 };
 
 /**
@@ -187,4 +198,51 @@ export const transformSongs = (items: any): Song[] => {
     url: item.uri,
     imgUrl: item.album.images.pop().url,
   }));
+};
+
+/**
+ * Retry a function with a timeout. Inspired by
+ * https://stackoverflow.com/questions/59854115/how-to-retry-api-calls-using-node-fetch
+ * @param func
+ * @param retries
+ * @param retryDelay
+ * @param timeout
+ */
+export const retryableFunc = (
+  func: () => Promise<any>,
+  timeout: number,
+  retries: number = 3,
+  retryDelay: number = 1000
+): Promise<any> => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
+
+  return new Promise((resolve, reject) => {
+    if (timeout) {
+      setTimeout(() => {
+        reject("error: timeout");
+      }, timeout);
+    }
+
+    const wrapper = (n: number) => {
+      func()
+        .then((res) => {
+          resolve(res);
+        })
+        .catch(async (err) => {
+          if (n > 0) {
+            await delay(retryDelay);
+            wrapper(--n);
+          } else {
+            reject(err);
+          }
+        });
+    };
+
+    wrapper(retries);
+  });
 };

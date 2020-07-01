@@ -19,56 +19,66 @@ class Music {
   platform: Platform;
 
   constructor(platform: Platform, authToken: string) {
-    AppleMusic.configure();
-
-    // If auth token is invalid, spotify configuration gives lots of errors
-    if (platform === "spotify") Spotify.configure(authToken);
-
     this.authToken = authToken;
     this.platform = platform;
   }
 
-  authorize = () => {
+  async configure() {
+    AppleMusic.configure();
+
+    // Spotify gives some errors if auth token is invalid, but let's ignore those for now
+    await Spotify.configure(this.authToken);
+  }
+
+  authorize() {
     return getLib(this.platform).authorize();
-  };
+  }
 
-  unauthorize = () => {
+  unauthorize() {
     return getLib(this.platform).unauthorize();
-  };
+  }
 
-  isAuthorized = () => {
-    return getLib(this.platform).isAuthorized(this.authToken);
-  };
+  isAuthorized() {
+    return getLib(this.platform).isAuthorized();
+  }
 
-  search = (query: string, searchTypes: SearchType[]) => {
-    return getLib(this.platform).search(query, searchTypes, this.authToken);
-  };
+  search(query: string, searchTypes: SearchType[]) {
+    return getLib(this.platform).search(query, searchTypes);
+  }
 
-  queueAndPlay = (song: Song) => {
-    return getLib(this.platform).queueAndPlay(song, this.authToken);
-  };
+  queueAndPlay(song: Song) {
+    return getLib(this.platform).queueAndPlay(song);
+  }
 
-  play = () => {
-    return getLib(this.platform).play(this.authToken);
-  };
+  play() {
+    return getLib(this.platform).play();
+  }
 
-  pause = () => {
-    return getLib(this.platform).pause(this.authToken);
-  };
+  pause() {
+    return getLib(this.platform).pause();
+  }
 
   /**
    * Get the playback progress in milliseconds
    */
-  progress = () => {
-    return getLib(this.platform).progress(this.authToken);
-  };
+  progress() {
+    return getLib(this.platform).progress();
+  }
 
   /**
    * Seek to a time in milliseconds
    */
-  seek = (time: number) => {
-    return getLib(this.platform).seek(time, this.authToken);
-  };
+  seek(time: number) {
+    return getLib(this.platform).seek(time);
+  }
+
+  /**
+   * Callback is fired every time a song finishes
+   * @param callback
+   */
+  songEnded(callback: VoidFunction): void {
+    return getLib(this.platform).songEnded(callback);
+  }
 }
 
 export default Music;

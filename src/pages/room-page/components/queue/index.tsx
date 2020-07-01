@@ -19,9 +19,10 @@ const SongQueueItem = styled.li`
 
 type QueueProps = {
   roomKey: string;
+  userIsDj: boolean;
 };
 
-export const Queue = ({ roomKey }: QueueProps) => {
+export const Queue = ({ roomKey, userIsDj }: QueueProps) => {
   const [playQueue, setPlayQueue] = useState<{ [key: string]: Song }>({});
   const firebase = useFirebase();
 
@@ -37,6 +38,8 @@ export const Queue = ({ roomKey }: QueueProps) => {
 
         setPlayQueue(snapshot.val());
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/queue`).off();
   }, [firebase, roomKey]);
 
   return (
@@ -49,6 +52,7 @@ export const Queue = ({ roomKey }: QueueProps) => {
             <SongCard
               song={song}
               actionIcon="minus"
+              actionDisabled={!userIsDj}
               onClickActionIcon={() => {
                 firebase
                   .database()

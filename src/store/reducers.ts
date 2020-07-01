@@ -5,20 +5,32 @@ import {
   updateName,
   updateMusicPlatform,
   updateMusicAuthToken,
+  updateUserId,
+  updateMusicAuthTokenExpiry,
+  updateDestinationRoomKey,
 } from "./actions";
 import { Platform } from "../lib/music-interface/music";
 
 const initialState: {
-  name: string;
+  destinationRoomKey?: string;
   musicPlatform: Platform;
   musicAuthToken: string;
+  musicAuthTokenExpiry: number;
+  name: string;
+  userId: string;
 } = {
-  name: "",
+  destinationRoomKey: undefined,
   musicPlatform: "apple",
   musicAuthToken: "",
+  musicAuthTokenExpiry: 0,
+  name: "",
+  userId: "",
 };
 
-const rootReducer = createReducer(initialState, {
+export const rootReducer = createReducer(initialState, {
+  [updateDestinationRoomKey.type]: (state, action) => {
+    state.destinationRoomKey = action.payload;
+  },
   [updateName.type]: (state, action) => {
     state.name = action.payload;
   },
@@ -27,6 +39,15 @@ const rootReducer = createReducer(initialState, {
   },
   [updateMusicAuthToken.type]: (state, action) => {
     state.musicAuthToken = action.payload;
+  },
+  [updateMusicAuthTokenExpiry.type]: (state, action) => {
+    state.musicAuthTokenExpiry = action.payload;
+  },
+  [updateName.type]: (state, action) => {
+    state.name = action.payload;
+  },
+  [updateUserId.type]: (state, action) => {
+    state.userId = action.payload;
   },
 });
 
