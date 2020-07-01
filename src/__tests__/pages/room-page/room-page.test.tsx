@@ -299,8 +299,6 @@ describe("Room page functionality for non-DJ", () => {
   it("screen looks as expected", async () => {
     render(<RoomPage />);
 
-    // screen.debug();
-
     // Title
     await waitFor(() =>
       expect(screen.getByText("Welcome to Shxkfbskcbd's Room")).toBeTruthy()
