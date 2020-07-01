@@ -1,4 +1,6 @@
-const authorize = jest.fn(() => Promise.resolve("fake-auth-token"));
+const authorize = jest.fn(() =>
+  Promise.resolve({ authToken: "fake-auth-token", expiresIn: 1000000 })
+);
 const pause = jest.fn(() => Promise.resolve());
 const queueAndPlay = jest.fn(() => Promise.resolve());
 const search = jest.fn(() =>

@@ -61,6 +61,7 @@ export const RoomPage = () => {
       .catch((error) => {
         console.warn(error);
       });
+
     return () => firebase.database().ref(`rooms/${roomKey}/name`).off();
   }, [firebase, history, roomKey]);
 
@@ -70,10 +71,9 @@ export const RoomPage = () => {
       .ref(`rooms/${roomKey}/owner`)
       .on("value", (snapshot) => {
         setUserIsOwner(userId === snapshot.val());
-        console.log("userIsOwner:", userId === snapshot.val());
-        console.log("userId:", userId);
-        console.log("snapshot:", snapshot.val());
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/owner`).off();
   }, [firebase, roomKey, userId]);
 
   useEffect(() => {
@@ -81,6 +81,7 @@ export const RoomPage = () => {
       .database()
       .ref(`rooms/${roomKey}/djs`)
       .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
         const djs = snapshot.val();
         setUserIsDj(!!djs[userId]);
       });
@@ -167,23 +168,22 @@ export const RoomPage = () => {
   );
 
   useEffect(() => {
-    music.songEnded(async () => {
-      console.log("song ended");
-      console.log({ userIsOwner });
-      console.log(userPressedNext.current);
+    if (!userIsOwner) {
+      // Don't do anything if the user isn't
+      // or is no longer the owner
+      music.songEnded(() => {});
+    } else {
+      music.songEnded(async () => {
+        // Only do this if the song ended on its own
+        if (userPressedNext.current) {
+          userPressedNext.current = false;
+          return;
+        }
 
-      // Only do this if the song ended on its own
-      if (userPressedNext.current) {
-        userPressedNext.current = false;
-        return;
-      }
-
-      // Only the room owner should control automatic next
-      if (!userIsOwner) return;
-
-      const currentSong = await dequeueSongFB();
-      setCurrentSongFB(currentSong);
-    });
+        const currentSong = await dequeueSongFB();
+        setCurrentSongFB(currentSong);
+      });
+    }
   }, [music, userIsOwner, dequeueSongFB, setCurrentSongFB]);
 
   const onClickPlay = async () => {
@@ -210,8 +210,6 @@ export const RoomPage = () => {
   };
 
   const onClickNext = async () => {
-    console.log("onClickNext");
-
     userPressedNext.current = true;
     const currentSong = await dequeueSongFB();
     setCurrentSongFB(currentSong);

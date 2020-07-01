@@ -27,7 +27,6 @@ export const LandingPage = () => {
   }) => {
     dispatch(updateMusicPlatform(platform));
     dispatch(updateMusicAuthToken(authToken));
-    console.log({ expiresIn });
     dispatch(updateMusicAuthTokenExpiry(Date.now() + expiresIn));
     try {
       await firebase.auth().signInAnonymously();
