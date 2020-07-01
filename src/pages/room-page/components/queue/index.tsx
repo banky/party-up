@@ -38,6 +38,8 @@ export const Queue = ({ roomKey, userIsDj }: QueueProps) => {
 
         setPlayQueue(snapshot.val());
       });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/queue`).off();
   }, [firebase, roomKey]);
 
   return (
