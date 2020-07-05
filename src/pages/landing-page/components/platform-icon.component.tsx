@@ -1,8 +1,30 @@
 import React from "react";
+import styled from "styled-components";
 import { Platform } from "lib/music-interface/music";
 import appleLogo from "./apple.png";
 import spotifyLogo from "./spotify.png";
-import "./platform-icon.css";
+
+const PlatformIconButton = styled.button`
+  flex: 1;
+  border: none;
+  background: none;
+`;
+
+const AppleIcon = styled.img`
+  max-width: 600px;
+  width: 50%;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const SpotifyIcon = styled.img`
+  max-width: 600px;
+  width: 63%;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
 
 type PlatformIconProps = {
   platform: Platform;
@@ -11,22 +33,12 @@ type PlatformIconProps = {
 
 export const PlatformIcon = ({ platform, onClick }: PlatformIconProps) => {
   return platform === "apple" ? (
-    <button className="platform-icon-wrapper">
-      <img
-        className="platform-icon apple"
-        src={appleLogo}
-        onClick={onClick}
-        alt="apple logo"
-      ></img>
-    </button>
+    <PlatformIconButton>
+      <AppleIcon src={appleLogo} onClick={onClick} alt="apple logo" />
+    </PlatformIconButton>
   ) : (
-    <div className="platform-icon-wrapper">
-      <img
-        className="platform-icon spotify"
-        src={spotifyLogo}
-        onClick={onClick}
-        alt="spotify logo"
-      ></img>
-    </div>
+    <PlatformIconButton>
+      <SpotifyIcon src={spotifyLogo} onClick={onClick} alt="spotify logo" />
+    </PlatformIconButton>
   );
 };
