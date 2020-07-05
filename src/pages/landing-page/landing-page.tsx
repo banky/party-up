@@ -62,9 +62,7 @@ export const LandingPage = () => {
             music
               .authorize()
               .then(onAuthorize("spotify"))
-              .catch((err) => {
-                console.log("hello. catch: ", err);
-              });
+              .catch((err) => {});
           }}
         />
       </PlatformIconsContainer>
