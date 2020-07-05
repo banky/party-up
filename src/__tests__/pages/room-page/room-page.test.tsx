@@ -10,11 +10,7 @@ import {
   mockMusicInstance,
 } from "utils/test-utils";
 import { RoomPage } from "pages/room-page/room-page";
-import {
-  updateMusicAuthToken,
-  updateMusicAuthTokenExpiry,
-  updateUserId,
-} from "store/actions";
+import { updateUserId } from "store/actions";
 
 const mockUserId = "fake-user-id";
 const mockRoomKey = "fake-room-key";
@@ -69,8 +65,6 @@ const mockDatabaseData = {
   },
 };
 
-mockStore.dispatch(updateMusicAuthToken("fake-auth-token"));
-mockStore.dispatch(updateMusicAuthTokenExpiry(Date.now() + 3600000));
 mockStore.dispatch(updateUserId(mockUserId));
 
 jest.mock("react-router-dom", () => ({

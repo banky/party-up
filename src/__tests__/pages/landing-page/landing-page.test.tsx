@@ -28,10 +28,6 @@ describe("Music login", () => {
     expect(mockMusicInstance.platform).toBe("apple");
 
     await waitFor(() =>
-      expect(mockStore.getState().musicAuthToken).toBe("fake-auth-token")
-    );
-
-    await waitFor(() =>
       expect(mockStore.getState().musicPlatform).toBe("apple")
     );
 
@@ -45,10 +41,6 @@ describe("Music login", () => {
 
     expect(mockMusicInstance.authorize).toHaveBeenCalled();
     expect(mockMusicInstance.platform).toBe("spotify");
-
-    await waitFor(() =>
-      expect(mockStore.getState().musicAuthToken).toBe("fake-auth-token")
-    );
 
     await waitFor(() =>
       expect(mockStore.getState().musicPlatform).toBe("spotify")
