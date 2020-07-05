@@ -1,4 +1,5 @@
 import SpotifyWebApi from "spotify-web-api-js";
+import cryptoRandomString from "crypto-random-string";
 import { SearchType, Song, SEARCH_LIMIT } from "../constants";
 import {
   getPlayerOptions,
@@ -8,40 +9,109 @@ import {
   loadSpotifyWebPlayer,
   transformSongs,
   retryableFunc,
+  json2UrlEncoded,
 } from "./helpers";
 
 let spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
 
-export const configure = async (authToken: string) => {
+export const configure = async () => {
   spotifyWebApi = new SpotifyWebApi();
   await loadSpotifyWebPlayer();
 
-  if (!authToken) return;
+  const authToken = localStorage.getItem("spotifyAuthToken") || "";
 
   spotifyWebApi.setAccessToken(authToken);
   await initializePlayer(authToken);
 };
 
-export const authorize = async (): Promise<{
+const parseSessionData = async (
+  response: Response
+): Promise<{
   authToken: string;
   expiresIn: number;
+  refreshToken: string;
 }> => {
-  const childWindow = openSpotifyLoginWindow();
-  const { authToken, expiresIn } = await getAuthTokenFromChildWindow(
-    childWindow
-  );
+  const {
+    access_token: authToken,
+    expires_in: expiresIn,
+    refresh_token: refreshToken,
+  } = await response.json();
 
-  if (!authToken) return { authToken, expiresIn };
+  if (!authToken) throw new Error("No auth token");
 
   spotifyWebApi.setAccessToken(authToken);
-  await initializePlayer(authToken);
-  return { authToken, expiresIn };
+
+  // Persist auth in local storage
+  localStorage.setItem("spotifyAuthToken", authToken);
+  localStorage.setItem("spotifyRefreshToken", refreshToken);
+  localStorage.setItem(
+    "spotifyAuthExpirationTime",
+    `${Date.now() + expiresIn * 1000}`
+  );
+
+  return { authToken, refreshToken, expiresIn };
 };
 
-export const unauthorize = (): void => {};
+export const authorize = async (): Promise<void> => {
+  const codeVerifier = cryptoRandomString({ length: 100 });
+  const childWindow = openSpotifyLoginWindow(codeVerifier);
+
+  const { code } = await getAuthTokenFromChildWindow(childWindow);
+
+  const fetchBody = json2UrlEncoded({
+    client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID || "",
+    grant_type: "authorization_code",
+    code: code,
+    redirect_uri: process.env.REACT_APP_BASE_URL + "/spotify-callback",
+    code_verifier: codeVerifier,
+  });
+
+  const response = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: fetchBody,
+  });
+
+  const { authToken, expiresIn } = await parseSessionData(response);
+  await initializePlayer(authToken);
+
+  // Refresh 10 seconds before expiry
+  setTimeout(refreshAuth, (expiresIn - 10) * 1000);
+};
+
+const refreshAuth = async () => {
+  const fetchBody = json2UrlEncoded({
+    client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID || "",
+    grant_type: "refresh_token",
+    refresh_token: localStorage.getItem("spotifyRefreshToken") || "",
+  });
+
+  const response = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: fetchBody,
+  });
+
+  const { authToken, expiresIn } = await parseSessionData(response);
+  await initializePlayer(authToken);
+
+  // Refresh 10 seconds before expiry
+  setTimeout(refreshAuth, (expiresIn - 10) * 1000);
+};
 
 export const isAuthorized = (): boolean => {
-  return spotifyWebApi.getAccessToken() !== "";
+  const authTokenExpirationTime = parseInt(
+    localStorage.getItem("spotifyAuthExpirationTime") || ""
+  );
+
+  return (
+    spotifyWebApi.getAccessToken() !== "" &&
+    authTokenExpirationTime > Date.now()
+  );
 };
 
 export const search = async (

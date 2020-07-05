@@ -29,24 +29,15 @@ export const RoomPage = () => {
 
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.userId);
-  const musicAuthToken = useSelector(
-    (state: RootState) => state.musicAuthToken
-  );
-  const musicAuthTokenExpiry = useSelector(
-    (state: RootState) => state.musicAuthTokenExpiry
-  );
 
   useEffect(() => {
-    const userIsValid =
-      musicAuthToken.length > 0 && Date.now() < musicAuthTokenExpiry;
-
-    if (!userIsValid) {
+    if (!music.isAuthorized()) {
       dispatch(updateDestinationRoomKey(roomKey));
       history.push("/");
     } else {
       dispatch(updateDestinationRoomKey());
     }
-  }, [dispatch, history, musicAuthToken, musicAuthTokenExpiry, roomKey]);
+  }, [dispatch, music, history, roomKey]);
 
   useEffect(() => {
     firebase

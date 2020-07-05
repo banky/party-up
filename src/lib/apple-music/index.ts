@@ -13,21 +13,12 @@ export const configure = () => {
   });
 };
 
-export const authorize = async (): Promise<{
-  authToken: string;
-  expiresIn: number;
-}> => {
-  const authToken = await MusicKit.getInstance().authorize();
-  const expiresIn = 10000000000; // Apple music auth tokens never expire :D
-  return { authToken, expiresIn };
-};
-
-export const unauthorize = (): void => {
-  return MusicKit.getInstance().unauthorize();
+export const authorize = (): Promise<void> => {
+  return MusicKit.getInstance().authorize();
 };
 
 export const isAuthorized = (): Boolean => {
-  return MusicKit.getInstance().isAuthorized();
+  return MusicKit.getInstance().isAuthorized;
 };
 
 export const search = async (

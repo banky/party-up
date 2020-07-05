@@ -13,16 +13,13 @@ const mockStore = createStore(rootReducer, {
   destinationRoomKey: undefined,
   name: "",
   musicPlatform: "apple",
-  musicAuthToken: "",
-  musicAuthTokenExpiry: 0,
   userId: "",
 });
 
 const mockFirebaseInstance = new Firebase();
 
 const mockPlatform = "apple";
-const mockAuthToken = "fake-auth-token";
-const mockMusicInstance = new Music(mockPlatform, mockAuthToken);
+const mockMusicInstance = new Music(mockPlatform);
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
