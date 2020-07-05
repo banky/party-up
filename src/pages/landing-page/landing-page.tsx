@@ -3,11 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useMusic } from "lib/music-interface/hook";
-import {
-  updateMusicAuthToken,
-  updateMusicPlatform,
-  updateMusicAuthTokenExpiry,
-} from "store/actions";
+import { updateMusicPlatform } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import { Platform } from "lib/music-interface/music";
 import { useFirebase } from "lib/firebase/hooks";
@@ -22,18 +18,8 @@ export const LandingPage = () => {
   const firebase = useFirebase();
   const dispatch = useDispatch();
 
-  const onAuthorize = (platform: Platform) => async ({
-    authToken,
-    expiresIn,
-  }: {
-    authToken: string;
-    expiresIn: number;
-  }) => {
-    if (!authToken) return;
-
+  const onAuthorize = (platform: Platform) => async () => {
     dispatch(updateMusicPlatform(platform));
-    dispatch(updateMusicAuthToken(authToken));
-    dispatch(updateMusicAuthTokenExpiry(Date.now() + expiresIn));
     try {
       await firebase.auth().signInAnonymously();
       history.push("/name");
@@ -63,14 +49,22 @@ export const LandingPage = () => {
           platform="apple"
           onClick={() => {
             music.platform = "apple";
-            music.authorize().then(onAuthorize("apple"));
+            music
+              .authorize()
+              .then(onAuthorize("apple"))
+              .catch(() => {});
           }}
         />
         <PlatformIcon
           platform="spotify"
           onClick={() => {
             music.platform = "spotify";
-            music.authorize().then(onAuthorize("spotify"));
+            music
+              .authorize()
+              .then(onAuthorize("spotify"))
+              .catch((err) => {
+                console.log("hello. catch: ", err);
+              });
           }}
         />
       </PlatformIconsContainer>

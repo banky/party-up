@@ -1,3 +1,4 @@
+import { sha256 } from "js-sha256";
 import { Song } from "../constants";
 
 type ScriptAttributes = {
@@ -43,6 +44,33 @@ export const loadScript = (attributes: ScriptAttributes): Promise<any> => {
     }
   });
 };
+
+/**
+ * From http://locutus.io/php/hex2bin/
+ * */
+function hex2bin(s: string) {
+  var ret = [];
+  var i = 0;
+  var l;
+
+  s += "";
+
+  for (l = s.length; i < l; i += 2) {
+    var c = parseInt(s.substr(i, 1), 16);
+    var k = parseInt(s.substr(i + 1, 1), 16);
+    if (isNaN(c) || isNaN(k)) return "";
+    ret.push((c << 4) | k);
+  }
+
+  return String.fromCharCode.apply(String, ret);
+}
+
+export const json2UrlEncoded = (obj: { [key: string]: string }) =>
+  Object.keys(obj)
+    .map((key) => {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
+    })
+    .join("&");
 
 declare var Spotify: any;
 
@@ -91,12 +119,21 @@ export const getPlayerOptions = (): { playerId: string | undefined } => {
 /**
  * It looks a bit nicer to log the user in in a separate window
  */
-export const openSpotifyLoginWindow = () => {
+export const openSpotifyLoginWindow = (codeVerifier: string) => {
   const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-  const response_type = "token";
+  const response_type = "code";
   const redirect_uri = encodeURIComponent(
     process.env.REACT_APP_BASE_URL + "/spotify-callback"
   );
+
+  // I'm not sure why hex2bin, but I found it in the source here:
+  // https://www.oauth.com/playground/authorization-code-with-pkce.html
+  const hashedCodeVerifier = hex2bin(sha256(codeVerifier));
+  const codeChallenge = btoa(hashedCodeVerifier)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
+  const codeChallengeMethod = "S256";
 
   const scopes = [
     "streaming",
@@ -115,7 +152,11 @@ export const openSpotifyLoginWindow = () => {
     "&redirect_uri=" +
     redirect_uri +
     "&scope=" +
-    encodeURIComponent(scopes);
+    encodeURIComponent(scopes) +
+    "&code_challenge_method=" +
+    codeChallengeMethod +
+    "&code_challenge=" +
+    codeChallenge;
 
   return window.open(
     spotify_auth_url,
@@ -132,20 +173,12 @@ export const getAuthTokenFromChildWindow = async (
   childWindow: Window | null
 ) => {
   let spotifyData = {
-    authToken: "",
-    expiresIn: 0,
+    code: "",
   };
 
   // Set a function that can be called by the child window
-  window.setSpotifyAuthToken = ({
-    authToken,
-    expiresIn,
-  }: {
-    authToken: string;
-    expiresIn: number;
-  }) => {
-    spotifyData.authToken = authToken;
-    spotifyData.expiresIn = expiresIn * 1000;
+  window.setSpotifyAuthToken = ({ code }: { code: string }) => {
+    spotifyData.code = code;
   };
 
   // Check if the child window has been closed every so often and resolve when it closes

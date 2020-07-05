@@ -5,12 +5,9 @@ import { RootState } from "store/reducers";
 
 export const useMusicLoading = () => {
   const musicPlatform = useSelector((state: RootState) => state.musicPlatform);
-  const musicAuthToken = useSelector(
-    (state: RootState) => state.musicAuthToken
-  );
 
   const [musicLoading, setMusicLoading] = useState(true);
-  const musicInstance = useRef(new Music(musicPlatform, musicAuthToken));
+  const musicInstance = useRef(new Music(musicPlatform));
 
   useEffect(() => {
     musicInstance.current.configure().then(() => {
