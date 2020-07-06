@@ -87,18 +87,22 @@ declare global {
  * https://developer.spotify.com/documentation/web-playback-sdk/quick-start/
  * @param authToken
  */
-export const initializePlayer = async (authToken: string) => {
-  const player = new Spotify.Player({
-    name: "Party Up",
-    getOAuthToken: (cb: Function) => {
-      cb(authToken);
-    },
-  });
+export const initializePlayer = async () => {
+  const authToken = localStorage.getItem("spotifyAuthToken") || "";
 
-  window.spotifyPlayer = player;
+  if (!window.spotifyPlayer) {
+    const player = new Spotify.Player({
+      name: "Party Up",
+      getOAuthToken: (cb: Function) => {
+        cb(authToken);
+      },
+    });
+
+    window.spotifyPlayer = player;
+  }
 
   // TODO: Show the user an error if this fails. Maybe retry?
-  await player.connect();
+  await window.spotifyPlayer.connect();
 };
 
 /**

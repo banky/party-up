@@ -21,7 +21,7 @@ export const configure = async () => {
   const authToken = localStorage.getItem("spotifyAuthToken") || "";
 
   spotifyWebApi.setAccessToken(authToken);
-  await initializePlayer(authToken);
+  await initializePlayer();
 };
 
 const parseSessionData = async (
@@ -74,8 +74,8 @@ export const authorize = async (): Promise<void> => {
     body: fetchBody,
   });
 
-  const { authToken, expiresIn } = await parseSessionData(response);
-  await initializePlayer(authToken);
+  const { expiresIn } = await parseSessionData(response);
+  await initializePlayer();
 
   // Refresh 10 seconds before expiry
   setTimeout(refreshAuth, (expiresIn - 10) * 1000);
@@ -96,8 +96,8 @@ const refreshAuth = async () => {
     body: fetchBody,
   });
 
-  const { authToken, expiresIn } = await parseSessionData(response);
-  await initializePlayer(authToken);
+  const { expiresIn } = await parseSessionData(response);
+  await initializePlayer();
 
   // Refresh 10 seconds before expiry
   setTimeout(refreshAuth, (expiresIn - 10) * 1000);
