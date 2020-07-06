@@ -74,9 +74,9 @@ test("openSpotifyLoginWindow", () => {
   window.open = jest.fn();
 
   const expectedUrl =
-    "https://accounts.spotify.com/authorize?client_id=fake-spotify-client-id&response_type=token&redirect_uri=http%3A%2F%2Ffake-base-url%2Fspotify-callback&scope=streaming%20user-read-email%20user-read-private%20user-modify-playback-state%20user-read-playback-state";
+    "https://accounts.spotify.com/authorize?client_id=fake-spotify-client-id&response_type=code&redirect_uri=http%3A%2F%2Ffake-base-url%2Fspotify-callback&scope=streaming%20user-read-email%20user-read-private%20user-modify-playback-state%20user-read-playback-state&code_challenge_method=S256&code_challenge=J7enCDw-_Z6s8Q-h1y_Egu8La4K3nvo4nbY0czlNVf8";
 
-  openSpotifyLoginWindow();
+  openSpotifyLoginWindow("fake-auth-code-verifier");
   expect(window.open).toHaveBeenCalledWith(
     expectedUrl,
     "_blank",
@@ -89,16 +89,14 @@ test("getAuthTokenFromChildWindow", async () => {
   setTimeout(() => {
     childWindow.closed = true;
     window.setSpotifyAuthToken({
-      authToken: "fake-auth-token",
-      expiresIn: 1000,
+      code: "fake-auth-code",
     });
   }, 10);
 
   // @ts-ignore: Mocking window is hard
   const token = await getAuthTokenFromChildWindow(childWindow);
   expect(token).toStrictEqual({
-    authToken: "fake-auth-token",
-    expiresIn: 1000000,
+    code: "fake-auth-code",
   });
 });
 

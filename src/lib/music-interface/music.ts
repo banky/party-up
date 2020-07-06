@@ -15,27 +15,19 @@ const getLib = (platform: Platform) => {
  * This provides a uniform interface to hide platform specific implementation details
  */
 class Music {
-  authToken: string;
   platform: Platform;
 
-  constructor(platform: Platform, authToken: string) {
-    this.authToken = authToken;
+  constructor(platform: Platform) {
     this.platform = platform;
   }
 
   async configure() {
     AppleMusic.configure();
-
-    // Spotify gives some errors if auth token is invalid, but let's ignore those for now
-    await Spotify.configure(this.authToken);
+    await Spotify.configure();
   }
 
   authorize() {
     return getLib(this.platform).authorize();
-  }
-
-  unauthorize() {
-    return getLib(this.platform).unauthorize();
   }
 
   isAuthorized() {
