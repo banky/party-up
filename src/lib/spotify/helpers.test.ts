@@ -42,7 +42,7 @@ test("initializePlayer", async () => {
     }),
   };
 
-  await initializePlayer("fake-auth-token");
+  await initializePlayer();
   expect(connect).toHaveBeenCalled();
 });
 
