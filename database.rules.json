@@ -1,6 +1,51 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "rooms": {
+      "$roomId": {
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null",
+
+        "owner": {
+          ".validate": "!data.exists()"
+        },
+        "currentSong": {
+          ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'imgUrl']) && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
+        },
+        "djs": {
+          ".validate": "(!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid)",
+
+          "$djId": {
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "members": {
+          ".validate": "newData.hasChild(auth.uid) && auth.uid != null",
+
+          "$memberId": {
+            ".validate": "newData.isBoolean() && auth.uid === $memberId"
+          }
+        },
+        "name": {
+          ".validate": "newData.isString() && (!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid)"
+        },
+        "playing": {
+          ".validate": "newData.isBoolean() && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
+        },
+        "queue": {
+          ".validate": "root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)",
+
+          "$queueItemId": {
+            ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'imgUrl'])"
+          }
+        }
+      }
+    },
+    "users": {
+      "$userId": {
+        ".read": "auth.uid != null",
+        ".write": "auth.uid === $userId",
+        ".validate": "newData.hasChildren(['name', 'platform', 'userId'])"
+      }
+    }
   }
 }
