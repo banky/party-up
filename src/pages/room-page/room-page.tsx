@@ -15,6 +15,7 @@ import {
   useCurrentSong,
   useFirebaseActions,
 } from "./hooks";
+import { DjBooth } from "./components/dj-booth";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -88,12 +89,16 @@ export const RoomPage = () => {
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <QueueTitle
-        userIsDj={userIsDj}
-        onClickSearch={() => setShowSearch(true)}
-      />
+      <div>
+        <DjBooth />
 
-      <Queue roomKey={roomKey} userIsDj={userIsDj} />
+        <QueueTitle
+          userIsDj={userIsDj}
+          onClickSearch={() => setShowSearch(true)}
+        />
+
+        <Queue roomKey={roomKey} userIsDj={userIsDj} />
+      </div>
 
       <NowPlaying
         song={currentSong}
