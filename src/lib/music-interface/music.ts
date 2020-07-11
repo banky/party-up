@@ -1,6 +1,6 @@
 import * as AppleMusic from "../apple-music";
 import * as Spotify from "../spotify";
-import { SearchType, Song } from "../constants";
+import { SearchType, Song } from "../types";
 
 export type Platform = "apple" | "spotify";
 

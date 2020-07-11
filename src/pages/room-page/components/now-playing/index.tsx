@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Song } from "lib/constants";
+import { Song } from "lib/types";
 import { NextButton, PlayButton, PauseButton } from "./buttons";
 
 const FixedBottomContainer = styled.div`

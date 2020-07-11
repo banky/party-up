@@ -1,5 +1,5 @@
 import { sha256 } from "js-sha256";
-import { Song } from "../constants";
+import { Song } from "../types";
 
 type ScriptAttributes = {
   async?: boolean;
