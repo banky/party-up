@@ -16,6 +16,7 @@ import {
   useFirebaseActions,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
+import styled from "styled-components";
 
 export const RoomPage = () => {
   const firebase = useFirebase();
@@ -89,16 +90,22 @@ export const RoomPage = () => {
   return (
     <div>
       <h1>{`Welcome to ${roomName}`}</h1>
-      <div>
-        <DjBooth />
+      <RoomWrapper>
+        <DjBoothWrapper>
+          <DjBooth />
+        </DjBoothWrapper>
 
-        <QueueTitle
-          userIsDj={userIsDj}
-          onClickSearch={() => setShowSearch(true)}
-        />
+        <QueueWrapper>
+          <QueueTitle
+            userIsDj={userIsDj}
+            onClickSearch={() => setShowSearch(true)}
+          />
 
-        <Queue roomKey={roomKey} userIsDj={userIsDj} />
-      </div>
+          <Queue roomKey={roomKey} userIsDj={userIsDj} />
+        </QueueWrapper>
+
+        <MessagesWrapper>{/* For messages */}</MessagesWrapper>
+      </RoomWrapper>
 
       <NowPlaying
         song={currentSong}
@@ -121,3 +128,19 @@ export const RoomPage = () => {
     </div>
   );
 };
+
+const RoomWrapper = styled.div`
+  display: flex;
+`;
+
+const DjBoothWrapper = styled.div`
+  flex: 2 1 200px;
+`;
+
+const QueueWrapper = styled.div`
+  flex: 2 1 700px;
+`;
+
+const MessagesWrapper = styled.div`
+  flex: 2 1 200px;
+`;

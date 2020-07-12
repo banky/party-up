@@ -12,7 +12,6 @@ const FixedBottomContainer = styled.div`
 `;
 
 const NowPlayingWrapper = styled.div`
-  max-width: 700px;
   height: 100%;
   border-radius: 15px 15px 0 0;
   background: rgba(255, 255, 255, 1);

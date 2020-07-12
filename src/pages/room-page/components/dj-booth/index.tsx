@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useFirebase } from "lib/firebase/hooks";
 import { RootState } from "store/reducers";
 import { useUserList } from "./hooks";
+import styled from "styled-components";
 
 export const DjBooth = () => {
   const firebase = useFirebase();
@@ -55,7 +56,7 @@ export const DjBooth = () => {
   }, [firebase, roomKey, userId]);
 
   return (
-    <div>
+    <Container>
       <span>Djs</span>
       <ul>
         {djs.map((dj) => (
@@ -72,6 +73,8 @@ export const DjBooth = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div``;
