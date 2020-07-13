@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useFirebase } from "lib/firebase/hooks";
 import { RootState } from "store/reducers";
 import { useUserList } from "./hooks";
 import styled from "styled-components";
+import { UserList } from "./user-list";
 
 export const DjBooth = () => {
   const firebase = useFirebase();
@@ -12,6 +13,7 @@ export const DjBooth = () => {
   const userId = useSelector((state: RootState) => state.userId);
   const members = useUserList(`rooms/${roomKey}/members`);
   const djs = useUserList(`rooms/${roomKey}/djs`);
+  const [ownerId, setOwnerId] = useState("");
 
   // User joins the room. In cleanup, we make sure they leave
   useEffect(() => {
@@ -55,26 +57,35 @@ export const DjBooth = () => {
     // Doing ref().off() to clean up breaks .info/connected
   }, [firebase, roomKey, userId]);
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`rooms/${roomKey}/owner`)
+      .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
+
+        setOwnerId(snapshot.val());
+      });
+
+    return () => firebase.database().ref(`rooms/${roomKey}/owner`).off();
+  });
+
   return (
     <Container>
-      <span>Djs</span>
-      <ul>
-        {djs.map((dj) => (
-          <li key={dj.userId}>
-            <span>{dj.name}</span>
-          </li>
-        ))}
-      </ul>
-      <span>Members</span>
-      <ul>
-        {members.map((member) => (
-          <li key={member.userId}>
-            <span>{member.name}</span>
-          </li>
-        ))}
-      </ul>
+      <Title>Dj Booth</Title>
+      <UserList
+        djs={djs}
+        members={members}
+        ownerId={ownerId}
+        currentUserId={userId}
+      />
     </Container>
   );
 };
 
 const Container = styled.div``;
+
+const Title = styled.h3`
+  height: 50px;
+  margin: 0 auto;
+`;

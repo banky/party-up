@@ -135,6 +135,7 @@ const RoomWrapper = styled.div`
 
 const DjBoothWrapper = styled.div`
   flex: 2 1 200px;
+  padding: 0 20px;
 `;
 
 const QueueWrapper = styled.div`
