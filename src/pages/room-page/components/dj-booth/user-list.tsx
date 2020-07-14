@@ -45,7 +45,7 @@ export const UserList = ({
         const onPressAction = isDj ? onPressDjDowngrade : onPressDjUpgrade;
 
         return (
-          <li>
+          <li key={member.userId}>
             <UserCard
               user={member}
               isDj={isDj}
