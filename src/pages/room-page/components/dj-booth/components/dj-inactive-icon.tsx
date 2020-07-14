@@ -4,12 +4,7 @@ import styled from "styled-components";
 const Svg = styled.svg`
   min-height: 50px;
   path {
-    stroke: "#d8d8d8";
-  }
-  &:hover {
-    path {
-      stroke: "#ee6352";
-    }
+    fill: #484d6d;
   }
 `;
 

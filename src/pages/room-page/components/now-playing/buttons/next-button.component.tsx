@@ -4,7 +4,7 @@ import { NowPlayingButton } from "./now-playing-button.component";
 
 const StyledButton = styled(NowPlayingButton)`
   position: absolute;
-  right: 5%;
+  right: 90px;
 `;
 
 type NextButtonProps = {

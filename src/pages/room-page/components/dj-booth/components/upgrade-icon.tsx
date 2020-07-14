@@ -5,12 +5,12 @@ const StyledButton = styled.button`
   background: none;
   border: none;
   min-height: 50px;
-  path {
-    stroke: "#d8d8d8";
+  line {
+    stroke: #484d6d;
   }
   &:hover {
-    path {
-      stroke: "#ee6352";
+    line {
+      stroke: #ee6352;
     }
   }
 `;

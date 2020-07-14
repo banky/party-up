@@ -83,7 +83,11 @@ export const DjBooth = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  @media only screen and (max-width: 1026px) {
+    display: none;
+  }
+`;
 
 const Title = styled.h3`
   height: 50px;

@@ -142,7 +142,7 @@ const djIconStyles = `
 position: absolute;
 top: 50%;
 transform: translateY(-50%);
-right: 15%;
+right: 10%;
 `;
 
 const StyledDjActiveIcon = styled(DjActiveIcon)`

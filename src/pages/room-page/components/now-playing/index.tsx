@@ -24,15 +24,14 @@ const StyledImage = styled.img`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 1%;
+  left: 90px;
   height: 60px;
-  margin-left: 2%;
   border-radius: 5px;
 `;
 
 const SongName = styled.div`
   position: absolute;
-  left: 90px;
+  left: 160px;
   top: 4px;
   font-size: 1.5em;
   white-space: nowrap;
@@ -43,7 +42,7 @@ const SongName = styled.div`
 
 const SongArtist = styled.div`
   position: absolute;
-  left: 90px;
+  left: 160px;
   top: 46px;
   font-size: 1em;
 `;
