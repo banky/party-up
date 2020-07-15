@@ -46,6 +46,7 @@ describe("Create Room", () => {
     expect(userSnapshot.val()).toStrictEqual({
       name: mockName,
       platform: mockPlatform,
+      userId: mockUserId,
     });
   });
 
