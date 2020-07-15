@@ -7,4 +7,5 @@ import "@testing-library/jest-dom/extend-expect";
 process.env = Object.assign(process.env, {
   REACT_APP_SPOTIFY_CLIENT_ID: "fake-spotify-client-id",
   REACT_APP_BASE_URL: "http://fake-base-url",
+  REACT_APP_FIREBASE_DATABASE_URL: "http://localhost:9000?ns=gopartyup",
 });
