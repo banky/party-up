@@ -13,10 +13,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-if (window.location.hostname === "localhost") {
-  firebaseConfig.databaseURL = `http://localhost:9000?ns=${process.env.REACT_APP_FIREBASE_PROJECT_ID}`;
-}
-
 class Firebase {
   constructor() {
     if (!app.apps.length) {

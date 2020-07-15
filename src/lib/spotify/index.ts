@@ -1,6 +1,7 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import cryptoRandomString from "crypto-random-string";
-import { SearchType, Song, SEARCH_LIMIT } from "../constants";
+import { SearchType, Song } from "../types";
+import { SEARCH_LIMIT } from "../constants";
 import {
   getPlayerOptions,
   initializePlayer,

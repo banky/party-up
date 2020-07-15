@@ -1,5 +1,5 @@
 import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
-import { SearchType } from "../constants";
+import { SearchType } from "../types";
 
 test("supportedAppleMusicSearchTypes", () => {
   const input: SearchType[] = [

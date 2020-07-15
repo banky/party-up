@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Song } from "lib/constants";
+import { Song } from "lib/types";
 import { NextButton, PlayButton, PauseButton } from "./buttons";
 
 const FixedBottomContainer = styled.div`
@@ -12,7 +12,6 @@ const FixedBottomContainer = styled.div`
 `;
 
 const NowPlayingWrapper = styled.div`
-  max-width: 700px;
   height: 100%;
   border-radius: 15px 15px 0 0;
   background: rgba(255, 255, 255, 1);
@@ -25,15 +24,14 @@ const StyledImage = styled.img`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 1%;
+  left: 90px;
   height: 60px;
-  margin-left: 2%;
   border-radius: 5px;
 `;
 
 const SongName = styled.div`
   position: absolute;
-  left: 90px;
+  left: 160px;
   top: 4px;
   font-size: 1.5em;
   white-space: nowrap;
@@ -44,7 +42,7 @@ const SongName = styled.div`
 
 const SongArtist = styled.div`
   position: absolute;
-  left: 90px;
+  left: 160px;
   top: 46px;
   font-size: 1em;
 `;

@@ -23,6 +23,7 @@ export const createUserFB = (
   platform: Platform
 ) => {
   firebase.database().ref("users").child(userId).set({
+    userId: userId,
     name: name,
     platform: platform,
   });
