@@ -21,8 +21,10 @@ export const configure = async () => {
 
   const authToken = localStorage.getItem("spotifyAuthToken") || "";
 
-  spotifyWebApi.setAccessToken(authToken);
-  await initializePlayer();
+  if (authToken) {
+    spotifyWebApi.setAccessToken(authToken);
+    await initializePlayer();
+  }
 };
 
 const parseSessionData = async (
