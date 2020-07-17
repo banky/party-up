@@ -17,7 +17,7 @@
     "@types/styled-components": "^5.1.0",
     "base64url": "^3.0.1",
     "crypto-random-string": "^3.2.0",
-    "firebase": "^7.16.0",
+    "firebase": "^7.16.1",
     "firebase-tools": "^8.5.0",
     "js-sha256": "^0.9.0",
     "react": "^16.13.1",
