@@ -127,7 +127,7 @@ const actionIconStyles = `
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 5%;
+  right: 10px;
 `;
 
 const StyledUpgradeIcon = styled(UpgradeIcon)`
@@ -142,7 +142,7 @@ const djIconStyles = `
 position: absolute;
 top: 50%;
 transform: translateY(-50%);
-right: 10%;
+right: 40px;
 `;
 
 const StyledDjActiveIcon = styled(DjActiveIcon)`

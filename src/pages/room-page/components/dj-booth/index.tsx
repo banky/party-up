@@ -68,7 +68,7 @@ export const DjBooth = () => {
       });
 
     return () => firebase.database().ref(`rooms/${roomKey}/owner`).off();
-  });
+  }, [firebase, roomKey]);
 
   return (
     <Container>

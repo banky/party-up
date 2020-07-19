@@ -264,12 +264,130 @@ describe("Room page functionality for DJ", () => {
   });
 });
 
+describe("Room page functionality for DJ that is not owner", () => {
+  beforeEach(async () => {
+    const mockDatabaseDataDjNotOwner = {
+      rooms: {
+        [mockRoomKey]: {
+          ...mockDatabaseData.rooms[mockRoomKey],
+          owner: {
+            [mockUserId]: false,
+          },
+          djs: {
+            [mockUserId]: true,
+          },
+        },
+      },
+    };
+
+    await act(async () => {
+      await mockFirebaseInstance
+        .database()
+        .ref()
+        .set(mockDatabaseDataDjNotOwner);
+    });
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
+
+    await act(async () => {
+      await mockFirebaseInstance.database().ref().set(null);
+    });
+  });
+
+  it("screen looks as expected", async () => {
+    render(<RoomPage />);
+
+    // Title
+    await waitFor(() =>
+      expect(screen.getByText("Welcome to Shxkfbskcbd's Room")).toBeTruthy()
+    );
+
+    // Song name
+    await waitFor(() => expect(screen.getByText("Say So")).toBeTruthy());
+
+    // Song artist
+    await waitFor(() => expect(screen.getByText("Doja Cat")).toBeTruthy());
+
+    // Song image url
+    await waitFor(() =>
+      expect(screen.getByAltText("Say So album art")).toHaveAttribute(
+        "src",
+        "imgurl.jpg"
+      )
+    );
+
+    // Player actions
+    expect(screen.queryByTitle("Play")).toBeNull();
+    expect(screen.queryByTitle("Next")).toBeNull();
+  });
+
+  it("search, add and remove song works", async () => {
+    render(<RoomPage />);
+
+    await waitFor(() => expect(screen.getByTitle("Add")).toBeTruthy());
+
+    // Open up the search screen
+    act(() => {
+      fireEvent.click(screen.getByTitle("Add"));
+    });
+
+    // Search functionality is mocked out, but perform a fake search
+    act(() => {
+      fireEvent.change(screen.getByPlaceholderText("Search for a song!"), {
+        target: { value: "fake song" },
+      });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByLabelText("search-button"));
+    });
+
+    // List of searched songs
+    await waitFor(() =>
+      expect(screen.getByText("fake-song-name")).toBeTruthy()
+    );
+
+    // Add song to queue
+    act(() => {
+      const songCardAddButton = screen.getAllByTitle("Add")[1];
+      fireEvent.click(songCardAddButton);
+    });
+
+    // Close search
+    act(() => {
+      fireEvent.click(screen.getByLabelText("cancel-search-button"));
+    });
+
+    // Expect mocked songs to be on queue
+    expect(screen.getByText("fake-song-name")).toBeTruthy();
+    expect(screen.getByText("fake-song-artist")).toBeTruthy();
+
+    // Remove song from queue
+    act(() => {
+      const removeButtons = screen.getAllByTitle("Remove");
+      const lastSongCardRemoveButton = removeButtons[removeButtons.length - 1];
+      fireEvent.click(lastSongCardRemoveButton);
+    });
+
+    // Expect the songs to be gone from the queue
+    await waitFor(() => {
+      expect(screen.queryByText("fake-song-name")).toBeNull();
+      expect(screen.queryByText("fake-song-artist")).toBeNull();
+    });
+  });
+});
+
 describe("Room page functionality for non-DJ", () => {
   beforeEach(async () => {
     const mockDatabaseDataNonDj = {
       rooms: {
         [mockRoomKey]: {
           ...mockDatabaseData.rooms[mockRoomKey],
+          owner: {
+            [mockUserId]: false,
+          },
           djs: {
             [mockUserId]: false,
           },

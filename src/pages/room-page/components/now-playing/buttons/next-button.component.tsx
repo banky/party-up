@@ -14,7 +14,7 @@ type NextButtonProps = {
 
 export const NextButton = ({ disabled, onClick }: NextButtonProps) => (
   <StyledButton
-    title={disabled ? "Only enabled for DJ's" : "Next"}
+    title={disabled ? "Only enabled for owner" : "Next"}
     disabled={disabled}
     onClick={onClick}
   >
