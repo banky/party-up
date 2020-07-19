@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { Platform } from "../lib/music-interface/music";
+import { Platform } from "lib/music/music";
 
 export const updateName = createAction<string>("UPDATE_NAME");
 

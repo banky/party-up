@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
-import { User } from "lib/types";
+import { User } from "lib/music/types";
 import { useFirebase } from "lib/firebase/hooks";
 import { useParams } from "react-router-dom";
 import { UpgradeIcon } from "./components/upgrade-icon";

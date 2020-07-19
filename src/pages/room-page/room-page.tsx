@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useFirebase } from "lib/firebase/hooks";
-import { useMusic } from "lib/music-interface/hook";
+import { useMusic } from "lib/music/hook";
 import { Search } from "./components/search";
 import { Queue } from "./components/queue";
 import { NowPlaying } from "./components/now-playing";

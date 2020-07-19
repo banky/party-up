@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { PlusIcon } from "../../../../components/plus-icon/plus-icon.component";
+import { PlusIcon } from "components/plus-icon/plus-icon.component";
 
 const QueueTitleWrapper = styled.div`
   width: 700px;

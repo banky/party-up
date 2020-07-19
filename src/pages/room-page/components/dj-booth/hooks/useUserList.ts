@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { User } from "lib/types";
+import { User } from "types/user";
 import { useFirebase } from "lib/firebase/hooks";
 
 export const useUserList = (ref: string) => {

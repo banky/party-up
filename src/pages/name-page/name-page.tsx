@@ -19,12 +19,12 @@ const NameInput = styled.input`
 `;
 
 const CreateRoomButton = styled.button`
-  margin-top: 1em;
   background-color: #9bc1bc;
   font-size: 22px;
   font-family: "Muli";
   border: none;
   height: 2em;
+  margin: 1em 1em;
 
   &:hover {
     opacity: 0.7;
@@ -32,12 +32,12 @@ const CreateRoomButton = styled.button`
 `;
 
 const JoinRoomButton = styled.button`
-  margin-top: 1em;
   background-color: #9bc1bc;
   font-size: 22px;
   font-family: "Muli";
   border: none;
   height: 2em;
+  margin: 1em 1em;
 
   &:hover {
     opacity: 0.7;

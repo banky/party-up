@@ -7,7 +7,7 @@ import {
   updateUserId,
   updateDestinationRoomKey,
 } from "./actions";
-import { Platform } from "../lib/music-interface/music";
+import { Platform } from "lib/music/music";
 
 const initialState: {
   destinationRoomKey?: string;

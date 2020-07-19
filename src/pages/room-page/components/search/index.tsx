@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useMusic } from "lib/music-interface/hook";
-import { Song } from "lib/types";
+import { useMusic } from "lib/music/hook";
+import { Song } from "lib/music/types";
 import { SongCard } from "components/song-card/song-card.component";
-import searchIcon from "../images/search-icon.png";
-import cancelIcon from "../images/cancel-icon.png";
+import searchIcon from "./images/search-icon.png";
+import cancelIcon from "./images/cancel-icon.png";
 
 const SearchContainer = styled.div`
   background: rgba(0, 0, 0, 0.7);

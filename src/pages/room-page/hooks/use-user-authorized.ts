@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { useMusic } from "lib/music-interface/hook";
+import { useMusic } from "lib/music/hook";
 import { updateDestinationRoomKey } from "store/actions";
 
 export const useUserAuthorized = () => {

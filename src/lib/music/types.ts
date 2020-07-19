@@ -1,4 +1,4 @@
-import { Platform } from "./music-interface/music";
+import { Platform } from "./music";
 
 // Defined by spotify search
 export type SearchType = "album" | "artist" | "playlist" | "track";
@@ -10,10 +10,4 @@ export type Song = {
   isrc: string;
   url: string; // This is a url for apple music but a "spotify uri" for spotify
   imgUrl: string;
-};
-
-export type User = {
-  userId: string;
-  name: string;
-  platform: Platform;
 };

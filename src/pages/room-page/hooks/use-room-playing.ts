@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useFirebase } from "lib/firebase/hooks";
-import { useMusic } from "lib/music-interface/hook";
+import { useMusic } from "lib/music/hook";
 
 export const useRoomPlaying = () => {
   const firebase = useFirebase();

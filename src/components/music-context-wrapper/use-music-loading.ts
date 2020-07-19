@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Music from "../../lib/music-interface";
+import Music from "lib/music";
 import { RootState } from "store/reducers";
 
 export const useMusicLoading = () => {

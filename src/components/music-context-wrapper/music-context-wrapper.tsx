@@ -1,5 +1,5 @@
 import React from "react";
-import { MusicContext } from "lib/music-interface";
+import { MusicContext } from "lib/music";
 import { useMusicLoading } from "./use-music-loading";
 
 type MusicContextWrapperProps = {
