@@ -50,7 +50,7 @@ const SongArtist = styled.div`
 type NowPlayingProps = {
   song?: Song;
   isPlaying: boolean;
-  userIsDj: boolean;
+  userIsOwner: boolean;
   onClickPlay: VoidFunction;
   onClickPause: VoidFunction;
   onClickNext: VoidFunction;
@@ -59,7 +59,7 @@ type NowPlayingProps = {
 export const NowPlaying = ({
   song,
   isPlaying,
-  userIsDj,
+  userIsOwner,
   onClickPlay,
   onClickPause,
   onClickNext,
@@ -71,11 +71,11 @@ export const NowPlaying = ({
         <SongName>{song?.name}</SongName>
         <SongArtist>{song?.artist}</SongArtist>
         {!isPlaying ? (
-          <PlayButton disabled={!userIsDj} onClick={onClickPlay} />
+          <PlayButton disabled={!userIsOwner} onClick={onClickPlay} />
         ) : (
-          <PauseButton disabled={!userIsDj} onClick={onClickPause} />
+          <PauseButton disabled={!userIsOwner} onClick={onClickPause} />
         )}
-        <NextButton disabled={!userIsDj} onClick={onClickNext} />
+        <NextButton disabled={!userIsOwner} onClick={onClickNext} />
       </NowPlayingWrapper>
     </FixedBottomContainer>
   );

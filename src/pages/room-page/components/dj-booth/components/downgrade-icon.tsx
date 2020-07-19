@@ -36,8 +36,8 @@ export const DowngradeIcon = ({ className, onClick }: DowngradeIconProps) => {
           x2="14.435"
           y2="33"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
         <line
           x1="24.435"
@@ -45,8 +45,8 @@ export const DowngradeIcon = ({ className, onClick }: DowngradeIconProps) => {
           x2="15.2426"
           y2="33"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
         <line
           x1="14.1924"
@@ -54,8 +54,8 @@ export const DowngradeIcon = ({ className, onClick }: DowngradeIconProps) => {
           x2="5"
           y2="23.8076"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
       </svg>
     </StyledButton>

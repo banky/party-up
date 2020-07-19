@@ -14,7 +14,7 @@ type PlayButtonProps = {
 
 export const PlayButton = ({ disabled, onClick }: PlayButtonProps) => (
   <StyledButton
-    title={disabled ? "Only enabled for DJ's" : "Play"}
+    title={disabled ? "Only enabled for owner" : "Play"}
     disabled={disabled}
     onClick={onClick}
   >

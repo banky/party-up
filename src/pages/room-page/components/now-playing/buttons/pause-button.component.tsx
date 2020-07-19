@@ -14,7 +14,7 @@ type PauseButtonProps = {
 
 export const PauseButton = ({ disabled, onClick }: PauseButtonProps) => (
   <StyledButton
-    title={disabled ? "Only enabled for DJ's" : "Pause"}
+    title={disabled ? "Only enabled for owner" : "Pause"}
     disabled={disabled}
     onClick={onClick}
   >

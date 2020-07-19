@@ -110,7 +110,7 @@ export const RoomPage = () => {
       <NowPlaying
         song={currentSong}
         isPlaying={roomPlaying}
-        userIsDj={userIsDj}
+        userIsOwner={userIsOwner}
         onClickPlay={onClickPlay}
         onClickPause={onClickPause}
         onClickNext={onClickNext}

@@ -36,8 +36,8 @@ export const UpgradeIcon = ({ className, onClick }: UpgradeIconProps) => {
           x2="15"
           y2="5"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
         <line
           x1="5"
@@ -45,8 +45,8 @@ export const UpgradeIcon = ({ className, onClick }: UpgradeIconProps) => {
           x2="14.1924"
           y2="5"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
         <line
           x1="15.2426"
@@ -54,8 +54,8 @@ export const UpgradeIcon = ({ className, onClick }: UpgradeIconProps) => {
           x2="24.435"
           y2="14.1924"
           stroke="#EE6352"
-          stroke-width="6"
-          stroke-linecap="round"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
       </svg>
     </StyledButton>
