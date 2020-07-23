@@ -26,7 +26,16 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
+Launches the test runner in the interactive watch mode. Tests are not run against the production database, instead they point to a local instance of firebase called the firebase emulator. So before running tests, start the emulator 
+
+```bash
+yarn firebase emulators:start
+```
+Then you can run 
+```bash
+yarn test
+```
+
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
@@ -35,6 +44,6 @@ Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Your app is ready to be deployed! A Github action currently builds and deploys to production
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
