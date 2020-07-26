@@ -4,10 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Firebase, { FirebaseContext } from "lib/firebase";
-import Music, { MusicContext } from "lib/music-interface";
+import Music, { MusicContext } from "lib/music";
 import { rootReducer } from "store/reducers";
 
-jest.mock("lib/music-interface/music");
+jest.mock("lib/music/music");
 
 const mockStore = createStore(rootReducer, {
   destinationRoomKey: undefined,

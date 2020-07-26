@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { PlusIcon } from "../plus-icon/plus-icon.component";
 import { MinusIcon } from "../minus-icon/minus-icon.component";
-import { Song } from "lib/types";
+import { Song } from "lib/music/types";
 
 const actionIconStyles = `
   position: absolute;

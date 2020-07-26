@@ -2,24 +2,10 @@ import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
 import { SearchType } from "../types";
 
 test("supportedAppleMusicSearchTypes", () => {
-  const input: SearchType[] = [
-    "artist",
-    "track",
-    "playlist",
-    "album",
-    "episode",
-    "show",
-  ];
+  const input: SearchType[] = ["artist", "track", "playlist", "album"];
 
   const output = supportedAppleMusicSearchTypes(input);
-  expect(output).toStrictEqual([
-    "artists",
-    "songs",
-    "playlists",
-    "albums",
-    "songs",
-    "songs",
-  ]);
+  expect(output).toStrictEqual(["artists", "songs", "playlists", "albums"]);
 });
 
 test("transformSongs", () => {

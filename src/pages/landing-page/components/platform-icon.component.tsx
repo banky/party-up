@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Platform } from "lib/music-interface/music";
+import { Platform } from "lib/music/music";
 import appleLogo from "./apple.png";
 import spotifyLogo from "./spotify.png";
 

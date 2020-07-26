@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Song } from "lib/types";
+import { Song } from "lib/music/types";
 import { SongCard } from "components/song-card/song-card.component";
 import { useFirebase } from "lib/firebase/hooks";
 

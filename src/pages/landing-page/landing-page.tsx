@@ -2,10 +2,10 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { useMusic } from "lib/music-interface/hook";
+import { useMusic } from "lib/music/hook";
 import { updateMusicPlatform } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
-import { Platform } from "lib/music-interface/music";
+import { Platform } from "lib/music/music";
 import { useFirebase } from "lib/firebase/hooks";
 
 const PlatformIconsContainer = styled.div`
