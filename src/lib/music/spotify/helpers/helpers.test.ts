@@ -6,7 +6,7 @@ import {
   getAuthTokenFromChildWindow,
   loadSpotifyWebPlayer,
   transformSongs,
-} from "./helpers";
+} from ".";
 
 const globalAny: any = global;
 
@@ -42,7 +42,7 @@ test("initializePlayer", async () => {
     }),
   };
 
-  await initializePlayer();
+  await initializePlayer("fake-auth-token");
   expect(connect).toHaveBeenCalled();
 });
 
@@ -107,7 +107,7 @@ describe("loadSpotifyWebPlayer", () => {
   });
 
   test("loadSpotifyWebPlayer", async () => {
-    jest.mock("./helpers", () => ({
+    jest.mock("./utils", () => ({
       loadScript: jest.fn().mockImplementation(() => Promise.resolve()),
     }));
 

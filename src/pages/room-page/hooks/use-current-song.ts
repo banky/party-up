@@ -16,7 +16,6 @@ export const useCurrentSong = () => {
       .ref(`rooms/${roomKey}/currentSong`)
       .on("value", (snapshot) => {
         if (!snapshot.exists()) return;
-        // TODO: Need to prevent playback if the room is not playing
         music.queueAndPlay(snapshot.val()).catch((error) => {
           // TODO: Show some kind of error to the user if the song could not be queued
         });

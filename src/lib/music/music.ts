@@ -92,8 +92,9 @@ class Music {
   /**
    * Callback is fired every time a song finishes
    * @param callback
+   * @returns A cleanup function to remove the listener
    */
-  songEnded(callback: VoidFunction): void {
+  songEnded(callback: VoidFunction): VoidFunction {
     return getLib(this.platform).songEnded(callback);
   }
 

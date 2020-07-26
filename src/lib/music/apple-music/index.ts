@@ -116,7 +116,7 @@ export const seek = (time: number): Promise<any> => {
   return MusicKit.getInstance().seekToTime(time / 1000);
 };
 
-export const songEnded = (callback: VoidFunction): void => {
+export const songEnded = (callback: VoidFunction): VoidFunction => {
   let previousProgress = 0;
 
   MusicKit.getInstance().addEventListener(
@@ -130,6 +130,12 @@ export const songEnded = (callback: VoidFunction): void => {
       }
     }
   );
+
+  return () =>
+    MusicKit.getInstance().removeEventListener(
+      "playbackProgressDidChange",
+      callback
+    );
 };
 
 export const setVolume = (percentage: number): Promise<void> => {

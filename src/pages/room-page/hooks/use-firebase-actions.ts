@@ -14,8 +14,10 @@ export const useFirebaseActions = () => {
   );
 
   const setCurrentSongFB = useCallback(
-    (song: Song) =>
-      firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song),
+    (song: Song) => {
+      firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
+      firebase.database().ref(`rooms/${roomKey}/playing`).set(true);
+    },
     [firebase, roomKey]
   );
 
