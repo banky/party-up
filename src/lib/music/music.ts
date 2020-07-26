@@ -71,6 +71,14 @@ class Music {
   songEnded(callback: VoidFunction): void {
     return getLib(this.platform).songEnded(callback);
   }
+
+  /**
+   * Set the music player volume
+   * @param percentage
+   */
+  setVolume(percentage: number): Promise<void> {
+    return getLib(this.platform).setVolume(percentage);
+  }
 }
 
 export default Music;

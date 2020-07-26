@@ -229,3 +229,8 @@ export const songEnded = (callback: VoidFunction): void => {
     }
   );
 };
+
+export const setVolume = (percentage: number): Promise<void> => {
+  const volume = Math.abs(percentage / 100);
+  return window.spotifyPlayer.setVolume(volume);
+};

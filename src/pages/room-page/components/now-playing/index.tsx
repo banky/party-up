@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Song } from "lib/music/types";
 import { NextButton, PlayButton, PauseButton } from "./buttons";
+import { VolumeControl } from "./volume-control";
 
 const FixedBottomContainer = styled.div`
   position: fixed;
@@ -70,6 +71,7 @@ export const NowPlaying = ({
         <StyledImage src={song?.imgUrl} alt={`${song?.name} album art`} />
         <SongName>{song?.name}</SongName>
         <SongArtist>{song?.artist}</SongArtist>
+        <VolumeControl />
         {!isPlaying ? (
           <PlayButton disabled={!userIsOwner} onClick={onClickPlay} />
         ) : (
