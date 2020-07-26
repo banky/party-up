@@ -1,5 +1,3 @@
-import { Platform } from "./music";
-
 // Defined by spotify search
 export type SearchType = "album" | "artist" | "playlist" | "track";
 
