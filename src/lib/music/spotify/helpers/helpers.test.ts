@@ -107,7 +107,7 @@ describe("loadSpotifyWebPlayer", () => {
   });
 
   test("loadSpotifyWebPlayer", async () => {
-    jest.mock("./helpers", () => ({
+    jest.mock("./utils", () => ({
       loadScript: jest.fn().mockImplementation(() => Promise.resolve()),
     }));
 
