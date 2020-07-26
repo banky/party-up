@@ -40,12 +40,21 @@ export const RoomPage = () => {
   useUserAuthorized();
 
   useEffect(() => {
+    // If there is a song, it will start playing
+    if (userIsOwner) {
+      if (currentSong !== undefined) {
+        setRoomPlayingFB(true);
+      }
+    }
+  }, [userIsOwner, currentSong, setRoomPlayingFB]);
+
+  useEffect(() => {
     if (!userIsOwner) {
       // Don't do anything if the user isn't
       // or is no longer the owner
-      music.songEnded(() => {});
+      return music.songEnded(() => {});
     } else {
-      music.songEnded(async () => {
+      return music.songEnded(async () => {
         // Only do this if the song ended on its own
         if (userPressedNext.current) {
           userPressedNext.current = false;

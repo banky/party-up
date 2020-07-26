@@ -23,7 +23,7 @@ export const configure = async () => {
 
   if (authToken) {
     spotifyWebApi.setAccessToken(authToken);
-    await initializePlayer();
+    await initializePlayer(authToken);
   }
 };
 
@@ -77,8 +77,8 @@ export const authorize = async (): Promise<void> => {
     body: fetchBody,
   });
 
-  const { expiresIn } = await parseSessionData(response);
-  await initializePlayer();
+  const { authToken, expiresIn } = await parseSessionData(response);
+  await initializePlayer(authToken);
 
   // Refresh 10 seconds before expiry
   setTimeout(refreshAuth, (expiresIn - 10) * 1000);
@@ -99,8 +99,8 @@ const refreshAuth = async () => {
     body: fetchBody,
   });
 
-  const { expiresIn } = await parseSessionData(response);
-  await initializePlayer();
+  const { authToken, expiresIn } = await parseSessionData(response);
+  await initializePlayer(authToken);
 
   // Refresh 10 seconds before expiry
   setTimeout(refreshAuth, (expiresIn - 10) * 1000);
@@ -214,7 +214,7 @@ export const seek = (time: number): Promise<any> => {
   });
 };
 
-export const songEnded = (callback: VoidFunction): void => {
+export const songEnded = (callback: VoidFunction): VoidFunction => {
   let previousPosition = 0;
 
   window.spotifyPlayer.addListener(
@@ -228,6 +228,9 @@ export const songEnded = (callback: VoidFunction): void => {
       }
     }
   );
+
+  return () =>
+    window.spotifyPlayer.removeListener("player_state_changed", callback);
 };
 
 export const setVolume = (percentage: number): Promise<void> => {
