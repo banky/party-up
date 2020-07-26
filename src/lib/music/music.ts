@@ -4,12 +4,11 @@ import { SearchType, Song } from "./types";
 
 export type Platform = "apple" | "spotify";
 
-const getLib = (platform: Platform) => {
-  return {
+const getLib = (platform: Platform) =>
+  ({
     apple: AppleMusic,
     spotify: Spotify,
-  }[platform];
-};
+  }[platform]);
 
 /**
  * This provides a uniform interface to hide platform specific implementation details
@@ -21,31 +20,57 @@ class Music {
     this.platform = platform;
   }
 
+  /**
+   * Configures both the apple music and spotify
+   * players. Call this on app initialization
+   */
   async configure() {
     AppleMusic.configure();
     await Spotify.configure();
   }
 
+  /**
+   * Opens a new window to authorize the user
+   * Call this before calling other functions
+   */
   authorize() {
     return getLib(this.platform).authorize();
   }
 
+  /**
+   * Check if the user is currently authorized for their platform
+   */
   isAuthorized() {
     return getLib(this.platform).isAuthorized();
   }
 
+  /**
+   * Search for music
+   * @param query The search query being performed
+   * @param searchTypes An array of types of results being searched
+   */
   search(query: string, searchTypes: SearchType[]) {
     return getLib(this.platform).search(query, searchTypes);
   }
 
+  /**
+   * Queue up and play a song
+   * @param song
+   */
   queueAndPlay(song: Song) {
     return getLib(this.platform).queueAndPlay(song);
   }
 
+  /**
+   * Resume playback
+   */
   play() {
     return getLib(this.platform).play();
   }
 
+  /**
+   * Pause playback
+   */
   pause() {
     return getLib(this.platform).pause();
   }
@@ -70,6 +95,14 @@ class Music {
    */
   songEnded(callback: VoidFunction): void {
     return getLib(this.platform).songEnded(callback);
+  }
+
+  /**
+   * Set the music player volume
+   * @param percentage
+   */
+  setVolume(percentage: number): Promise<void> {
+    return getLib(this.platform).setVolume(percentage);
   }
 }
 
