@@ -7,6 +7,56 @@ import { updateName } from "store/actions";
 import { createUserFB, createRoomFB } from "./helpers";
 import { useFirebase } from "lib/firebase/hooks";
 
+export const NamePage = () => {
+  const dispatch = useDispatch();
+  const name = useSelector((state: RootState) => state.name);
+  const platform = useSelector((state: RootState) => state.musicPlatform);
+  const userId = useSelector((state: RootState) => state.userId);
+  const destinationRoomKey = useSelector(
+    (state: RootState) => state.destinationRoomKey
+  );
+  const history = useHistory();
+  const firebase = useFirebase();
+
+  const createRoomButtonClick = () => {
+    createUserFB(firebase, userId, name, platform);
+    const roomKey = createRoomFB(firebase, userId, name);
+    history.push(`/room/${roomKey}`);
+  };
+
+  const joinRoomButtonClick = () => {
+    createUserFB(firebase, userId, name, platform);
+    history.push(`/room/${destinationRoomKey}`);
+  };
+
+  return (
+    <div>
+      <h1>What is your name?</h1>
+      <div>
+        <NameInput
+          value={name}
+          aria-label={"name-input"}
+          onChange={(e) => dispatch(updateName(e.target.value))}
+        />
+      </div>
+      <CreateRoomButton
+        onClick={createRoomButtonClick}
+        disabled={name.length === 0}
+      >
+        Create Room
+      </CreateRoomButton>
+      {destinationRoomKey !== undefined && (
+        <JoinRoomButton
+          onClick={joinRoomButtonClick}
+          disabled={name.length === 0}
+        >
+          Join Room
+        </JoinRoomButton>
+      )}
+    </div>
+  );
+};
+
 const NameInput = styled.input`
   border: 1px solid #ebcfb2;
   border-radius: 20px;
@@ -43,45 +93,3 @@ const JoinRoomButton = styled.button`
     opacity: 0.7;
   }
 `;
-
-export const NamePage = () => {
-  const dispatch = useDispatch();
-  const name = useSelector((state: RootState) => state.name);
-  const platform = useSelector((state: RootState) => state.musicPlatform);
-  const userId = useSelector((state: RootState) => state.userId);
-  const destinationRoomKey = useSelector(
-    (state: RootState) => state.destinationRoomKey
-  );
-  const history = useHistory();
-  const firebase = useFirebase();
-
-  const createRoomButtonClick = () => {
-    createUserFB(firebase, userId, name, platform);
-    const roomKey = createRoomFB(firebase, userId, name);
-    history.push(`/room/${roomKey}`);
-  };
-
-  const joinRoomButtonClick = () => {
-    createUserFB(firebase, userId, name, platform);
-    history.push(`/room/${destinationRoomKey}`);
-  };
-
-  return (
-    <div>
-      <h1>What is your name?</h1>
-      <div>
-        <NameInput
-          value={name}
-          aria-label={"name-input"}
-          onChange={(e) => dispatch(updateName(e.target.value))}
-        />
-      </div>
-      <CreateRoomButton onClick={createRoomButtonClick}>
-        Create Room
-      </CreateRoomButton>
-      {destinationRoomKey !== undefined && (
-        <JoinRoomButton onClick={joinRoomButtonClick}>Join Room</JoinRoomButton>
-      )}
-    </div>
-  );
-};
