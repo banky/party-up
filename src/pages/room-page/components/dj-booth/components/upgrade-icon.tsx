@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
-  background: none;
-  border: none;
   min-height: 50px;
   line {
     stroke: #484d6d;

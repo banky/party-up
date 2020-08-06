@@ -4,8 +4,6 @@ import styled from "styled-components";
 const StyledButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
   & svg {
     fill: ${(props) => (props.disabled ? "#d8d8d8" : "#484d6d")};
   }

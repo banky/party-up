@@ -1,15 +1,19 @@
 body {
   background-color: #edf6ff;
-  font-size: 22px;
+  font-size: 20px;
   text-align: center;
   font-family: "Muli";
 }
 
 h1 {
-  font-family: "Bangers";
-  font-size: 2em;
+  font-family: "Muli";
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
 }
 
 button {
   cursor: pointer;
+  background: none;
+  border: none;
 }
