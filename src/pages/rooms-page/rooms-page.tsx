@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Header } from "components/header/header.component";
 import { RoomsPageSwitcher } from "./components/rooms-page-switcher";
-import { useFirebase } from "lib/firebase/hooks";
 import { RoomCards } from "./components/room-cards";
 
 export const RoomsPage = () => {
@@ -14,8 +13,4 @@ export const RoomsPage = () => {
       <RoomCards rooms={[]} />
     </>
   );
-};
-
-const AllRooms = () => {
-  const firebase = useFirebase();
 };
