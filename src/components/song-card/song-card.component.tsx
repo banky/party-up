@@ -68,11 +68,11 @@ export const SongCard = ({
   actionDisabled,
   onClickActionIcon,
 }: SongCardProps) => {
-  const { name, artist, imgUrl } = song;
+  const { name, artist, smallImage } = song;
 
   return (
     <SongCardWrapper>
-      <SongCardImage src={imgUrl} alt={`${name} album art`} />
+      <SongCardImage src={smallImage} alt={`${name} album art`} />
       <SongName>{name}</SongName>
       <SongArtist>{artist}</SongArtist>
       {actionIcon === "plus" ? (

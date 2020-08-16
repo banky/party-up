@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { LoginPage } from "pages/login-page/login-page";
-import { NamePage } from "pages/name-page/name-page";
+import { CreateRoomPage } from "pages/create-room-page/create-room-page";
 import { RoomPage } from "pages/room-page/room-page";
 import { SpotifyCallback } from "pages/spotify-callback-page";
 import { NotFoundPage } from "pages/not-found-page/not-found-page";
@@ -17,8 +17,8 @@ export const Routes = () => {
         <Route path="/room">
           <RoomPage />
         </Route>
-        <Route path="/name">
-          <NamePage />
+        <Route path="/create-room">
+          <CreateRoomPage />
         </Route>
         <Route path="/spotify-callback">
           <SpotifyCallback />

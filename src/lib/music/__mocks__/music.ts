@@ -15,7 +15,8 @@ const search = jest.fn(() =>
       name: "fake-song-name",
       isrc: "fake-isrc",
       url: "fake-url",
-      imgUrl: "fake-img-url",
+      smallImage: "fake-img-url",
+      mediumImage: "fake-img-url",
     },
   ])
 );

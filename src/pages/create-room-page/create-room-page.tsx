@@ -7,7 +7,7 @@ import { updateName } from "store/actions";
 import { createUserFB, createRoomFB } from "./helpers";
 import { useFirebase } from "lib/firebase/hooks";
 
-export const NamePage = () => {
+export const CreateRoomPage = () => {
   const dispatch = useDispatch();
   const name = useSelector((state: RootState) => state.name);
   const platform = useSelector((state: RootState) => state.musicPlatform);

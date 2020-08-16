@@ -6,6 +6,63 @@ import { SongCard } from "components/song-card/song-card.component";
 import searchIcon from "./images/search-icon.png";
 import cancelIcon from "./images/cancel-icon.png";
 
+type SearchProps = {
+  userIsDj: boolean;
+  cancelSearch: VoidFunction;
+  onSelectSong: (song: Song) => void;
+};
+
+export const Search = ({
+  userIsDj,
+  cancelSearch,
+  onSelectSong,
+}: SearchProps) => {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const music = useMusic();
+
+  return (
+    <SearchContainer>
+      <div>
+        <SearchInput
+          placeholder="Search for a song! "
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+        <StyledButton
+          type="submit"
+          aria-label="search-button"
+          onClick={() => {
+            if (!searchInput.trim().length) return;
+            music
+              .search(searchInput, ["track"])
+              .then((searchResults) => setSearchResults(searchResults));
+          }}
+        >
+          <ButtonIcon src={searchIcon} alt="" />
+        </StyledButton>
+        <StyledButton aria-label="cancel-search-button" onClick={cancelSearch}>
+          <ButtonIcon src={cancelIcon} alt="" />
+        </StyledButton>
+      </div>
+      <SongQueue>
+        {searchResults.map((song) => {
+          return (
+            <SongQueueItem key={song.url}>
+              <SongCard
+                song={song}
+                actionIcon="plus"
+                actionDisabled={!userIsDj}
+                onClickActionIcon={() => onSelectSong(song)}
+              />
+            </SongQueueItem>
+          );
+        })}
+      </SongQueue>
+    </SearchContainer>
+  );
+};
+
 const SearchContainer = styled.div`
   background: rgba(0, 0, 0, 0.7);
   position: absolute;
@@ -55,61 +112,3 @@ const StyledButton = styled.button`
 const ButtonIcon = styled.img`
   width: 25px;
 `;
-
-type SearchProps = {
-  userIsDj: boolean;
-  cancelSearch: VoidFunction;
-  onSelectSong: (song: Song) => void;
-};
-
-export const Search = ({
-  userIsDj,
-  cancelSearch,
-  onSelectSong,
-}: SearchProps) => {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState<Song[]>([]);
-
-  const music = useMusic();
-
-  return (
-    <SearchContainer>
-      <div>
-        <SearchInput
-          placeholder="Search for a song! "
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-        <StyledButton
-          type="submit"
-          aria-label="search-button"
-          onClick={() => {
-            if (!searchInput.trim().length) return;
-            music
-              .search(searchInput, ["track"])
-              .then((searchResults) => setSearchResults(searchResults));
-          }}
-        >
-          <ButtonIcon src={searchIcon} alt="" />
-        </StyledButton>
-        <StyledButton aria-label="cancel-search-button" onClick={cancelSearch}>
-          <ButtonIcon src={cancelIcon} alt="" />
-        </StyledButton>
-      </div>
-      <SongQueue>
-        {searchResults.map((song) => {
-          return (
-            <SongQueueItem key={song.url}>
-              <SongCard
-                song={song}
-                actionIcon="plus"
-                actionDisabled={!userIsDj}
-                onClickActionIcon={() => onSelectSong(song)}
-              />
-            </SongQueueItem>
-          );
-        })}
-      </SongQueue>
-    </SearchContainer>
-  );
-};

@@ -9,7 +9,7 @@
           ".validate": "!data.exists()"
         },
         "currentSong": {
-          ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'imgUrl']) && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
+          ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage']) && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
         },
         "djs": {
           ".validate": "(!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid)",
@@ -35,7 +35,7 @@
           ".validate": "root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)",
 
           "$queueItemId": {
-            ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'imgUrl'])"
+            ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
           }
         }
       }
