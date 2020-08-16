@@ -12,7 +12,7 @@ const PlatformIconsContainer = styled.div`
   display: flex;
 `;
 
-export const LandingPage = () => {
+export const LoginPage = () => {
   const history = useHistory();
   const music = useMusic();
   const firebase = useFirebase();

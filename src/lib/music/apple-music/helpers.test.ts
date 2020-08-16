@@ -32,7 +32,8 @@ test("transformSongs", () => {
       name: "Bet on it",
       isrc: "123123123",
       url: "https://music.apple.com/goodsong",
-      imgUrl: "http://image.com/100x100.jpg",
+      smallImage: "http://image.com/64x64.jpg",
+      mediumImage: "http://image.com/300x300.jpg",
     },
   ]);
 });

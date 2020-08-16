@@ -94,7 +94,7 @@ class Music {
    * @param callback
    * @returns A cleanup function to remove the listener
    */
-  songEnded(callback: VoidFunction): VoidFunction {
+  songEnded(callback: VoidFunction) {
     return getLib(this.platform).songEnded(callback);
   }
 
@@ -102,7 +102,7 @@ class Music {
    * Set the music player volume
    * @param percentage
    */
-  setVolume(percentage: number): Promise<void> {
+  setVolume(percentage: number) {
     return getLib(this.platform).setVolume(percentage);
   }
 }

@@ -156,7 +156,8 @@ test("transformSongs", () => {
     {
       album: "56 Nights",
       artist: "Future, Fake artist",
-      imgUrl: "small-image",
+      smallImage: "small-image",
+      mediumImage: "med-image",
       isrc: "123123123",
       name: "March madness",
       url: "fake-url.com",

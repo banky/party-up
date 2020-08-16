@@ -21,7 +21,8 @@ const mockDatabaseData = {
       currentSong: {
         album: "Hot Pink",
         artist: "Doja Cat",
-        imgUrl: "imgurl.jpg",
+        smallImage: "imgurl.jpg",
+        mediumImage: "imgurl.jpg",
         isrc: "USRC11903454",
         name: "Say So",
         url: "https://music.apple.com/ca/album/say-so/1486262969?i=1486263180",
@@ -35,7 +36,9 @@ const mockDatabaseData = {
         "-MAOuWlJ3As47bHliRKq": {
           album: "Man of the Woods",
           artist: "Justin Timberlake, Chris Stapleton",
-          imgUrl:
+          smallImage:
+            "https://i.scdn.co/image/ab67616d000048514626ff0fee963da605f6aa06",
+          mediumImage:
             "https://i.scdn.co/image/ab67616d000048514626ff0fee963da605f6aa06",
           isrc: "USRC11703503",
           name: "Say Yes (feat. Chris Stapleton)",
@@ -44,7 +47,9 @@ const mockDatabaseData = {
         "-MAOuWzONbO7aJlPW9f2": {
           album: "Big 2020 Workout Hits! Fitness Music",
           artist: "Workout Remix Factory",
-          imgUrl:
+          smallImage:
+            "https://is4-ssl.mzstatic.com/image/thumb/Music123/v4/dc/68/7d/dc687d62-ff19-ebe7-1590-e39778336a47/195081869353.jpg/100x100bb.jpeg",
+          mediumImage:
             "https://is4-ssl.mzstatic.com/image/thumb/Music123/v4/dc/68/7d/dc687d62-ff19-ebe7-1590-e39778336a47/195081869353.jpg/100x100bb.jpeg",
           isrc: "QM6P42025065",
           name: "Say So (Workout Mix)",
@@ -54,7 +59,9 @@ const mockDatabaseData = {
         "-MAOuXDBT0cXHoRPUP7_": {
           album: "The Black Parade",
           artist: "My Chemical Romance",
-          imgUrl:
+          smallImage:
+            "https://i.scdn.co/image/ab67616d0000485117f77fab7e8f18d5f9fee4a1",
+          mediumImage:
             "https://i.scdn.co/image/ab67616d0000485117f77fab7e8f18d5f9fee4a1",
           isrc: "USRE10602914",
           name: "Famous Last Words",
@@ -250,7 +257,8 @@ describe("Room page functionality for DJ", () => {
         .set({
           album: "firebase-album",
           artist: "firebase-artist",
-          imgUrl: "firebase-img-url",
+          smallImage: "firebase-img-url",
+          mediumImage: "firebase-img-url",
           isrc: "firebase-isrc",
           name: "firebase-name",
           url: "firebase-url",

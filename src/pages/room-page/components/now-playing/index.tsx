@@ -68,7 +68,7 @@ export const NowPlaying = ({
   return (
     <FixedBottomContainer>
       <NowPlayingWrapper>
-        <StyledImage src={song?.imgUrl} alt={`${song?.name} album art`} />
+        <StyledImage src={song?.smallImage} alt={`${song?.name} album art`} />
         <SongName>{song?.name}</SongName>
         <SongArtist>{song?.artist}</SongArtist>
         <VolumeControl />

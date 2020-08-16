@@ -28,8 +28,8 @@ export const supportedAppleMusicSearchTypes = (
  * @param songs
  */
 export const transformSongs = (songs: any): Song[] => {
-  const formatImgUrl = (url: string) => {
-    const IMAGE_HEIGHT = "100";
+  const formatImgUrl = (url: string, size: number) => {
+    const IMAGE_HEIGHT = `${size}`;
     const IMAGE_WIDTH = IMAGE_HEIGHT;
 
     url = url.replace("{h}", IMAGE_HEIGHT);
@@ -43,6 +43,7 @@ export const transformSongs = (songs: any): Song[] => {
     name: song.attributes.name,
     isrc: song.attributes.isrc,
     url: song.attributes.url,
-    imgUrl: formatImgUrl(song.attributes.artwork.url),
+    smallImage: formatImgUrl(song.attributes.artwork.url, 64), // Sizes to match spotify
+    mediumImage: formatImgUrl(song.attributes.artwork.url, 300),
   }));
 };

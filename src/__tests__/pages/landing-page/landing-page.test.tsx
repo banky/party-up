@@ -8,7 +8,7 @@ import {
   mockFirebaseInstance,
   mockMusicInstance,
 } from "utils/test-utils";
-import { LandingPage } from "pages/landing-page/landing-page";
+import { LoginPage } from "pages/login-page/login-page";
 import { fireEvent } from "@testing-library/react";
 
 const mockAuth = {
@@ -20,7 +20,7 @@ mockFirebaseInstance.auth = jest.fn(() => mockAuth);
 
 describe("Music login", () => {
   it("logs in properly for apple music", async () => {
-    render(<LandingPage />);
+    render(<LoginPage />);
 
     fireEvent.click(screen.getByAltText("apple logo"));
 
@@ -35,7 +35,7 @@ describe("Music login", () => {
   });
 
   it("logs in properly for spotify", async () => {
-    render(<LandingPage />);
+    render(<LoginPage />);
 
     fireEvent.click(screen.getByAltText("spotify logo"));
 

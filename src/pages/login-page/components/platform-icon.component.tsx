@@ -6,8 +6,6 @@ import spotifyLogo from "./spotify.png";
 
 const PlatformIconButton = styled.button`
   flex: 1;
-  border: none;
-  background: none;
 `;
 
 const AppleIcon = styled.img`

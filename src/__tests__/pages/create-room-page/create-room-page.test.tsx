@@ -7,7 +7,7 @@ import {
   mockStore,
   mockFirebaseInstance,
 } from "utils/test-utils";
-import { NamePage } from "pages/name-page/name-page";
+import { CreateRoomPage } from "pages/create-room-page/create-room-page";
 import { updateUserId, updateMusicPlatform } from "store/actions";
 
 const mockUserId = "fake-user-id";
@@ -27,7 +27,7 @@ describe("Create Room", () => {
   });
 
   it("creates the expected user in firebase", async () => {
-    render(<NamePage />);
+    render(<CreateRoomPage />);
 
     fireEvent.change(screen.getByLabelText("name-input"), {
       target: { value: mockName },
