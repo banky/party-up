@@ -26,7 +26,7 @@ export const RoomCard = ({
   numListeners,
   numDjs,
 }: RoomCardProps) => {
-  const [cardBackgroundColor, setCardBackgroundColor] = useState([
+  const [cardBackgroundColorStart, setCardBackgroundColorEnd] = useState([
     256,
     256,
     256,
@@ -38,26 +38,43 @@ export const RoomCard = ({
     if (img === null) return;
 
     if (img.complete) {
-      setCardBackgroundColor(colorThief.getColor(img));
+      setCardBackgroundColorEnd(colorThief.getColor(img));
     } else {
       img.addEventListener("load", () => {
-        setCardBackgroundColor(colorThief.getColor(img));
+        setCardBackgroundColorEnd(colorThief.getColor(img));
       });
     }
-  }, [setCardBackgroundColor]);
+  }, [roomId, setCardBackgroundColorEnd]);
 
-  const cardForegroundColor = useMemo(
-    () => cardBackgroundColor.map((channel) => channel + (256 - channel) * 0.9),
-    [cardBackgroundColor]
+  const cardBackgroundColorEnd = useMemo(
+    () =>
+      cardBackgroundColorStart.map(
+        (channel) => channel + (256 - channel) * 0.9
+      ),
+    [cardBackgroundColorStart]
   );
+
+  const cardHeaderTextColor = useMemo(() => {
+    // Light if the average of channels is bigger than 128
+    const isLightBackground =
+      cardBackgroundColorStart.reduce((acc, curr) => acc + curr, 0) /
+        cardBackgroundColorStart.length >
+      128;
+    const targetColor = isLightBackground ? 0 : 256;
+
+    // Try to make the text color contrast with background
+    return cardBackgroundColorStart.map(
+      (channel) => channel + (targetColor - channel) * 0.9
+    );
+  }, [cardBackgroundColorStart]);
 
   return (
     <CardContainer
-      backgroundColor={cardBackgroundColor}
-      foregroundColor={cardForegroundColor}
+      backgroundColorStart={cardBackgroundColorStart}
+      backgroundColorEnd={cardBackgroundColorEnd}
     >
-      <RoomName foregroundColor={cardForegroundColor}>{roomName}</RoomName>
-      <GenreContainer foregroundColor={cardForegroundColor}>
+      <RoomName textColor={cardHeaderTextColor}>{roomName}</RoomName>
+      <GenreContainer textColor={cardHeaderTextColor}>
         <GenreHeader>{"Genre: "}</GenreHeader>
         <Genre>{genre}</Genre>
       </GenreContainer>
@@ -89,40 +106,40 @@ export const RoomCard = ({
 };
 
 const CardContainer = styled.div<{
-  backgroundColor: Array<number>;
-  foregroundColor: Array<number>;
+  backgroundColorStart: Array<number>;
+  backgroundColorEnd: Array<number>;
 }>`
   height: 450px;
   width: 350px;
   background: linear-gradient(
     rgb(
-      ${(props) => props.backgroundColor[0]},
-      ${(props) => props.backgroundColor[1]},
-      ${(props) => props.backgroundColor[2]}
+      ${(props) => props.backgroundColorStart[0]},
+      ${(props) => props.backgroundColorStart[1]},
+      ${(props) => props.backgroundColorStart[2]}
     ),
     rgb(
-      ${(props) => props.foregroundColor[0]},
-      ${(props) => props.foregroundColor[1]},
-      ${(props) => props.foregroundColor[2]}
+      ${(props) => props.backgroundColorEnd[0]},
+      ${(props) => props.backgroundColorEnd[1]},
+      ${(props) => props.backgroundColorEnd[2]}
     )
   );
   border-radius: 15px;
 `;
 
-const RoomName = styled.h1<{ foregroundColor: Array<number> }>`
+const RoomName = styled.h1<{ textColor: Array<number> }>`
   color: rgb(
-    ${(props) => props.foregroundColor[0]},
-    ${(props) => props.foregroundColor[1]},
-    ${(props) => props.foregroundColor[2]}
+    ${(props) => props.textColor[0]},
+    ${(props) => props.textColor[1]},
+    ${(props) => props.textColor[2]}
   );
   padding-top: 10px;
 `;
 
-const GenreContainer = styled.div<{ foregroundColor: Array<number> }>`
+const GenreContainer = styled.div<{ textColor: Array<number> }>`
   color: rgb(
-    ${(props) => props.foregroundColor[0]},
-    ${(props) => props.foregroundColor[1]},
-    ${(props) => props.foregroundColor[2]}
+    ${(props) => props.textColor[0]},
+    ${(props) => props.textColor[1]},
+    ${(props) => props.textColor[2]}
   );
 `;
 
