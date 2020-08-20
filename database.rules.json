@@ -44,7 +44,7 @@
       "$userId": {
         ".read": "auth.uid != null",
         ".write": "auth.uid === $userId",
-        ".validate": "newData.hasChildren(['name', 'platform', 'userId'])"
+        ".validate": "newData.hasChildren(['name', 'platform'])"
       }
     }
   }

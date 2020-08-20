@@ -1,5 +1,4 @@
 import Firebase from "lib/firebase";
-import { Platform } from "lib/music/music";
 
 export const roomNameFromOwner = (ownerName: string) => {
   const endsWithS = ownerName[ownerName.length - 1] === "s";
@@ -7,26 +6,6 @@ export const roomNameFromOwner = (ownerName: string) => {
     return `${ownerName}' Room`;
   }
   return `${ownerName}'s Room`;
-};
-
-/**
- * Create a user in Firebase
- * @param firebase
- * @param userId
- * @param name
- * @param platform
- */
-export const createUserFB = (
-  firebase: Firebase,
-  userId: string,
-  name: string,
-  platform: Platform
-) => {
-  firebase.database().ref("users").child(userId).set({
-    userId: userId,
-    name: name,
-    platform: platform,
-  });
 };
 
 /**
