@@ -18,14 +18,17 @@
             ".validate": "newData.isBoolean()"
           }
         },
-        "members": {
+        "listeners": {
           ".validate": "newData.hasChild(auth.uid) && auth.uid != null",
 
-          "$memberId": {
-            ".validate": "newData.isBoolean() && auth.uid === $memberId"
+          "$listernerId": {
+            ".validate": "root.child('rooms/'+$roomId).exists() && newData.isBoolean() && auth.uid === $listernerId"
           }
         },
-        "name": {
+        "title": {
+          ".validate": "newData.isString() && (!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid)"
+        },
+        "genre": {
           ".validate": "newData.isString() && (!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid)"
         },
         "playing": {

@@ -25,9 +25,9 @@ export function RoomsPageSwitcher({ value, setValue }: RoomsPageSwitcher) {
             indicator: classes.indicator,
           }}
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Top Rooms" {...a11yProps(0)} />
+          <Tab label="Your Rooms" {...a11yProps(1)} />
+          <Tab label="Search" {...a11yProps(2)} />
         </Tabs>
       </div>
     </Container>

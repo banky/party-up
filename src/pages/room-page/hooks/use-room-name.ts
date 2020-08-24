@@ -11,7 +11,7 @@ export const useRoomName = () => {
   useEffect(() => {
     firebase
       .database()
-      .ref(`rooms/${roomKey}/name`)
+      .ref(`rooms/${roomKey}/title`)
       .once("value")
       .then((snapshot) => {
         if (!snapshot.exists()) return history.push("/not-found");

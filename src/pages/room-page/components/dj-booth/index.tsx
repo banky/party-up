@@ -11,7 +11,7 @@ export const DjBooth = () => {
   const firebase = useFirebase();
   const { roomKey } = useParams();
   const userId = useSelector((state: RootState) => state.userId);
-  const members = useUserList(`rooms/${roomKey}/members`);
+  const listeners = useUserList(`rooms/${roomKey}/listeners`);
   const djs = useUserList(`rooms/${roomKey}/djs`);
   const [ownerId, setOwnerId] = useState("");
 
@@ -21,17 +21,17 @@ export const DjBooth = () => {
 
     firebase
       .database()
-      .ref(`rooms/${roomKey}/members/${userId}`)
+      .ref(`rooms/${roomKey}/listeners/${userId}`)
       .set(true)
       .catch((err) => console.warn(err));
 
     return () => {
       firebase
         .database()
-        .ref(`rooms/${roomKey}/members/${userId}`)
+        .ref(`rooms/${roomKey}/listeners/${userId}`)
         .set(false)
         .then(() => {
-          firebase.database().ref(`rooms/${roomKey}/members/${userId}`).off();
+          firebase.database().ref(`rooms/${roomKey}/listeners/${userId}`).off();
         })
         .catch((err) => console.warn(err));
     };
@@ -48,7 +48,7 @@ export const DjBooth = () => {
 
         firebase
           .database()
-          .ref(`rooms/${roomKey}/members/${userId}`)
+          .ref(`rooms/${roomKey}/listeners/${userId}`)
           .onDisconnect()
           .set(false)
           .catch((err) => console.warn(err));
@@ -75,7 +75,7 @@ export const DjBooth = () => {
       <Title>Dj Booth</Title>
       <UserList
         djs={djs}
-        members={members}
+        listeners={listeners}
         ownerId={ownerId}
         currentUserId={userId}
       />
