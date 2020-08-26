@@ -3,6 +3,8 @@ import { RoomCards } from "./room-cards";
 import { Room } from "types/room";
 import { useFirebase } from "lib/firebase/hooks";
 
+const ROOMS_PER_PAGE = 24;
+
 export const AllRooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const firebase = useFirebase();
@@ -10,14 +12,17 @@ export const AllRooms = () => {
   useEffect(() => {
     firebase
       .database()
-      .ref(`rooms/`)
-      .on("value", (snapshot) => {
-        // Place the room ID into the room object
+      .ref("rooms")
+      .orderByChild("listeners/_count")
+      .limitToFirst(ROOMS_PER_PAGE)
+      .once("value")
+      .then((snapshot) => {
         const roomEntries: Array<Array<any>> = Object.entries(snapshot.val());
-        const rooms = roomEntries.map((roomEntry) => ({
+        const rooms: Room[] = roomEntries.map((roomEntry) => ({
           key: roomEntry[0],
           ...roomEntry[1],
         }));
+        rooms.sort((a, z) => z.listeners._count - a.listeners._count);
 
         setRooms(rooms);
       });
