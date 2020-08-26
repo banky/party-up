@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useMusic } from "lib/music/hook";
-import { updateMusicPlatform } from "store/actions";
+import { updateMusicPlatform, updateUserId } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import { Platform } from "lib/music/music";
 import { useFirebase } from "lib/firebase/hooks";
+import { useSetUserInFirebase } from "hooks/set-user-firebase";
 
 const PlatformIconsContainer = styled.div`
   display: flex;
@@ -17,11 +18,15 @@ export const LoginPage = () => {
   const music = useMusic();
   const firebase = useFirebase();
   const dispatch = useDispatch();
+  const setUserInFirebase = useSetUserInFirebase();
 
   const onAuthorize = (platform: Platform) => async () => {
     dispatch(updateMusicPlatform(platform));
     try {
-      await firebase.auth().signInAnonymously();
+      const userCredentials = await firebase.auth().signInAnonymously();
+      const userId = userCredentials.user?.uid || "";
+      setUserInFirebase(userId, "", platform);
+      dispatch(updateUserId(userId));
       history.push("/name");
     } catch (error) {
       console.error(

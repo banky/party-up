@@ -30,7 +30,7 @@ const mockDatabaseData = {
       djs: {
         [mockUserId]: true,
       },
-      name: "Shxkfbskcbd's Room",
+      title: "Shxkfbskcbd's Room",
       playing: false,
       queue: {
         "-MAOuWlJ3As47bHliRKq": {

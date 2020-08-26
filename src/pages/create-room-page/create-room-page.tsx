@@ -1,95 +1,77 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useMemo, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "store/reducers";
-import { updateName } from "store/actions";
-import { createUserFB, createRoomFB } from "./helpers";
+import { createRoomFB } from "./helpers";
 import { useFirebase } from "lib/firebase/hooks";
+import { Header } from "components/header/header.component";
+import { Input } from "components/input/input.component";
+import { PrimaryButton } from "components/primary-button/primary-button.component";
+import { SecondaryButton } from "components/secondary-button/secondary-button.component";
 
 export const CreateRoomPage = () => {
-  const dispatch = useDispatch();
-  const name = useSelector((state: RootState) => state.name);
-  const platform = useSelector((state: RootState) => state.musicPlatform);
+  const [title, setTitle] = useState("");
+  const [genre, setGenre] = useState("");
   const userId = useSelector((state: RootState) => state.userId);
-  const destinationRoomKey = useSelector(
-    (state: RootState) => state.destinationRoomKey
-  );
   const history = useHistory();
   const firebase = useFirebase();
 
-  const createRoomButtonClick = () => {
-    createUserFB(firebase, userId, name, platform);
-    const roomKey = createRoomFB(firebase, userId, name);
+  const createRoomButtonClick = useCallback(() => {
+    const roomKey = createRoomFB({ firebase, userId, title, genre });
+    if (!roomKey) {
+      console.warn("Could not create room");
+      return;
+    }
     history.push(`/room/${roomKey}`);
-  };
+  }, [firebase, history, userId, genre, title]);
 
-  const joinRoomButtonClick = () => {
-    createUserFB(firebase, userId, name, platform);
-    history.push(`/room/${destinationRoomKey}`);
-  };
+  const cancelButtonClick = useCallback(() => {
+    history.push("");
+  }, [history]);
+
+  const inputsValid = useMemo(() => title.length > 0 && genre.length > 0, [
+    title,
+    genre,
+  ]);
 
   return (
-    <div>
-      <h1>What is your name?</h1>
+    <>
+      <Header title="Create Room" />
+
       <div>
-        <NameInput
-          value={name}
-          aria-label={"name-input"}
-          onChange={(e) => dispatch(updateName(e.target.value))}
+        <StyledInput
+          placeholder="Room Title"
+          value={title}
+          aria-label="room-title-input"
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      <CreateRoomButton
-        onClick={createRoomButtonClick}
-        disabled={name.length === 0}
-      >
-        Create Room
-      </CreateRoomButton>
-      {destinationRoomKey !== undefined && (
-        <JoinRoomButton
-          onClick={joinRoomButtonClick}
-          disabled={name.length === 0}
-        >
-          Join Room
-        </JoinRoomButton>
-      )}
-    </div>
+      <div>
+        <StyledInput
+          placeholder="Genre"
+          value={genre}
+          aria-label="room-genre-input"
+          onChange={(e) => setGenre(e.target.value)}
+        />
+      </div>
+      <ButtonContainer>
+        <SecondaryButton onClick={cancelButtonClick}>Cancel</SecondaryButton>
+        <PrimaryButton disabled={!inputsValid} onClick={createRoomButtonClick}>
+          Create
+        </PrimaryButton>
+      </ButtonContainer>
+    </>
   );
 };
 
-const NameInput = styled.input`
-  border: 1px solid #ebcfb2;
-  border-radius: 20px;
+const StyledInput = styled(Input)`
+  margin: 80px 0;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
   width: 50%;
-  height: 2em;
-  font-size: 22px;
-  font-family: "Muli";
-  padding-left: 20px;
-  padding-right: 20px;
-`;
-
-const CreateRoomButton = styled.button`
-  background-color: #9bc1bc;
-  font-size: 22px;
-  font-family: "Muli";
-  border: none;
-  height: 2em;
-  margin: 1em 1em;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-const JoinRoomButton = styled.button`
-  background-color: #9bc1bc;
-  font-size: 22px;
-  font-family: "Muli";
-  border: none;
-  height: 2em;
-  margin: 1em 1em;
-
-  &:hover {
-    opacity: 0.7;
-  }
+  margin: 0 auto;
+  justify-content: space-around;
 `;

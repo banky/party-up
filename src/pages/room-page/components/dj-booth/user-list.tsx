@@ -10,14 +10,14 @@ import { DjInactiveIcon } from "./components/dj-inactive-icon";
 
 type UserListProps = {
   djs: User[];
-  members: User[];
+  listeners: User[];
   ownerId: string;
   currentUserId: string;
 };
 
 export const UserList = ({
   djs,
-  members,
+  listeners,
   ownerId,
   currentUserId,
 }: UserListProps) => {
@@ -40,16 +40,16 @@ export const UserList = ({
 
   return (
     <UserListWrapper>
-      {members.map((member) => {
-        const isDj = djs.some((dj) => member.userId === dj.userId);
+      {listeners.map((listener) => {
+        const isDj = djs.some((dj) => listener.userId === dj.userId);
         const onPressAction = isDj ? onPressDjDowngrade : onPressDjUpgrade;
 
         return (
-          <li key={member.userId}>
+          <li key={listener.userId}>
             <UserCard
-              user={member}
+              user={listener}
               isDj={isDj}
-              isOwner={ownerId === member.userId}
+              isOwner={ownerId === listener.userId}
               showActionIcon={ownerId === currentUserId}
               onPressAction={onPressAction}
             />

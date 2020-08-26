@@ -1,10 +1,10 @@
 import { Song } from "lib/music/types";
 
 export type Room = {
-  id: string;
-  name: string;
+  key: string;
+  title: string;
   genre: string;
   currentSong: Song;
-  numListeners: number;
-  numDjs: number;
+  listeners: { _count: number };
+  djs: { _count: number };
 };
