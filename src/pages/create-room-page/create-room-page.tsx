@@ -14,13 +14,11 @@ export const CreateRoomPage = () => {
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const userId = useSelector((state: RootState) => state.userId);
-  // const name = useSelector((state: RootState) => state.name);
   const history = useHistory();
   const firebase = useFirebase();
 
   const createRoomButtonClick = useCallback(() => {
     const roomKey = createRoomFB({ firebase, userId, title, genre });
-    console.log("new room key: ", roomKey);
     if (!roomKey) {
       console.warn("Could not create room");
       return;

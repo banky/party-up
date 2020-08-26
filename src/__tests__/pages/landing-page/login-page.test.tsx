@@ -11,8 +11,12 @@ import {
 import { LoginPage } from "pages/login-page/login-page";
 import { fireEvent } from "@testing-library/react";
 
+const mockUser = {
+  user: { uid: "fake-uid" },
+};
+
 const mockAuth = {
-  signInAnonymously: jest.fn(() => Promise.resolve()),
+  signInAnonymously: jest.fn(() => Promise.resolve(mockUser)),
 };
 
 // @ts-ignore
