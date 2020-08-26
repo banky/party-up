@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 // @ts-ignore: No types
 import ColorThief from "colorthief";
+import { useHistory } from "react-router-dom";
 
 type RoomCardProps = {
   roomId: string;
@@ -26,6 +27,7 @@ export const RoomCard = ({
   numListeners,
   numDjs,
 }: RoomCardProps) => {
+  const history = useHistory();
   const [cardBackgroundColorStart, setCardBackgroundColorEnd] = useState([
     256,
     256,
@@ -72,6 +74,7 @@ export const RoomCard = ({
     <CardContainer
       backgroundColorStart={cardBackgroundColorStart}
       backgroundColorEnd={cardBackgroundColorEnd}
+      onClick={() => history.push(`room/${roomId}`)}
     >
       <RoomName textColor={cardHeaderTextColor}>{roomName}</RoomName>
       <GenreContainer textColor={cardHeaderTextColor}>

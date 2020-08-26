@@ -1,6 +1,8 @@
 {
   "rules": {
     "rooms": {
+      ".read": "auth.uid != null",
+
       "$roomId": {
         ".read": "auth.uid != null",
         ".write": "auth.uid != null",
