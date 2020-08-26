@@ -28,7 +28,7 @@ export const RoomCard = ({
   numDjs,
 }: RoomCardProps) => {
   const history = useHistory();
-  const [cardBackgroundColorStart, setCardBackgroundColorEnd] = useState([
+  const [cardBackgroundColorStart, setCardBackgroundColorStart] = useState([
     256,
     256,
     256,
@@ -40,13 +40,13 @@ export const RoomCard = ({
     if (img === null) return;
 
     if (img.complete) {
-      setCardBackgroundColorEnd(colorThief.getColor(img));
+      setCardBackgroundColorStart(colorThief.getColor(img));
     } else {
       img.addEventListener("load", () => {
-        setCardBackgroundColorEnd(colorThief.getColor(img));
+        setCardBackgroundColorStart(colorThief.getColor(img));
       });
     }
-  }, [roomId, setCardBackgroundColorEnd]);
+  }, [roomId, setCardBackgroundColorStart]);
 
   const cardBackgroundColorEnd = useMemo(
     () =>
