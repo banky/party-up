@@ -1,7 +1,6 @@
 import React from "react";
 import {
   render,
-  act,
   fireEvent,
   screen,
   mockStore,
@@ -12,7 +11,8 @@ import { updateUserId, updateMusicPlatform } from "store/actions";
 
 const mockUserId = "fake-user-id";
 const mockPlatform = "apple";
-const mockName = "Mario";
+const mockTitle = "Marios room";
+const mockGenre = "rock n roll";
 
 describe("Create Room", () => {
   mockStore.dispatch(updateUserId(mockUserId));
@@ -26,31 +26,19 @@ describe("Create Room", () => {
     mockFirebaseInstance.database().ref().set(null);
   });
 
-  it("creates the expected user in firebase", async () => {
+  it("creates the expected room in firebase", async () => {
     render(<CreateRoomPage />);
 
-    fireEvent.change(screen.getByLabelText("name-input"), {
-      target: { value: mockName },
+    fireEvent.change(screen.getByLabelText("room-title-input"), {
+      target: { value: mockTitle },
     });
 
-    expect(mockStore.getState().name).toBe(mockName);
-
-    fireEvent.click(screen.getByText("Create Room"));
-
-    const userSnapshot = await mockFirebaseInstance
-      .database()
-      .ref("users")
-      .child(mockUserId)
-      .once("value");
-
-    expect(userSnapshot.val()).toStrictEqual({
-      name: mockName,
-      platform: mockPlatform,
-      userId: mockUserId,
+    fireEvent.change(screen.getByLabelText("room-genre-input"), {
+      target: { value: mockGenre },
     });
-  });
 
-  it("creates the expected room in firebase", async () => {
+    fireEvent.click(screen.getByText("Create"));
+
     const roomsSnapshot = await mockFirebaseInstance
       .database()
       .ref("rooms")
@@ -62,7 +50,8 @@ describe("Create Room", () => {
     expect(lastRoom).toStrictEqual({
       owner: mockUserId,
       djs: { [mockUserId]: true },
-      name: "Mario's Room",
+      title: "Marios room",
+      genre: "rock n roll",
     });
   });
 });
