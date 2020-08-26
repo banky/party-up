@@ -2,6 +2,7 @@
   "rules": {
     "rooms": {
       ".read": "auth.uid != null",
+      ".indexOn": ["listeners/_count"],
 
       "$roomId": {
         ".read": "auth.uid != null",
