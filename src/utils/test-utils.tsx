@@ -11,7 +11,6 @@ jest.mock("lib/music/music");
 
 const mockStore = createStore(rootReducer, {
   destinationRoomKey: undefined,
-  name: "",
   musicPlatform: "apple",
   userId: "",
 });

@@ -13,7 +13,7 @@ export const useUserAuthorized = () => {
   useEffect(() => {
     if (!music.isAuthorized()) {
       dispatch(updateDestinationRoomKey(roomKey));
-      history.push("/");
+      history.push("/login");
     } else {
       dispatch(updateDestinationRoomKey());
     }

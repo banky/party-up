@@ -25,9 +25,15 @@ export const LoginPage = () => {
     try {
       const userCredentials = await firebase.auth().signInAnonymously();
       const userId = userCredentials.user?.uid || "";
-      setUserInFirebase(userId, "", platform);
+      const nameSnapshot = await firebase
+        .database()
+        .ref(`users/${userId}/name`)
+        .once("value");
+      const name = nameSnapshot.val() ?? "";
+
+      setUserInFirebase(userId, name, platform);
       dispatch(updateUserId(userId));
-      history.push("/name");
+      name === "" ? history.push("/name") : history.push("/");
     } catch (error) {
       console.error(
         "Error authenticating. Code:",
