@@ -1,5 +1,4 @@
 export * from "./use-room-name";
-export * from "./use-user-authorized";
 export * from "./use-user-is-owner";
 export * from "./use-user-is-dj";
 export * from "./use-room-playing";

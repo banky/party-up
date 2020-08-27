@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useFirebase } from "lib/firebase/hooks";
 import { useMusic } from "lib/music/hook";
+import { useUserAuthorized } from "hooks/use-user-authorized";
 import { Search } from "./components/search";
 import { Queue } from "./components/queue";
 import { NowPlaying } from "./components/now-playing";
 import { QueueTitle } from "./components/queue-title";
 import {
-  useUserAuthorized,
   useRoomName,
   useUserIsOwner,
   useUserIsDj,

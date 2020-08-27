@@ -19,7 +19,9 @@ export const configure = async () => {
   spotifyWebApi = new SpotifyWebApi();
   await loadSpotifyWebPlayer();
 
-  const authToken = localStorage.getItem("spotifyAuthToken") || "";
+  const authToken = isAuthorized()
+    ? localStorage.getItem("spotifyAuthToken")
+    : "";
 
   if (authToken) {
     spotifyWebApi.setAccessToken(authToken);
