@@ -15,8 +15,7 @@ export const AllRooms = () => {
       .ref("rooms")
       .orderByChild("listeners/_count")
       .limitToFirst(ROOMS_PER_PAGE)
-      .once("value")
-      .then((snapshot) => {
+      .on("value", (snapshot) => {
         const rooms = roomsWithId(snapshot.val());
         rooms.sort(byMostPopular);
 

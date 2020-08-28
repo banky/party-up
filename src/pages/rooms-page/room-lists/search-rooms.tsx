@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "store/reducers";
 import { useFirebase } from "lib/firebase/hooks";
 import { Room } from "types/room";
-import { PrimaryButton } from "components/primary-button/primary-button.component";
 import { RoomCards } from "../components/room-cards";
 import { ROOMS_PER_PAGE } from "./constants";
 import { roomsWithId, byMostPopular } from "./helpers";
+import { Input } from "components/input/input.component";
 
-export const YourRooms = () => {
+export const SearchRooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
+  const [search, setSearch] = useState("");
   const firebase = useFirebase();
   const userId = useSelector((state: RootState) => state.userId);
-  const history = useHistory();
 
   useEffect(() => {
     firebase
@@ -26,26 +26,35 @@ export const YourRooms = () => {
         const rooms = roomsWithId(snapshot.val());
         rooms.sort(byMostPopular);
 
-        // TODO: To do this kind of filtering on the server,
-        // we need to use Firestore instead of realtime db
-        const yourRooms = rooms.filter((room) => room.owner === userId);
-
-        setRooms(yourRooms);
+        setRooms(rooms);
       });
 
     return () => firebase.database().ref(`rooms`).off();
   }, [firebase, userId]);
 
+  useEffect(() => {
+    const bySearchFields = (room: Room) => {
+      const title = room.title.toLowerCase();
+      const genre = room.genre.toLowerCase();
+      const lowerCaseSearch = search.toLowerCase();
+      return title.includes(lowerCaseSearch) || genre.includes(lowerCaseSearch);
+    };
+    const filteredRooms = rooms.filter(bySearchFields);
+    setFilteredRooms(filteredRooms);
+  }, [search]);
+
   return (
     <>
-      <CreateRoomButton onClick={() => history.push("create-room")}>
-        Create Room
-      </CreateRoomButton>
-      <RoomCards rooms={rooms} />
+      <SearchRoomsInput
+        placeholder="Search by room name or genre"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <RoomCards rooms={filteredRooms} />
     </>
   );
 };
 
-const CreateRoomButton = styled(PrimaryButton)`
+const SearchRoomsInput = styled(Input)`
   margin-top: 20px;
 `;
