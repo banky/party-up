@@ -41,7 +41,7 @@ export const SearchRooms = () => {
     };
     const filteredRooms = rooms.filter(bySearchFields);
     setFilteredRooms(filteredRooms);
-  }, [search]);
+  }, [search, rooms]);
 
   return (
     <>
