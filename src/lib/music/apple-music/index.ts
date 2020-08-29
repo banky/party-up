@@ -106,10 +106,27 @@ export const pause = (): Promise<any> => {
   return MusicKit.getInstance().pause();
 };
 
-export const progress = (): Promise<number> => {
+export const progressMilliseconds = (): Promise<number> => {
   const progressInSeconds = MusicKit.getInstance().player.currentPlaybackTime;
 
   return Promise.resolve(Math.floor(progressInSeconds * 1000));
+};
+
+export const progress = (
+  callback: (progress: number) => void
+): VoidFunction => {
+  MusicKit.getInstance().addEventListener(
+    "playbackProgressDidChange",
+    ({ progress }: { progress: number }) => {
+      callback(progress);
+    }
+  );
+
+  return () =>
+    MusicKit.getInstance().removeEventListener(
+      "playbackProgressDidChange",
+      callback
+    );
 };
 
 export const seek = (time: number): Promise<any> => {

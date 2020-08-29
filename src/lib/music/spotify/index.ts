@@ -202,10 +202,28 @@ export const pause = (): Promise<any> => {
   });
 };
 
-export const progress = async (): Promise<number> => {
+export const progressMilliseconds = async (): Promise<number> => {
   const response = await spotifyWebApi.getMyCurrentPlaybackState();
 
   return response.progress_ms || 0;
+};
+
+export const progress = (
+  callback: (progress: number) => void
+): VoidFunction => {
+  var refreshProgress = setInterval(
+    () =>
+      window.spotifyPlayer
+        .getCurrentState()
+        .then(
+          ({ position, duration }: { position: number; duration: number }) => {
+            callback(position / duration);
+          }
+        ),
+    1000
+  );
+
+  return () => clearInterval(refreshProgress);
 };
 
 export const seek = (time: number): Promise<any> => {
