@@ -14,6 +14,7 @@ import {
   useRoomPlaying,
   useCurrentSong,
   useFirebaseActions,
+  useProgress,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
 import styled from "styled-components";
@@ -36,6 +37,7 @@ export const RoomPage = () => {
     enqueueSongFB,
     dequeueSongFB,
   } = useFirebaseActions();
+  const progress = useProgress();
 
   useUserAuthorized();
 
@@ -120,6 +122,7 @@ export const RoomPage = () => {
         song={currentSong}
         isPlaying={roomPlaying}
         userIsOwner={userIsOwner}
+        progress={progress}
         onClickPlay={onClickPlay}
         onClickPause={onClickPause}
         onClickNext={onClickNext}

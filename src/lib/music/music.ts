@@ -78,8 +78,17 @@ class Music {
   /**
    * Get the playback progress in milliseconds
    */
-  progress() {
-    return getLib(this.platform).progress();
+  progressMilliseconds() {
+    return getLib(this.platform).progressMilliseconds();
+  }
+
+  /**
+   * Callback is fired when song progress is updated
+   * @param callback called with a progress value between 0 and 1
+   * @returns A cleanup function to remove the listener
+   */
+  progress(callback: (progress: number) => void) {
+    return getLib(this.platform).progress(callback);
   }
 
   /**
