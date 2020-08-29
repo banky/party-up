@@ -21,7 +21,11 @@ const search = jest.fn(() =>
   ])
 );
 const songEnded = jest.fn();
-const progress = jest.fn(() => Promise.resolve(1000));
+const progress = jest.fn((callback) => {
+  callback(10);
+  return () => {};
+});
+const progressMilliseconds = jest.fn(() => Promise.resolve(1000));
 const seek = jest.fn(() => Promise.resolve());
 const setVolume = jest.fn(() => Promise.resolve());
 
@@ -37,6 +41,7 @@ const mock = jest.fn().mockImplementation(() => {
     search,
     songEnded,
     progress,
+    progressMilliseconds,
     seek,
     setVolume,
   };
