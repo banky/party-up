@@ -12,21 +12,25 @@ type HeaderProps = {
 
 export const Header = ({ title }: HeaderProps) => {
   const [name, setName] = useState("");
+  const [profileImgUrl, setProfileImgUrl] = useState("");
   const history = useHistory();
   const firebase = useFirebase();
   const userId = useSelector((state: RootState) => state.userId);
 
   useEffect(() => {
-    const ref = `users/${userId}/name`;
+    const ref = `users/${userId}`;
     firebase
       .database()
       .ref(ref)
-      .on("value", (snapshot) => setName(snapshot.val()));
+      .on("value", (snapshot) => {
+        if (snapshot.exists()) {
+          setName(snapshot.val().name);
+          setProfileImgUrl(snapshot.val().imageUrl);
+        }
+      });
 
     return () => firebase.database().ref(ref).off();
   }, [firebase, userId]);
-
-  const profileImgUrl = "https://image.flaticon.com/icons/png/512/37/37232.png";
 
   return (
     <Container>
@@ -36,7 +40,9 @@ export const Header = ({ title }: HeaderProps) => {
       <Title>{title}</Title>
       <Profile>
         <ProfileName>{name}</ProfileName>
-        <ProfileImage src={profileImgUrl} />
+        <button onClick={() => history.push("/profile")}>
+          <ProfileImage src={profileImgUrl} />
+        </button>
       </Profile>
     </Container>
   );
@@ -73,4 +79,5 @@ const ProfileImage = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 15px;
+  object-fit: cover;
 `;

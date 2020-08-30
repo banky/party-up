@@ -7,6 +7,7 @@ import { SpotifyCallback } from "pages/spotify-callback-page";
 import { NotFoundPage } from "pages/not-found-page/not-found-page";
 import { RoomsPage } from "pages/rooms-page/rooms-page";
 import { NamePage } from "pages/name-page/name-page";
+import { ProfilePage } from "pages/profile-page/profile-page";
 
 export const Routes = () => {
   return (
@@ -32,6 +33,9 @@ export const Routes = () => {
         </Route>
         <Route path="/login">
           <LoginPage />
+        </Route>
+        <Route path="/profile">
+          <ProfilePage />
         </Route>
         <Route path="/">
           <RoomsPage />
