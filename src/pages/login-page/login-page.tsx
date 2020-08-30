@@ -7,7 +7,7 @@ import { updateMusicPlatform, updateUserId } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import { Platform } from "lib/music/music";
 import { useFirebase } from "lib/firebase/hooks";
-import { useSetUserInFirebase } from "hooks/set-user-firebase";
+import { useUpdateUserInFirebase } from "hooks/use-update-user-firebase";
 
 const PlatformIconsContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const LoginPage = () => {
   const music = useMusic();
   const firebase = useFirebase();
   const dispatch = useDispatch();
-  const setUserInFirebase = useSetUserInFirebase();
+  const updateUserInFirebase = useUpdateUserInFirebase();
 
   const onAuthorize = (platform: Platform) => async () => {
     dispatch(updateMusicPlatform(platform));
@@ -31,7 +31,7 @@ export const LoginPage = () => {
         .once("value");
       const name = nameSnapshot.val() ?? "";
 
-      setUserInFirebase(userId, name, platform);
+      updateUserInFirebase({ userId, name, platform });
       dispatch(updateUserId(userId));
       name === "" ? history.push("/name") : history.push("/");
     } catch (error) {
