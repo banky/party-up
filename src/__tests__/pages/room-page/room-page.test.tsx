@@ -30,6 +30,9 @@ const mockDatabaseData = {
       djs: {
         [mockUserId]: true,
       },
+      listeners: {
+        [mockUserId]: true,
+      },
       title: "Shxkfbskcbd's Room",
       playing: false,
       queue: {
@@ -98,10 +101,6 @@ describe("Room page functionality for DJ", () => {
 
   afterEach(async () => {
     jest.clearAllMocks();
-
-    await act(async () => {
-      await mockFirebaseInstance.database().ref().set(null);
-    });
   });
 
   it("screen looks as expected", async () => {
@@ -276,9 +275,7 @@ describe("Room page functionality for DJ that is not owner", () => {
       rooms: {
         [mockRoomKey]: {
           ...mockDatabaseData.rooms[mockRoomKey],
-          owner: {
-            [mockUserId]: false,
-          },
+          owner: "some-other-user",
           djs: {
             [mockUserId]: true,
           },
@@ -296,10 +293,6 @@ describe("Room page functionality for DJ that is not owner", () => {
 
   afterEach(async () => {
     jest.clearAllMocks();
-
-    await act(async () => {
-      await mockFirebaseInstance.database().ref().set(null);
-    });
   });
 
   it("screen looks as expected", async () => {
@@ -391,9 +384,7 @@ describe("Room page functionality for non-DJ", () => {
       rooms: {
         [mockRoomKey]: {
           ...mockDatabaseData.rooms[mockRoomKey],
-          owner: {
-            [mockUserId]: false,
-          },
+          owner: "some-other-user",
           djs: {
             [mockUserId]: false,
           },
@@ -408,10 +399,6 @@ describe("Room page functionality for non-DJ", () => {
 
   afterEach(async () => {
     jest.clearAllMocks();
-
-    await act(async () => {
-      await mockFirebaseInstance.database().ref().set(null);
-    });
   });
 
   it("screen looks as expected", async () => {
