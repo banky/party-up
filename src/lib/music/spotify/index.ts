@@ -123,6 +123,8 @@ export const search = async (
   query: string,
   searchTypes: SearchType[]
 ): Promise<Song[]> => {
+  if (!query) return [];
+
   const response = await spotifyWebApi.search(query, searchTypes, {
     limit: SEARCH_LIMIT,
   });

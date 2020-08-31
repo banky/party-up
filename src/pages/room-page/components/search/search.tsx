@@ -1,29 +1,37 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Input } from "components/input/input.component";
-import { PrimaryButton } from "components/primary-button/primary-button.component";
 import { useMusic } from "lib/music/hook";
 import { Song } from "lib/music/types";
 import { SongCard } from "components/song-card/song-card.component";
+import { useDebouncedCallback } from "hooks/use-debounced-callback";
 
 export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const music = useMusic();
 
-  const onSearch = useCallback(() => {
-    music.search(searchQuery, ["track"]).then((searchResults) => {
-      setSearchResults(searchResults);
-    });
-  }, [music, searchQuery]);
+  const onSearch = useDebouncedCallback(
+    () => {
+      music
+        .search(searchQuery, ["track"])
+        .then((searchResults) => setSearchResults(searchResults));
+    },
+    [music, searchQuery],
+    750
+  );
+
+  useEffect(() => {
+    onSearch();
+  }, [searchQuery, onSearch]);
 
   return (
     <>
       <StyledInput
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Start typing to search"
       />
-      <PrimaryButton onClick={() => onSearch()}>Search</PrimaryButton>
       <SongQueue>
         {searchResults.map((song) => {
           return (
