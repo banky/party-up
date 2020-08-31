@@ -30,7 +30,7 @@
     "redux-persist": "^6.0.0",
     "spotify-web-api-js": "^1.5.0",
     "styled-components": "^5.1.1",
-    "typescript": "~3.9.7"
+    "typescript": "~4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
