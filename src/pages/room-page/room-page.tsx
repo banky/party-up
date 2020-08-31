@@ -1,40 +1,44 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import { useFirebase } from "lib/firebase/hooks";
 import { useMusic } from "lib/music/hook";
 import { useUserAuthorized } from "hooks/use-user-authorized";
+import { Header } from "components/header/header.component";
+import { TabSwitcher } from "components/tab-switcher/tab-switcher";
 import { Search } from "./components/search";
-import { Queue } from "./components/queue";
 import { NowPlaying } from "./components/now-playing";
-import { QueueTitle } from "./components/queue-title";
 import {
   useRoomName,
   useUserIsOwner,
-  useUserIsDj,
   useRoomPlaying,
   useCurrentSong,
   useFirebaseActions,
   useProgress,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
-import styled from "styled-components";
+
+const TABS = {
+  History: () => null,
+  "Your Queue": () => null,
+  Playlists: () => null,
+  Search: Search,
+};
 
 export const RoomPage = () => {
   const firebase = useFirebase();
   const music = useMusic();
   const { roomKey } = useParams();
-  const [showSearch, setShowSearch] = useState(false);
   const userPressedNext = useRef(false);
+  const [switcherValue, setSwitcherValue] = useState(3);
 
   const roomName = useRoomName();
   const userIsOwner = useUserIsOwner();
-  const userIsDj = useUserIsDj();
   const roomPlaying = useRoomPlaying();
   const currentSong = useCurrentSong();
   const {
     setRoomPlayingFB,
     setCurrentSongFB,
-    enqueueSongFB,
     dequeueSongFB,
   } = useFirebaseActions();
   const progress = useProgress();
@@ -69,6 +73,10 @@ export const RoomPage = () => {
     }
   }, [music, userIsOwner, dequeueSongFB, setCurrentSongFB]);
 
+  const SongList = useMemo(() => Object.values(TABS)[switcherValue], [
+    switcherValue,
+  ]);
+
   const onClickPlay = async () => {
     // Only set current song if one doesn't exist already
     firebase
@@ -99,50 +107,54 @@ export const RoomPage = () => {
   };
 
   return (
-    <div>
-      <h1>{`Welcome to ${roomName}`}</h1>
-      <RoomWrapper>
-        <DjBoothWrapper>
-          <DjBooth />
-        </DjBoothWrapper>
-
-        <QueueWrapper>
-          <QueueTitle
-            userIsDj={userIsDj}
-            onClickSearch={() => setShowSearch(true)}
-          />
-
-          <Queue roomKey={roomKey} userIsDj={userIsDj} />
-        </QueueWrapper>
-
-        <MessagesWrapper>{/* For messages */}</MessagesWrapper>
-      </RoomWrapper>
-
-      <NowPlaying
-        song={currentSong}
-        isPlaying={roomPlaying}
-        userIsOwner={userIsOwner}
-        progress={progress}
-        onClickPlay={onClickPlay}
-        onClickPause={onClickPause}
-        onClickNext={onClickNext}
-      />
-
-      {showSearch && (
-        <Search
-          userIsDj={userIsDj}
-          cancelSearch={() => setShowSearch(false)}
-          onSelectSong={(song) => {
-            enqueueSongFB(song);
-          }}
+    <>
+      <Header title={roomName} />
+      <RoomPageWrapper>
+        <TabSwitcher
+          tabs={Object.keys(TABS)}
+          value={switcherValue}
+          setValue={setSwitcherValue}
         />
-      )}
-    </div>
+        <RoomContentWrapper>
+          <DjBoothWrapper>
+            <DjBooth />
+          </DjBoothWrapper>
+
+          <SongListWrapper>
+            <SongList />
+          </SongListWrapper>
+
+          <MessagesWrapper>{/* For messages */}</MessagesWrapper>
+        </RoomContentWrapper>
+
+        <NowPlaying
+          song={currentSong}
+          isPlaying={roomPlaying}
+          userIsOwner={userIsOwner}
+          progress={progress}
+          onClickPlay={onClickPlay}
+          onClickPause={onClickPause}
+          onClickNext={onClickNext}
+        />
+      </RoomPageWrapper>
+    </>
   );
 };
 
-const RoomWrapper = styled.div`
+const RoomPageWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 40px; /* Height of the header :( */
+`;
+
+const RoomContentWrapper = styled.div`
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
 `;
 
 const DjBoothWrapper = styled.div`
@@ -150,7 +162,8 @@ const DjBoothWrapper = styled.div`
   padding: 0 20px;
 `;
 
-const QueueWrapper = styled.div`
+const SongListWrapper = styled.div`
+  overflow: auto;
   flex: 2 1 700px;
 `;
 
