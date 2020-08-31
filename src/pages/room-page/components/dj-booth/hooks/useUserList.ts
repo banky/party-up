@@ -43,7 +43,7 @@ export const useUserList = (ref: string) => {
         if (!isCancelled) {
           setUsers(
             snapshots
-              .map((snapshot) => snapshot.val())
+              .map((snapshot) => ({ userId: snapshot.key, ...snapshot.val() }))
               .filter((val) => val !== null)
           );
         }
