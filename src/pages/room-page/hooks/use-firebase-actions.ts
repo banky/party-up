@@ -14,11 +14,14 @@ export const useFirebaseActions = () => {
   );
 
   const setCurrentSongFB = useCallback(
-    (song: Song) => {
-      firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
-      firebase.database().ref(`rooms/${roomKey}/playing`).set(true);
+    (song?: Song) => {
+      if (song !== undefined) {
+        firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
+        setRoomPlayingFB(true);
+      }
+      setRoomPlayingFB(false);
     },
-    [firebase, roomKey]
+    [firebase, roomKey, setRoomPlayingFB]
   );
 
   const enqueueSongFB = useCallback(
