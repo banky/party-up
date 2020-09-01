@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { RootState } from "store/reducers";
 import { Header } from "components/header/header.component";
 import { Input } from "components/input/input.component";

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { Song } from "lib/music/types";
 
 export const useFirebaseActions = () => {

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { User } from "types/user";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useParams } from "react-router-dom";
 import { UpgradeIcon } from "./components/upgrade-icon";
 import { DowngradeIcon } from "./components/downgrade-icon";

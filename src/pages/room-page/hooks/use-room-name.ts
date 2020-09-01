@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useParams, useHistory } from "react-router-dom";
 
 export const useRoomName = () => {

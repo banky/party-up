@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useMusic } from "lib/music/hook";
 import { Song } from "lib/music/types";
 

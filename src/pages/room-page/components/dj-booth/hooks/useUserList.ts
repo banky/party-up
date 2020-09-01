@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { User } from "types/user";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 
 export const useUserList = (ref: string) => {
   const firebase = useFirebase();

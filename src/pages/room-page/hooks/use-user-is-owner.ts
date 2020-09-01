@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { RootState } from "store/reducers";
 
 export const useUserIsOwner = () => {

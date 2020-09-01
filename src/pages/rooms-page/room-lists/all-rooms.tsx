@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { RoomCards } from "../components/room-cards";
 import { Room } from "types/room";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { ROOMS_PER_PAGE } from "./constants";
 import { byMostPopular, roomsWithId } from "./helpers";
 

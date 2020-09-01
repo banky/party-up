@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useMusic } from "lib/music/hook";
 import { useUserAuthorized } from "hooks/use-user-authorized";
 import { Header } from "components/header/header.component";

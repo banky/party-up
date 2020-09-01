@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { Input } from "components/input/input.component";
 import { useMusic } from "lib/music/hook";
+import { useFirebase } from "lib/firebase/hook";
 import { Song } from "lib/music/types";
 import { SongCard } from "components/song-card/song-card.component";
 import { useDebouncedCallback } from "hooks/use-debounced-callback";
@@ -10,6 +11,7 @@ export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const music = useMusic();
+  const firebase = useFirebase();
 
   const onSearch = useDebouncedCallback(
     () => {
@@ -24,6 +26,8 @@ export const Search = () => {
   useEffect(() => {
     onSearch();
   }, [searchQuery, onSearch]);
+
+  const onPressSongCard = useCallback((song: Song) => () => {}, []);
 
   return (
     <>

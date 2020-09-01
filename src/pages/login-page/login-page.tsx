@@ -6,7 +6,7 @@ import { useMusic } from "lib/music/hook";
 import { updateMusicPlatform, updateUserId } from "store/actions";
 import { PlatformIcon } from "./components/platform-icon.component";
 import { Platform } from "lib/music/music";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useUpdateUserInFirebase } from "hooks/use-update-user-firebase";
 
 const PlatformIconsContainer = styled.div`
@@ -25,6 +25,7 @@ export const LoginPage = () => {
     try {
       const userCredentials = await firebase.auth().signInAnonymously();
       const userId = userCredentials.user?.uid || "";
+      // TODO: Fix this by pulling the entire user and only updating the name field
       const nameSnapshot = await firebase
         .database()
         .ref(`users/${userId}/name`)

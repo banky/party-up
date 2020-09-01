@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import PartyUpLogo from "./assets/party-up.png";
 import { RootState } from "store/reducers";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 
 type HeaderProps = {
   title: string;
