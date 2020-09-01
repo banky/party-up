@@ -4,12 +4,13 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles } from "@material-ui/core/styles";
 
-type RoomsPageSwitcher = {
+type TabSwitcherProps = {
+  tabs: string[];
   value: number;
   setValue: (_: number) => void;
 };
 
-export function RoomsPageSwitcher({ value, setValue }: RoomsPageSwitcher) {
+export function TabSwitcher({ tabs, value, setValue }: TabSwitcherProps) {
   const classes = useStyles();
 
   return (
@@ -25,9 +26,9 @@ export function RoomsPageSwitcher({ value, setValue }: RoomsPageSwitcher) {
             indicator: classes.indicator,
           }}
         >
-          <Tab label="Top Rooms" {...a11yProps(0)} />
-          <Tab label="Your Rooms" {...a11yProps(1)} />
-          <Tab label="Search" {...a11yProps(2)} />
+          {tabs.map((tab, index) => (
+            <Tab key={tab} label={tab} {...a11yProps(index)} />
+          ))}
         </Tabs>
       </div>
     </Container>
@@ -47,8 +48,7 @@ const a11yProps = (index: Number) => {
  */
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "rgba(0, 0, 0, 0)",
   },
   indicator: {
     backgroundColor: "#ee6352",
@@ -56,6 +56,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Container = styled.div`
-  max-width: 540px;
+  max-width: 640px;
   margin: 0 auto;
 `;

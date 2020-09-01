@@ -4,4 +4,5 @@ export type User = {
   userId: string;
   name: string;
   platform: Platform;
+  imageUrl: string;
 };

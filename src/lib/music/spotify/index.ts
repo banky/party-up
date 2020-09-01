@@ -123,6 +123,8 @@ export const search = async (
   query: string,
   searchTypes: SearchType[]
 ): Promise<Song[]> => {
+  if (!query) return [];
+
   const response = await spotifyWebApi.search(query, searchTypes, {
     limit: SEARCH_LIMIT,
   });
@@ -215,11 +217,10 @@ export const progress = (
     () =>
       window.spotifyPlayer
         .getCurrentState()
-        .then(
-          ({ position, duration }: { position: number; duration: number }) => {
-            callback(position / duration);
-          }
-        ),
+        .then((args: { position: number; duration: number } | null) => {
+          const { position, duration } = args || { position: 0, duration: 1 };
+          callback(position / duration);
+        }),
     1000
   );
 

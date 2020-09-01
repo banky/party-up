@@ -45,9 +45,6 @@ export const NowPlaying = ({
 };
 
 const FixedBottomContainer = styled.div`
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
   width: 100%;
   height: 100px;
 `;
