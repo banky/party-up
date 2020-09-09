@@ -17,10 +17,11 @@ import {
   useProgress,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
+import { YourQueue } from "./components/your-queue";
 
 const TABS = {
   History: () => null,
-  "Your Queue": () => null,
+  "Your Queue": YourQueue,
   Playlists: () => null,
   Search: Search,
 };
@@ -30,7 +31,7 @@ export const RoomPage = () => {
   const music = useMusic();
   const { roomKey } = useParams();
   const userPressedNext = useRef(false);
-  const [switcherValue, setSwitcherValue] = useState(3);
+  const [switcherValue, setSwitcherValue] = useState(1);
 
   const roomName = useRoomName();
   const userIsOwner = useUserIsOwner();

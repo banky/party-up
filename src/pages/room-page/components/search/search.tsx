@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Input } from "components/input/input.component";
 import { useMusic } from "lib/music/hook";
@@ -6,12 +7,19 @@ import { useFirebase } from "lib/firebase/hook";
 import { Song } from "lib/music/types";
 import { SongCard } from "components/song-card/song-card.component";
 import { useDebouncedCallback } from "hooks/use-debounced-callback";
+import { RootState } from "store/reducers";
+import { useParams } from "react-router-dom";
+import { SongQueue, SongQueueItem } from "../song-queue";
+
+const SEARCH_DEBOUNCE = 750; // Milliseconds
 
 export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const music = useMusic();
   const firebase = useFirebase();
+  const userId = useSelector((state: RootState) => state.userId);
+  const { roomKey } = useParams();
 
   const onSearch = useDebouncedCallback(
     () => {
@@ -20,14 +28,21 @@ export const Search = () => {
         .then((searchResults) => setSearchResults(searchResults));
     },
     [music, searchQuery],
-    750
+    SEARCH_DEBOUNCE
   );
 
   useEffect(() => {
     onSearch();
   }, [searchQuery, onSearch]);
 
-  const onPressSongCard = useCallback((song: Song) => () => {}, []);
+  const onPressSongCard = useCallback(
+    (song: Song) => {
+      // Each user can only have one queue per room. This is convenient
+      const queueId = `${userId}${roomKey}`;
+      firebase.database().ref(`queues/${queueId}`).push(song);
+    },
+    [firebase, roomKey, userId]
+  );
 
   return (
     <>
@@ -44,7 +59,7 @@ export const Search = () => {
                 song={song}
                 actionIcon="plus"
                 actionDisabled={false}
-                onClickActionIcon={() => {}}
+                onClickActionIcon={() => onPressSongCard(song)}
               />
             </SongQueueItem>
           );
@@ -53,19 +68,6 @@ export const Search = () => {
     </>
   );
 };
-
-const SongQueue = styled.ul`
-  padding: 0;
-  margin: auto;
-  margin-bottom: 20px;
-  max-width: 700px;
-  list-style-type: none;
-`;
-
-const SongQueueItem = styled.li`
-  margin-top: 15px;
-  margin-bottom: 15px;
-`;
 
 const StyledInput = styled(Input)`
   margin-top: 20px;
