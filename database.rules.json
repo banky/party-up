@@ -36,13 +36,6 @@
         },
         "playing": {
           ".validate": "newData.isBoolean() && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
-        },
-        "queue": {
-          ".validate": "root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)",
-
-          "$queueItemId": {
-            ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
-          }
         }
       }
     },
