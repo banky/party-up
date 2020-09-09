@@ -52,6 +52,15 @@
         ".write": "auth.uid === $userId",
         ".validate": "newData.hasChildren(['name', 'platform'])"
       }
+    },
+    "queues": {
+      "$queueId": {
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null && $queueId.contains(auth.uid)",
+        "$queueItemId": {
+          ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
+        }
+      }
     }
   }
 }
