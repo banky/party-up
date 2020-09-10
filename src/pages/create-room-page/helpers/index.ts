@@ -25,5 +25,6 @@ export const createRoomFB = ({
       djs: {
         [userId]: true,
       },
+      currentDj: userId,
     }).key;
 };
