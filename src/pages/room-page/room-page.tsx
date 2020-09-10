@@ -15,6 +15,7 @@ import {
   useCurrentSong,
   useFirebaseActions,
   useProgress,
+  useDequeueSongFb,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
 import { YourQueue } from "./components/your-queue";
@@ -37,11 +38,8 @@ export const RoomPage = () => {
   const userIsOwner = useUserIsOwner();
   const roomPlaying = useRoomPlaying();
   const currentSong = useCurrentSong();
-  const {
-    setRoomPlayingFB,
-    setCurrentSongFB,
-    dequeueSongFB,
-  } = useFirebaseActions();
+  const { setRoomPlayingFB, setCurrentSongFB } = useFirebaseActions();
+  const dequeueSongFB = useDequeueSongFb();
   const progress = useProgress();
 
   useUserAuthorized();

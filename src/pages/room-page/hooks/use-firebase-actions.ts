@@ -30,32 +30,5 @@ export const useFirebaseActions = () => {
     [firebase, roomKey]
   );
 
-  const dequeueSongFB = useCallback(
-    (): Promise<Song> =>
-      firebase
-        .database()
-        .ref(`rooms/${roomKey}/queue`)
-        .once("value")
-        .then((snapshot) => {
-          if (!snapshot.exists()) return;
-
-          const songList = snapshot.val();
-          const songKeys = Object.keys(songList);
-
-          const currentSong = songList[songKeys[0]];
-
-          firebase
-            .database()
-            .ref(`rooms/${roomKey}/queue/${songKeys[0]}`)
-            .remove();
-
-          return currentSong;
-        })
-        .catch((error) => {
-          console.warn(error);
-        }),
-    [firebase, roomKey]
-  );
-
-  return { setRoomPlayingFB, setCurrentSongFB, enqueueSongFB, dequeueSongFB };
+  return { setRoomPlayingFB, setCurrentSongFB, enqueueSongFB };
 };
