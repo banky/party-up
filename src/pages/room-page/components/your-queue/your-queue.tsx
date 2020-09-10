@@ -14,22 +14,24 @@ export const YourQueue = () => {
   const { roomKey } = useParams();
 
   useEffect(() => {
-    const queueId = `${userId}${roomKey}`;
     firebase
       .database()
-      .ref(`queues/${queueId}`)
+      .ref(`rooms/${roomKey}/queues/${userId}`)
       .on("value", (snapshot) => {
         const snapshotVal = snapshot.exists() ? snapshot.val() : {};
         setSongList(snapshotVal);
       });
 
-    return () => firebase.database().ref(`queues/${queueId}`).off();
+    return () =>
+      firebase.database().ref(`rooms/${roomKey}/queues/${userId}`).off();
   }, [firebase, roomKey, userId]);
 
   const onPressSongCard = useCallback(
     (songKey: string) => {
-      const queueId = `${userId}${roomKey}`;
-      firebase.database().ref(`queues/${queueId}/${songKey}`).remove();
+      firebase
+        .database()
+        .ref(`rooms/${roomKey}/queues/${userId}/${songKey}`)
+        .remove();
     },
     [firebase, roomKey, userId]
   );

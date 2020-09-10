@@ -37,9 +37,7 @@ export const Search = () => {
 
   const onPressSongCard = useCallback(
     (song: Song) => {
-      // Each user can only have one queue per room. This is convenient
-      const queueId = `${userId}${roomKey}`;
-      firebase.database().ref(`queues/${queueId}`).push(song);
+      firebase.database().ref(`rooms/${roomKey}/queues/${userId}`).push(song);
     },
     [firebase, roomKey, userId]
   );
