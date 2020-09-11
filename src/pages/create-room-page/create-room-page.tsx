@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "store/reducers";
 import { createRoomFB } from "./helpers";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { Header } from "components/header/header.component";
 import { Input } from "components/input/input.component";
 import { PrimaryButton } from "components/primary-button/primary-button.component";

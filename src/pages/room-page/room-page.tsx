@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { useMusic } from "lib/music/hook";
 import { useUserAuthorized } from "hooks/use-user-authorized";
 import { Header } from "components/header/header.component";
@@ -15,12 +15,14 @@ import {
   useCurrentSong,
   useFirebaseActions,
   useProgress,
+  useDequeueSongFb,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
+import { YourQueue } from "./components/your-queue";
 
 const TABS = {
   History: () => null,
-  "Your Queue": () => null,
+  "Your Queue": YourQueue,
   Playlists: () => null,
   Search: Search,
 };
@@ -30,17 +32,14 @@ export const RoomPage = () => {
   const music = useMusic();
   const { roomKey } = useParams();
   const userPressedNext = useRef(false);
-  const [switcherValue, setSwitcherValue] = useState(3);
+  const [switcherValue, setSwitcherValue] = useState(1);
 
   const roomName = useRoomName();
   const userIsOwner = useUserIsOwner();
   const roomPlaying = useRoomPlaying();
   const currentSong = useCurrentSong();
-  const {
-    setRoomPlayingFB,
-    setCurrentSongFB,
-    dequeueSongFB,
-  } = useFirebaseActions();
+  const { setRoomPlayingFB, setCurrentSongFB } = useFirebaseActions();
+  const dequeueSongFB = useDequeueSongFb();
   const progress = useProgress();
 
   useUserAuthorized();

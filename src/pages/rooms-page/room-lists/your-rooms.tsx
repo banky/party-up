@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "store/reducers";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { Room } from "types/room";
 import { PrimaryButton } from "components/primary-button/primary-button.component";
 import { RoomCards } from "../components/room-cards";

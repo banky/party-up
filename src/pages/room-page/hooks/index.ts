@@ -5,3 +5,4 @@ export * from "./use-room-playing";
 export * from "./use-current-song";
 export * from "./use-firebase-actions";
 export * from "./use-progress";
+export * from "./use-dequeue-song-fb";

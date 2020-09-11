@@ -21,6 +21,9 @@
             ".validate": "newData.isBoolean()"
           }
         },
+        "currentDj": {
+          ".validate": "!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid"
+        },
         "listeners": {
           ".validate": "newData.hasChild(auth.uid) && auth.uid != null",
 
@@ -37,11 +40,11 @@
         "playing": {
           ".validate": "newData.isBoolean() && root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)"
         },
-        "queue": {
-          ".validate": "root.child('rooms/'+$roomId+'/djs').hasChild(auth.uid)",
-
-          "$queueItemId": {
-            ".validate": "newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
+        "queues": {
+          "$userId": {
+            "$queueItemId": {
+              ".validate": "(root.child('rooms/'+$roomId+'/owner').val() == auth.uid || $userId === auth.uid) && newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
+            }
           }
         }
       }

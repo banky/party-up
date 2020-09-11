@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { Platform } from "lib/music/music";
 
 // Just a black image

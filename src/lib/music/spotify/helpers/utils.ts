@@ -74,10 +74,10 @@ export const json2UrlEncoded = (obj: { [key: string]: string }) =>
 /**
  * Retry a function with a timeout. Inspired by
  * https://stackoverflow.com/questions/59854115/how-to-retry-api-calls-using-node-fetch
- * @param func
- * @param retries
- * @param retryDelay
- * @param timeout
+ * @param func Function to be called
+ * @param timeout Reject promise if timeout is reached
+ * @param retries Number of times to retry the function. Default: 3
+ * @param retryDelay Time between each retry. Default: 1000 milliseconds
  */
 export const retryableFunc = (
   func: () => Promise<any>,

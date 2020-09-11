@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "store/reducers";
-import { useFirebase } from "lib/firebase/hooks";
+import { useFirebase } from "lib/firebase/hook";
 import { Room } from "types/room";
 import { RoomCards } from "../components/room-cards";
 import { ROOMS_PER_PAGE } from "./constants";
