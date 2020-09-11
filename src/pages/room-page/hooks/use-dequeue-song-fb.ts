@@ -68,12 +68,7 @@ const getNextDj = ({
 }: getNextDjProps): Promise<string> => {
   const firstUser = currentDj;
 
-  const getNextDjRecursively = async ({
-    firebase,
-    roomKey,
-    djs,
-    currentDj,
-  }: getNextDjProps): Promise<string> => {
+  const getNextDjRecursively = async (currentDj: string): Promise<string> => {
     const keys = Object.keys(djs);
     const index = keys.indexOf(currentDj);
     const nextIndex = (index + 1) % keys.length;
@@ -93,21 +88,11 @@ const getNextDj = ({
     const nextUserHasQueue = queuesSnapshot.exists();
 
     if (!nextUserIsDj || !nextUserHasQueue) {
-      return getNextDjRecursively({
-        firebase,
-        roomKey,
-        djs,
-        currentDj: nextUser,
-      });
+      return getNextDjRecursively(nextUser);
     }
 
     return nextUser;
   };
 
-  return getNextDjRecursively({
-    firebase,
-    roomKey,
-    djs,
-    currentDj,
-  });
+  return getNextDjRecursively(currentDj);
 };
