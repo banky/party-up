@@ -79,9 +79,6 @@ const getNextDj = ({
     const nextIndex = (index + 1) % keys.length;
     const nextUser = keys[nextIndex];
 
-    console.log({ nextUser });
-    console.log({ firstUser });
-
     // Stop recursion if we loop around
     if (nextUser === firstUser) {
       return firstUser;
