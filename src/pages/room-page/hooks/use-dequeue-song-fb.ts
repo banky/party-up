@@ -60,28 +60,57 @@ type getNextDjProps = {
  * Get the next DJ that is ready to play a song
  * @param param0
  */
-const getNextDj = async ({
+const getNextDj = ({
   firebase,
   roomKey,
   djs,
   currentDj,
 }: getNextDjProps): Promise<string> => {
-  const keys = Object.keys(djs);
-  const index = keys.indexOf(currentDj);
-  const nextIndex = (index + 1) % keys.length;
-  const nextUser = keys[nextIndex];
+  const firstUser = currentDj;
 
-  const queuesSnapshot = await firebase
-    .database()
-    .ref(`rooms/${roomKey}/queues/${nextUser}`)
-    .once("value");
+  const getNextDjRecursively = async ({
+    firebase,
+    roomKey,
+    djs,
+    currentDj,
+  }: getNextDjProps): Promise<string> => {
+    const keys = Object.keys(djs);
+    const index = keys.indexOf(currentDj);
+    const nextIndex = (index + 1) % keys.length;
+    const nextUser = keys[nextIndex];
 
-  const nextUserIsDj = djs[nextUser] === true;
-  const nextUserHasQueue = queuesSnapshot.exists();
+    console.log({ nextUser });
+    console.log({ firstUser });
 
-  if (!nextUserIsDj || !nextUserHasQueue) {
-    return getNextDj({ firebase, roomKey, djs, currentDj: nextUser });
-  }
+    // Stop recursion if we loop around
+    if (nextUser === firstUser) {
+      return firstUser;
+    }
 
-  return nextUser;
+    const queuesSnapshot = await firebase
+      .database()
+      .ref(`rooms/${roomKey}/queues/${nextUser}`)
+      .once("value");
+
+    const nextUserIsDj = djs[nextUser] === true;
+    const nextUserHasQueue = queuesSnapshot.exists();
+
+    if (!nextUserIsDj || !nextUserHasQueue) {
+      return getNextDjRecursively({
+        firebase,
+        roomKey,
+        djs,
+        currentDj: nextUser,
+      });
+    }
+
+    return nextUser;
+  };
+
+  return getNextDjRecursively({
+    firebase,
+    roomKey,
+    djs,
+    currentDj,
+  });
 };
