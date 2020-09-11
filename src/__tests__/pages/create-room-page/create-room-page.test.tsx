@@ -49,6 +49,7 @@ describe("Create Room", () => {
 
     expect(lastRoom).toStrictEqual({
       owner: mockUserId,
+      currentDj: mockUserId,
       djs: { [mockUserId]: true },
       title: "Marios room",
       genre: "rock n roll",
