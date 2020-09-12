@@ -5,7 +5,7 @@ import { Song } from "lib/music/types";
 
 export const useFirebaseActions = () => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
 
   const setRoomPlayingFB = useCallback(
     (playing: boolean) =>

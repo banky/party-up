@@ -22,7 +22,7 @@ export const UserList = ({
   currentUserId,
 }: UserListProps) => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
 
   const onPressDjUpgrade = useCallback(
     (user: User) => {

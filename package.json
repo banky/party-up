@@ -16,9 +16,12 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
     "base64url": "^3.0.1",
     "colorthief": "^2.3.2",
     "crypto-random-string": "^3.2.0",
+    "eslint-plugin-react": "^7.20.6",
     "firebase": "^7.19.0",
     "firebase-tools": "^8.6.0",
     "js-sha256": "^0.9.0",
@@ -30,16 +33,14 @@
     "redux-persist": "^6.0.0",
     "spotify-web-api-js": "^1.5.0",
     "styled-components": "^5.1.1",
-    "typescript": "~3.9.7"
+    "typescript": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom-fourteen",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.ts\""
   },
   "browserslist": {
     "production": [

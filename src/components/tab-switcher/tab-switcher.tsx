@@ -46,7 +46,7 @@ const a11yProps = (index: Number) => {
  * I haven't been able to figure out a way to do this in
  * a styled component. Material UI makes me sad, but it's pretty so 🤷🏿‍♂️
  */
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     backgroundColor: "rgba(0, 0, 0, 0)",
   },

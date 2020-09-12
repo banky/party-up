@@ -19,7 +19,7 @@ export const Search = () => {
   const music = useMusic();
   const firebase = useFirebase();
   const userId = useSelector((state: RootState) => state.userId);
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
 
   const onSearch = useDebouncedCallback(
     () => {

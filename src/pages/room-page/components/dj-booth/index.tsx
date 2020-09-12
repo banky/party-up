@@ -9,7 +9,7 @@ import { UserList } from "./user-list";
 
 export const DjBooth = () => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const userId = useSelector((state: RootState) => state.userId);
   const listeners = useUserList(`rooms/${roomKey}/listeners`);
   const djs = useUserList(`rooms/${roomKey}/djs`);

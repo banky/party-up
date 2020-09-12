@@ -5,7 +5,7 @@ import { useMusic } from "lib/music/hook";
 import { updateDestinationRoomKey } from "store/actions";
 
 export const useUserAuthorized = () => {
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const music = useMusic();
   const dispatch = useDispatch();
   const history = useHistory();

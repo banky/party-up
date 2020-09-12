@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 export const useRoomName = () => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const history = useHistory();
   const [roomName, setRoomName] = useState("");
 

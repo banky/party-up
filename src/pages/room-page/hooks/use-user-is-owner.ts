@@ -6,7 +6,7 @@ import { RootState } from "store/reducers";
 
 export const useUserIsOwner = () => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const [userIsOwner, setUserIsOwner] = useState(false);
   const userId = useSelector((state: RootState) => state.userId);
 

@@ -154,7 +154,11 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     if (!spotifySong.url.includes(SPOTIFY_BASE_URL)) {
       spotifySong = await findSongByIsrc(song);
     }
-  } catch (error) {}
+  } catch (error) {
+    return Promise.reject(
+      `Spotify could not find song: ${song.name} by ISRC: ${song.isrc}. Error: ${error}`
+    );
+  }
 
   // If ISRC search failed, try to find the song with manual search
   try {
@@ -213,7 +217,7 @@ export const progressMilliseconds = async (): Promise<number> => {
 export const progress = (
   callback: (progress: number) => void
 ): VoidFunction => {
-  var refreshProgress = setInterval(
+  const refreshProgress = setInterval(
     () =>
       window.spotifyPlayer
         .getCurrentState()

@@ -6,7 +6,7 @@ import { useMusic } from "lib/music/hook";
 export const useRoomPlaying = () => {
   const firebase = useFirebase();
   const music = useMusic();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const [roomPlaying, setRoomPlaying] = useState(false);
 
   useEffect(() => {
@@ -15,10 +15,14 @@ export const useRoomPlaying = () => {
       .ref(`rooms/${roomKey}/playing`)
       .on("value", (snapshot) => {
         if (snapshot.val() === true) {
-          music.play().catch((error) => {});
+          music.play().catch((error) => {
+            console.error("Error playing song: ", error);
+          });
           setRoomPlaying(true);
         } else if (snapshot.val() === false) {
-          music.pause().catch((error) => {});
+          music.pause().catch((error) => {
+            console.error("Error pausing song: ", error);
+          });
           setRoomPlaying(false);
         }
       });
