@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: 14
       - run: yarn install
+      - run: yarn lint
       - run: yarn firebase emulators:exec --only database "yarn test --watchAll=false"
       - run: yarn build
         env:
