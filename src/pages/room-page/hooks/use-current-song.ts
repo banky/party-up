@@ -7,7 +7,7 @@ import { Song } from "lib/music/types";
 export const useCurrentSong = () => {
   const firebase = useFirebase();
   const music = useMusic();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const [currentSong, setCurrentSong] = useState<Song | undefined>();
 
   useEffect(() => {
@@ -18,6 +18,7 @@ export const useCurrentSong = () => {
         if (!snapshot.exists()) return;
         music.queueAndPlay(snapshot.val()).catch((error) => {
           // TODO: Show some kind of error to the user if the song could not be queued
+          console.error("Error queueing and playing song: ", error);
         });
         setCurrentSong(snapshot.val());
       });

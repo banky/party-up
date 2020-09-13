@@ -1,7 +1,6 @@
 import React from "react";
 import {
   render,
-  act,
   waitFor,
   screen,
   mockStore,

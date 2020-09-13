@@ -57,7 +57,7 @@ export const openSpotifyLoginWindow = (codeVerifier: string) => {
 export const getAuthTokenFromChildWindow = async (
   childWindow: Window | null
 ) => {
-  let spotifyData = {
+  const spotifyData = {
     code: "",
   };
 

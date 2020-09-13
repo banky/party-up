@@ -6,7 +6,7 @@ import Firebase from "lib/firebase";
 
 export const useDequeueSongFb = () => {
   const firebase = useFirebase();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
 
   return useCallback(async (): Promise<Song> => {
     const currentDjSnapshot = await firebase

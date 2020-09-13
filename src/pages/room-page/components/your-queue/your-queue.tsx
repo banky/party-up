@@ -11,7 +11,7 @@ export const YourQueue = () => {
   const [songList, setSongList] = useState<{ [key: string]: Song }>({});
   const firebase = useFirebase();
   const userId = useSelector((state: RootState) => state.userId);
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
 
   useEffect(() => {
     firebase

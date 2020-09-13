@@ -1,7 +1,6 @@
 import {
   loadScript,
   initializePlayer,
-  getPlayerOptions,
   openSpotifyLoginWindow,
   getAuthTokenFromChildWindow,
   loadSpotifyWebPlayer,

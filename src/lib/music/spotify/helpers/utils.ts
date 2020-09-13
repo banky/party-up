@@ -48,19 +48,20 @@ export const loadScript = (attributes: ScriptAttributes): Promise<any> => {
  * From http://locutus.io/php/hex2bin/
  * */
 export const hex2bin = (s: string) => {
-  var ret = [];
-  var i = 0;
-  var l;
+  const ret = [];
+  let i = 0;
+  let l;
 
   s += "";
 
   for (l = s.length; i < l; i += 2) {
-    var c = parseInt(s.substr(i, 1), 16);
-    var k = parseInt(s.substr(i + 1, 1), 16);
+    const c = parseInt(s.substr(i, 1), 16);
+    const k = parseInt(s.substr(i + 1, 1), 16);
     if (isNaN(c) || isNaN(k)) return "";
     ret.push((c << 4) | k);
   }
 
+  // eslint-disable-next-line prefer-spread
   return String.fromCharCode.apply(String, ret);
 };
 

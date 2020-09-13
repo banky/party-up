@@ -30,7 +30,7 @@ const TABS = {
 export const RoomPage = () => {
   const firebase = useFirebase();
   const music = useMusic();
-  const { roomKey } = useParams();
+  const { roomKey } = useParams<{ roomKey: string }>();
   const userPressedNext = useRef(false);
   const [switcherValue, setSwitcherValue] = useState(1);
 

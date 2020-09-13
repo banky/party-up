@@ -64,7 +64,9 @@ export const LoginPage = () => {
             music
               .authorize()
               .then(onAuthorize("apple"))
-              .catch(() => {});
+              .catch((error) => {
+                console.error("Unable to log in with Apple Music: ", error);
+              });
           }}
         />
         <PlatformIcon
@@ -74,7 +76,9 @@ export const LoginPage = () => {
             music
               .authorize()
               .then(onAuthorize("spotify"))
-              .catch((err) => {});
+              .catch((error) => {
+                console.error("Unable to log in with Spotify: ", error);
+              });
           }}
         />
       </PlatformIconsContainer>

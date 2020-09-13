@@ -2,7 +2,7 @@ import { SearchType, Song } from "../types";
 import { SEARCH_LIMIT } from "../constants";
 import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
 
-declare var MusicKit: any;
+declare let MusicKit: any;
 
 export const configure = () => {
   MusicKit.configure({
