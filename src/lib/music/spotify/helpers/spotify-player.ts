@@ -24,6 +24,23 @@ export const initializePlayer = async (authToken: string) => {
       },
     });
 
+    // Register error handling
+    player.on('initialization_error', ({ message }: { message: any } ) => {
+      console.error('Failed to initialize', message);
+    });
+
+    player.on('authentication_error', ({ message }: { message: any }) => {
+      console.error('Failed to authenticate', message);
+    });
+
+    player.on('account_error', ({ message }: { message: any }) => {
+      console.error('Failed to validate Spotify account', message);
+    });
+
+    player.on('playback_error', ({ message }: { message: any }) => {
+      console.error('Failed to perform playback', message);
+    });
+
     window.spotifyPlayer = player;
   }
 
