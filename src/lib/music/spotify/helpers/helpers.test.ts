@@ -37,6 +37,7 @@ test("initializePlayer", async () => {
     Player: jest.fn().mockImplementation(() => {
       return {
         connect: connect,
+        on: jest.fn(),
       };
     }),
   };
