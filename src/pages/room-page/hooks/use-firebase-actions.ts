@@ -19,7 +19,7 @@ export const useFirebaseActions = () => {
         firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
       }
     },
-    [firebase, roomKey, setRoomPlayingFB]
+    [firebase, roomKey]
   );
 
   const enqueueSongFB = useCallback(
