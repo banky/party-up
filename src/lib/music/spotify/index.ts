@@ -9,6 +9,7 @@ import {
   getAuthTokenFromChildWindow,
   loadSpotifyWebPlayer,
   transformSongs,
+  retryableFunc,
   json2UrlEncoded,
 } from "./helpers";
 
@@ -154,7 +155,9 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
       spotifySong = await findSongByIsrc(song);
     }
   } catch (error) {
-    console.warn("Spotify search failed. Falling back to manual search", error);
+    return Promise.reject(
+      `Spotify could not find song: ${song.name} by ISRC: ${song.isrc}. Error: ${error}`
+    );
   }
 
   // If ISRC search failed, try to find the song with manual search
@@ -177,18 +180,20 @@ export const queueAndPlay = async (song: Song): Promise<any> => {
     return Promise.reject(error);
   }
 
-  await spotifyWebApi.play({
-    device_id: playerId,
-    uris: [spotifySong.url],
-  });
+  // Playing sometimes fails if we just defined the player.
+  // Keep trying to queue up the song if it fails
+  return retryableFunc(
+    () =>
+      spotifyWebApi.play({
+        device_id: playerId,
+        uris: [spotifySong.url],
+      }),
+    5000
+  );
 };
 
-export const play = async (): Promise<any> => {
+export const play = (): Promise<any> => {
   const { playerId } = getPlayerOptions();
-  const state = await window.spotifyPlayer.getCurrentState();
-
-  // Playing when already playing results in a 403
-  if (state === null || state.paused === false) return Promise.resolve();
 
   return spotifyWebApi.play({
     device_id: playerId,

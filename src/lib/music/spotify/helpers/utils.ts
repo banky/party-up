@@ -73,6 +73,53 @@ export const json2UrlEncoded = (obj: { [key: string]: string }) =>
     .join("&");
 
 /**
+ * Retry a function with a timeout. Inspired by
+ * https://stackoverflow.com/questions/59854115/how-to-retry-api-calls-using-node-fetch
+ * @param func Function to be called
+ * @param timeout Reject promise if timeout is reached
+ * @param retries Number of times to retry the function. Default: 3
+ * @param retryDelay Time between each retry. Default: 1000 milliseconds
+ */
+export const retryableFunc = (
+  func: () => Promise<any>,
+  timeout: number,
+  retries: number = 3,
+  retryDelay: number = 1000
+): Promise<any> => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
+
+  return new Promise((resolve, reject) => {
+    if (timeout) {
+      setTimeout(() => {
+        reject("error: timeout");
+      }, timeout);
+    }
+
+    const wrapper = (n: number) => {
+      func()
+        .then((res) => {
+          resolve(res);
+        })
+        .catch(async (err) => {
+          if (n > 0) {
+            await delay(retryDelay);
+            wrapper(--n);
+          } else {
+            reject(err);
+          }
+        });
+    };
+
+    wrapper(retries);
+  });
+};
+
+/**
  * Transforms spotify tracks into Party-Up Song objects
  * Track objet structure can be viewed here: https://developer.spotify.com/documentation/web-api/reference/search/search/
  * @param items
