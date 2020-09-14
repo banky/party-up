@@ -17,9 +17,7 @@ export const useFirebaseActions = () => {
     (song?: Song) => {
       if (song !== undefined) {
         firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
-        setRoomPlayingFB(true);
       }
-      setRoomPlayingFB(false);
     },
     [firebase, roomKey, setRoomPlayingFB]
   );
