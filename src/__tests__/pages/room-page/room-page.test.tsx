@@ -126,7 +126,7 @@ describe("Room page functionality for DJ", () => {
     );
 
     // Player actions
-    expect(screen.getByTitle("Pause")).toBeTruthy();
+    expect(screen.getByTitle("Play")).toBeTruthy();
     expect(screen.getByTitle("Next")).toBeTruthy();
   });
 
@@ -188,10 +188,16 @@ describe("Room page functionality for DJ", () => {
   it("play/pause button works", async () => {
     render(<RoomPage />);
 
-    await waitFor(() => expect(screen.getByTitle("Pause")).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle("Play")).toBeTruthy());
 
     // Room starts off playing
-    await waitFor(() => expect(mockMusicInstance.play).toHaveBeenCalled());
+    await waitFor(() =>
+      expect(mockMusicInstance.queueAndPlay).toHaveBeenCalled()
+    );
+
+    await act(async () => {
+      fireEvent.click(screen.getByTitle("Play"));
+    });
 
     await act(async () => {
       fireEvent.click(screen.getByTitle("Pause"));
