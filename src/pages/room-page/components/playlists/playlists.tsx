@@ -24,7 +24,6 @@ export const Playlists = () => {
       const songs = await music.getSongsForPlaylist(playlist);
 
       songs.forEach((song) => {
-        // console.log("pushing song: ", song);
         firebase.database().ref(`rooms/${roomKey}/queues/${userId}`).push(song);
       });
     },

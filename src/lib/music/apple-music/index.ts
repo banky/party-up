@@ -1,5 +1,5 @@
 import { Playlist, SearchType, Song } from "../types";
-import { SEARCH_LIMIT } from "../constants";
+import { PLAYLIST_LIMIT, SEARCH_LIMIT } from "../constants";
 import {
   supportedAppleMusicSearchTypes,
   transformPlaylists,
@@ -169,7 +169,7 @@ export const setVolume = (percentage: number): Promise<void> => {
 
 export const getPlaylists = async (): Promise<Playlist[]> => {
   const playlistsResponse = await fetch(
-    "https://api.music.apple.com/v1/me/library/playlists",
+    `https://api.music.apple.com/v1/me/library/playlists?limit=${PLAYLIST_LIMIT}`,
     {
       method: "GET",
       headers: {

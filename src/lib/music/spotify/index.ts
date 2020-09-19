@@ -1,7 +1,11 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import cryptoRandomString from "crypto-random-string";
 import { Playlist, SearchType, Song } from "../types";
-import { SEARCH_LIMIT } from "../constants";
+import {
+  PLAYLIST_LIMIT,
+  PLAYLIST_PLACEHOLDER_IMAGE,
+  SEARCH_LIMIT,
+} from "../constants";
 import {
   getPlayerOptions,
   initializePlayer,
@@ -266,19 +270,31 @@ export const setVolume = (percentage: number): Promise<void> => {
 };
 
 export const getPlaylists = async (): Promise<Playlist[]> => {
-  const playlists = await spotifyWebApi.getUserPlaylists();
+  const playlists = await spotifyWebApi.getUserPlaylists(undefined, {
+    limit: PLAYLIST_LIMIT,
+  });
 
   const transformedPlaylists: Playlist[] = playlists.items.map((playlist) => ({
-    id: "some-unique-id",
+    id: playlist.uri.substring("spotify:playlist:".length), // Remove the prefix
     name: playlist.name,
     description: playlist.description || "",
     songs: [],
-    image: playlist.images[0].url,
+    image:
+      playlist.images[0] !== undefined
+        ? playlist.images[0].url
+        : PLAYLIST_PLACEHOLDER_IMAGE,
   }));
 
   return transformedPlaylists;
 };
 
-export const getSongsForPlaylist = (playlist: Playlist): Promise<Song[]> => {
-  return Promise.reject("getSongsForPlaylist not implemented for spotify");
+export const getSongsForPlaylist = async (
+  playlist: Playlist
+): Promise<Song[]> => {
+  const playlistTrackResponse = await spotifyWebApi.getPlaylistTracks(
+    playlist.id
+  );
+  const tracks = playlistTrackResponse.items.map((item) => item.track);
+
+  return transformSongs(tracks);
 };
