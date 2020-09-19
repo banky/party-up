@@ -61,7 +61,6 @@ export const transformPlaylists = (playlists: any): Playlist[] => {
       id: playlist.href,
       name: playlist.attributes.name,
       description: playlist.attributes.description?.standard || "",
-      songs: [],
       image:
         playlist.attributes.artwork !== undefined
           ? formatImgUrl(playlist.attributes.artwork.url, 100)

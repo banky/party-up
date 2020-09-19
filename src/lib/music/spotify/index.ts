@@ -274,16 +274,17 @@ export const getPlaylists = async (): Promise<Playlist[]> => {
     limit: PLAYLIST_LIMIT,
   });
 
-  const transformedPlaylists: Playlist[] = playlists.items.map((playlist) => ({
-    id: playlist.uri.substring("spotify:playlist:".length), // Remove the prefix
-    name: playlist.name,
-    description: playlist.description || "",
-    songs: [],
-    image:
-      playlist.images[0] !== undefined
-        ? playlist.images[0].url
-        : PLAYLIST_PLACEHOLDER_IMAGE,
-  }));
+  const transformedPlaylists: Playlist[] = playlists.items.map(
+    (playlist): Playlist => ({
+      id: playlist.uri.substring("spotify:playlist:".length), // Remove the prefix
+      name: playlist.name,
+      description: playlist.description || "",
+      image:
+        playlist.images[0] !== undefined
+          ? playlist.images[0].url
+          : PLAYLIST_PLACEHOLDER_IMAGE,
+    })
+  );
 
   return transformedPlaylists;
 };

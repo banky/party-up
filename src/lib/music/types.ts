@@ -15,6 +15,5 @@ export type Playlist = {
   id: string;
   name: string;
   description: string;
-  songs: Song[];
   image: string;
 };
