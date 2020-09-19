@@ -1,3 +1,4 @@
+import { PLAYLIST_PLACEHOLDER_IMAGE } from "../constants";
 import { SearchType, Song, Playlist } from "../types";
 
 type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
@@ -37,15 +38,17 @@ export const supportedAppleMusicSearchTypes = (
  * @param songs
  */
 export const transformSongs = (songs: any): Song[] => {
-  return songs.map((song: any) => ({
-    album: song.attributes.albumName,
-    artist: song.attributes.artistName,
-    name: song.attributes.name,
-    isrc: song.attributes.isrc,
-    url: song.attributes.url,
-    smallImage: formatImgUrl(song.attributes.artwork.url, 64), // Sizes to match spotify
-    mediumImage: formatImgUrl(song.attributes.artwork.url, 300),
-  }));
+  return songs.map(
+    (song: any): Song => ({
+      album: song.attributes.albumName,
+      artist: song.attributes.artistName,
+      name: song.attributes.name,
+      isrc: song.attributes.isrc,
+      url: song.attributes.url,
+      smallImage: formatImgUrl(song.attributes.artwork.url, 100), // Sizes to match spotify
+      mediumImage: formatImgUrl(song.attributes.artwork.url, 300),
+    })
+  );
 };
 
 /**
@@ -53,12 +56,16 @@ export const transformSongs = (songs: any): Song[] => {
  * @param songs
  */
 export const transformPlaylists = (playlists: any): Playlist[] => {
-  return playlists.map((playlist: any) => ({
-    name: playlist.attributes.name,
-    description: playlist.attributes.description?.standard || "",
-    tracks: [],
-    smallImage:
-      playlist.attributes.artwork &&
-      formatImgUrl(playlist.attributes.artwork.url, 64),
-  }));
+  return playlists.map(
+    (playlist: any): Playlist => ({
+      id: playlist.href,
+      name: playlist.attributes.name,
+      description: playlist.attributes.description?.standard || "",
+      songs: [],
+      image:
+        playlist.attributes.artwork !== undefined
+          ? formatImgUrl(playlist.attributes.artwork.url, 100)
+          : PLAYLIST_PLACEHOLDER_IMAGE,
+    })
+  );
 };

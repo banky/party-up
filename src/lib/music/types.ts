@@ -12,8 +12,9 @@ export type Song = {
 };
 
 export type Playlist = {
+  id: string;
   name: string;
   description: string;
-  tracks: Song[];
-  smallImage?: string;
+  songs: Song[];
+  image: string;
 };
