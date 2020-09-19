@@ -5,11 +5,11 @@ import { Input } from "components/input/input.component";
 import { useMusic } from "lib/music/hook";
 import { useFirebase } from "lib/firebase/hook";
 import { Song } from "lib/music/types";
-import { SongCard } from "components/song-card/song-card.component";
+import { MediaCard } from "components/media-card/media-card.component";
 import { useDebouncedCallback } from "hooks/use-debounced-callback";
 import { RootState } from "store/reducers";
 import { useParams } from "react-router-dom";
-import { SongQueue, SongQueueItem } from "../song-queue";
+import { MediaQueue, MediaQueueItem } from "../../../../components/media-queue";
 
 const SEARCH_DEBOUNCE = 750; // Milliseconds
 
@@ -35,7 +35,7 @@ export const Search = () => {
     onSearch();
   }, [searchQuery, onSearch]);
 
-  const onPressSongCard = useCallback(
+  const onClickAddSong = useCallback(
     (song: Song) => {
       firebase.database().ref(`rooms/${roomKey}/queues/${userId}`).push(song);
     },
@@ -49,20 +49,23 @@ export const Search = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Start typing to search"
       />
-      <SongQueue>
+      <MediaQueue>
         {searchResults.map((song) => {
           return (
-            <SongQueueItem key={song.url}>
-              <SongCard
-                song={song}
+            <MediaQueueItem key={song.url}>
+              <MediaCard
+                title={song.name}
+                subtitle={song.artist}
+                imageUrl={song.smallImage}
+                imageAlt={`${song.name} album art`}
                 actionIcon="plus"
                 actionDisabled={false}
-                onClickActionIcon={() => onPressSongCard(song)}
+                onClickActionIcon={() => onClickAddSong(song)}
               />
-            </SongQueueItem>
+            </MediaQueueItem>
           );
         })}
-      </SongQueue>
+      </MediaQueue>
     </>
   );
 };

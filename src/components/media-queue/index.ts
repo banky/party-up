@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SongQueue = styled.ul`
+export const MediaQueue = styled.ul`
   padding: 0;
   margin: auto;
   margin-bottom: 20px;
@@ -8,7 +8,7 @@ export const SongQueue = styled.ul`
   list-style-type: none;
 `;
 
-export const SongQueueItem = styled.li`
+export const MediaQueueItem = styled.li`
   margin-top: 15px;
   margin-bottom: 15px;
 `;

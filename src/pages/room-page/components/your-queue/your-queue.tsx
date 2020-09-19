@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { SongQueue, SongQueueItem } from "../song-queue";
-import { SongCard } from "components/song-card/song-card.component";
+import { MediaQueue, MediaQueueItem } from "../../../../components/media-queue";
+import { MediaCard } from "components/media-card/media-card.component";
 import { Song } from "lib/music/types";
 import { useFirebase } from "lib/firebase/hook";
 import { useSelector } from "react-redux";
@@ -37,21 +37,24 @@ export const YourQueue = () => {
   );
 
   return (
-    <SongQueue>
+    <MediaQueue>
       {Object.keys(songList).map((songKey) => {
         const song = songList[songKey];
 
         return (
-          <SongQueueItem key={song.url}>
-            <SongCard
-              song={song}
+          <MediaQueueItem key={song.url}>
+            <MediaCard
+              title={song.name}
+              subtitle={song.artist}
+              imageUrl={song.smallImage}
+              imageAlt={`${song.name} album art`}
               actionIcon="minus"
               actionDisabled={false}
               onClickActionIcon={() => onPressSongCard(songKey)}
             />
-          </SongQueueItem>
+          </MediaQueueItem>
         );
       })}
-    </SongQueue>
+    </MediaQueue>
   );
 };
