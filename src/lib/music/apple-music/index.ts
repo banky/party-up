@@ -1,6 +1,10 @@
-import { SearchType, Song } from "../types";
-import { SEARCH_LIMIT } from "../constants";
-import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
+import { Playlist, SearchType, Song } from "../types";
+import { PLAYLIST_LIMIT, SEARCH_LIMIT } from "../constants";
+import {
+  supportedAppleMusicSearchTypes,
+  transformPlaylists,
+  transformSongs,
+} from "./helpers";
 
 declare let MusicKit: any;
 
@@ -26,6 +30,8 @@ export const search = async (
   query: string,
   searchTypes: SearchType[]
 ): Promise<Song[]> => {
+  if (!query) return [];
+
   const supportedSearchTypes = supportedAppleMusicSearchTypes(searchTypes);
 
   const response = await MusicKit.getInstance().api.search(query, {
@@ -159,4 +165,61 @@ export const setVolume = (percentage: number): Promise<void> => {
   const volume = Math.abs(percentage / 100);
   MusicKit.getInstance().player.volume = volume;
   return Promise.resolve();
+};
+
+export const getPlaylists = async (): Promise<Playlist[]> => {
+  const playlistsResponse = await fetch(
+    `https://api.music.apple.com/v1/me/library/playlists?limit=${PLAYLIST_LIMIT}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_APPLE_DEV_TOKEN}`,
+        "Music-User-Token": MusicKit.getInstance().musicUserToken,
+      },
+    }
+  );
+
+  const playlists = await playlistsResponse.json();
+  return transformPlaylists(playlists.data);
+};
+
+export const getSongsForPlaylist = async (
+  playlist: Playlist
+): Promise<Song[]> => {
+  const playlistWithSongsResponse = await fetch(
+    `https://api.music.apple.com${playlist.id}?include=tracks`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_APPLE_DEV_TOKEN}`,
+        "Music-User-Token": MusicKit.getInstance().musicUserToken,
+      },
+    }
+  );
+  const playlistWithSongs = await playlistWithSongsResponse.json();
+
+  // We only request one song, so get the first from data
+  const trackIds: string[] = playlistWithSongs.data[0].relationships.tracks.data.map(
+    (track: any) => track.attributes.playParams.catalogId
+  );
+
+  // Apple has a limit on how many tracks can be requested at a go.
+  // TODO: Need to do this multiple times for long playlists
+  if (trackIds.length > 300) {
+    trackIds.splice(300, trackIds.length);
+  }
+
+  const trackIdsList = trackIds.join(",");
+
+  const playlistSongsResponse = await fetch(
+    `https://api.music.apple.com/v1/catalog/ca/songs?ids=${trackIdsList}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_APPLE_DEV_TOKEN}`,
+        "Music-User-Token": MusicKit.getInstance().musicUserToken,
+      },
+    }
+  );
+  const responseJson = await playlistSongsResponse.json();
+
+  return transformSongs(responseJson.data);
 };

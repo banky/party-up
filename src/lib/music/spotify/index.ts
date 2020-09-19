@@ -1,7 +1,11 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import cryptoRandomString from "crypto-random-string";
-import { SearchType, Song } from "../types";
-import { SEARCH_LIMIT } from "../constants";
+import { Playlist, SearchType, Song } from "../types";
+import {
+  PLAYLIST_LIMIT,
+  PLAYLIST_PLACEHOLDER_IMAGE,
+  SEARCH_LIMIT,
+} from "../constants";
 import {
   getPlayerOptions,
   initializePlayer,
@@ -263,4 +267,35 @@ export const songEnded = (callback: VoidFunction): VoidFunction => {
 export const setVolume = (percentage: number): Promise<void> => {
   const volume = Math.abs(percentage / 100);
   return window.spotifyPlayer.setVolume(volume);
+};
+
+export const getPlaylists = async (): Promise<Playlist[]> => {
+  const playlists = await spotifyWebApi.getUserPlaylists(undefined, {
+    limit: PLAYLIST_LIMIT,
+  });
+
+  const transformedPlaylists: Playlist[] = playlists.items.map(
+    (playlist): Playlist => ({
+      id: playlist.uri.substring("spotify:playlist:".length), // Remove the prefix
+      name: playlist.name,
+      description: playlist.description || "",
+      image:
+        playlist.images[0] !== undefined
+          ? playlist.images[0].url
+          : PLAYLIST_PLACEHOLDER_IMAGE,
+    })
+  );
+
+  return transformedPlaylists;
+};
+
+export const getSongsForPlaylist = async (
+  playlist: Playlist
+): Promise<Song[]> => {
+  const playlistTrackResponse = await spotifyWebApi.getPlaylistTracks(
+    playlist.id
+  );
+  const tracks = playlistTrackResponse.items.map((item) => item.track);
+
+  return transformSongs(tracks);
 };

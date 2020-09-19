@@ -1,6 +1,6 @@
 import * as AppleMusic from "./apple-music";
 import * as Spotify from "./spotify";
-import { SearchType, Song } from "./types";
+import { Playlist, SearchType, Song } from "./types";
 
 export type Platform = "apple" | "spotify";
 
@@ -113,6 +113,21 @@ class Music {
    */
   setVolume(percentage: number) {
     return getLib(this.platform).setVolume(percentage);
+  }
+
+  /**
+   * Get a list of the users playlists
+   */
+  getPlaylists() {
+    return getLib(this.platform).getPlaylists();
+  }
+
+  /**
+   * Populate the songs for a single playlist
+   * This is only done for one playlist at a time to save bandwidth
+   */
+  getSongsForPlaylist(playlist: Playlist) {
+    return getLib(this.platform).getSongsForPlaylist(playlist);
   }
 }
 

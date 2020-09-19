@@ -28,6 +28,29 @@ const progress = jest.fn((callback) => {
 const progressMilliseconds = jest.fn(() => Promise.resolve(1000));
 const seek = jest.fn(() => Promise.resolve());
 const setVolume = jest.fn(() => Promise.resolve());
+const getPlaylists = jest.fn(() =>
+  Promise.resolve([
+    {
+      id: "fake-playlist-id",
+      name: "fake-playlist",
+      description: "fake-playlist-description",
+      image: "fake-img-url",
+    },
+  ])
+);
+const getSongsForPlaylist = jest.fn(() =>
+  Promise.resolve([
+    {
+      album: "fake-album",
+      artist: "fake-song-artist",
+      name: "fake-song-name",
+      isrc: "fake-isrc",
+      url: "fake-url",
+      smallImage: "fake-img-url",
+      mediumImage: "fake-img-url",
+    },
+  ])
+);
 
 const mock = jest.fn().mockImplementation(() => {
   return {
@@ -44,6 +67,8 @@ const mock = jest.fn().mockImplementation(() => {
     progressMilliseconds,
     seek,
     setVolume,
+    getPlaylists,
+    getSongsForPlaylist,
   };
 });
 

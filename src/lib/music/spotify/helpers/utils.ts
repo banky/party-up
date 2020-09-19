@@ -122,22 +122,22 @@ export const retryableFunc = (
 /**
  * Transforms spotify tracks into Party-Up Song objects
  * Track objet structure can be viewed here: https://developer.spotify.com/documentation/web-api/reference/search/search/
- * @param items
+ * @param songs
  */
-export const transformSongs = (items: any): Song[] => {
+export const transformSongs = (songs: any): Song[] => {
   // Format array of artists to a list separated by delimiter
-  const formatArtists = (item: any, delimiter: string): string =>
-    item.artists
+  const formatArtists = (song: any, delimiter: string): string =>
+    song.artists
       .reduce((acc: string, curr: any) => acc + curr.name + delimiter, "")
       .slice(0, -delimiter.length);
 
-  return items.map((item: any) => ({
-    album: item.album.name,
-    artist: formatArtists(item, ", "),
-    name: item.name,
-    isrc: item.external_ids.isrc,
-    url: item.uri,
-    smallImage: item.album.images[2].url,
-    mediumImage: item.album.images[1].url,
+  return songs.map((song: any) => ({
+    album: song.album.name,
+    artist: formatArtists(song, ", "),
+    name: song.name,
+    isrc: song.external_ids.isrc,
+    url: song.uri,
+    smallImage: song.album.images[2].url,
+    mediumImage: song.album.images[1].url,
   }));
 };

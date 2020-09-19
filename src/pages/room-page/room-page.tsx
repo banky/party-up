@@ -19,11 +19,12 @@ import {
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
 import { YourQueue } from "./components/your-queue";
+import { Playlists } from "./components/playlists";
 
 const TABS = {
   History: () => null,
   "Your Queue": YourQueue,
-  Playlists: () => null,
+  Playlists: Playlists,
   Search: Search,
 };
 
@@ -32,7 +33,7 @@ export const RoomPage = () => {
   const music = useMusic();
   const { roomKey } = useParams<{ roomKey: string }>();
   const userPressedNext = useRef(false);
-  const [switcherValue, setSwitcherValue] = useState(1);
+  const [switcherValue, setSwitcherValue] = useState(2);
 
   const roomName = useRoomName();
   const userIsOwner = useUserIsOwner();
