@@ -269,11 +269,16 @@ export const getPlaylists = async (): Promise<Playlist[]> => {
   const playlists = await spotifyWebApi.getUserPlaylists();
 
   const transformedPlaylists: Playlist[] = playlists.items.map((playlist) => ({
+    id: "some-unique-id",
     name: playlist.name,
     description: playlist.description || "",
-    tracks: [],
-    smallImage: playlist.images[0].url,
+    songs: [],
+    image: playlist.images[0].url,
   }));
 
   return transformedPlaylists;
+};
+
+export const getSongsForPlaylist = (playlist: Playlist): Promise<Song[]> => {
+  return Promise.reject("getSongsForPlaylist not implemented for spotify");
 };
