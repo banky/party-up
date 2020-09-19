@@ -38,7 +38,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom-fourteen",
+    "test": "yarn firebase emulators:exec --only database \"react-scripts test --env=jsdom-fourteen\"",
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.ts\""
   },
