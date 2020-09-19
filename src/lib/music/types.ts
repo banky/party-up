@@ -10,3 +10,10 @@ export type Song = {
   smallImage: string;
   mediumImage: string;
 };
+
+export type Playlist = {
+  name: string;
+  description: string;
+  tracks: Song[];
+  smallImage?: string;
+};

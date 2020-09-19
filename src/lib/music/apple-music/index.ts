@@ -1,6 +1,10 @@
-import { SearchType, Song } from "../types";
+import { Playlist, SearchType, Song } from "../types";
 import { SEARCH_LIMIT } from "../constants";
-import { supportedAppleMusicSearchTypes, transformSongs } from "./helpers";
+import {
+  supportedAppleMusicSearchTypes,
+  transformPlaylists,
+  transformSongs,
+} from "./helpers";
 
 declare let MusicKit: any;
 
@@ -159,4 +163,21 @@ export const setVolume = (percentage: number): Promise<void> => {
   const volume = Math.abs(percentage / 100);
   MusicKit.getInstance().player.volume = volume;
   return Promise.resolve();
+};
+
+export const getPlaylists = async (): Promise<Playlist[]> => {
+  const playlistsResponse = await fetch(
+    "https://api.music.apple.com/v1/me/library/playlists",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_APPLE_DEV_TOKEN}`,
+        "Content-Type": "application/json",
+        "Music-User-Token": MusicKit.getInstance().musicUserToken,
+      },
+    }
+  );
+
+  const playlists = await playlistsResponse.json();
+  return transformPlaylists(playlists.data);
 };

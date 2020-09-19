@@ -1,6 +1,15 @@
-import { SearchType, Song } from "../types";
+import { SearchType, Song, Playlist } from "../types";
 
 type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
+
+const formatImgUrl = (url: string, size: number) => {
+  const IMAGE_HEIGHT = `${size}`;
+  const IMAGE_WIDTH = IMAGE_HEIGHT;
+
+  url = url.replace("{h}", IMAGE_HEIGHT);
+  url = url.replace("{w}", IMAGE_WIDTH);
+  return url;
+};
 
 /**
  * Convert Party Up search those supported by apple music
@@ -28,15 +37,6 @@ export const supportedAppleMusicSearchTypes = (
  * @param songs
  */
 export const transformSongs = (songs: any): Song[] => {
-  const formatImgUrl = (url: string, size: number) => {
-    const IMAGE_HEIGHT = `${size}`;
-    const IMAGE_WIDTH = IMAGE_HEIGHT;
-
-    url = url.replace("{h}", IMAGE_HEIGHT);
-    url = url.replace("{w}", IMAGE_WIDTH);
-    return url;
-  };
-
   return songs.map((song: any) => ({
     album: song.attributes.albumName,
     artist: song.attributes.artistName,
@@ -45,5 +45,20 @@ export const transformSongs = (songs: any): Song[] => {
     url: song.attributes.url,
     smallImage: formatImgUrl(song.attributes.artwork.url, 64), // Sizes to match spotify
     mediumImage: formatImgUrl(song.attributes.artwork.url, 300),
+  }));
+};
+
+/**
+ * Convert apple music playlist objects to Party Up Playlist objects
+ * @param songs
+ */
+export const transformPlaylists = (playlists: any): Playlist[] => {
+  return playlists.map((playlist: any) => ({
+    name: playlist.attributes.name,
+    description: playlist.attributes.description?.standard || "",
+    tracks: [],
+    smallImage:
+      playlist.attributes.artwork &&
+      formatImgUrl(playlist.attributes.artwork.url, 64),
   }));
 };

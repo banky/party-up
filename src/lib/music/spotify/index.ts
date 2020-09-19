@@ -1,6 +1,6 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import cryptoRandomString from "crypto-random-string";
-import { SearchType, Song } from "../types";
+import { Playlist, SearchType, Song } from "../types";
 import { SEARCH_LIMIT } from "../constants";
 import {
   getPlayerOptions,
@@ -263,4 +263,17 @@ export const songEnded = (callback: VoidFunction): VoidFunction => {
 export const setVolume = (percentage: number): Promise<void> => {
   const volume = Math.abs(percentage / 100);
   return window.spotifyPlayer.setVolume(volume);
+};
+
+export const getPlaylists = async (): Promise<Playlist[]> => {
+  const playlists = await spotifyWebApi.getUserPlaylists();
+
+  const transformedPlaylists: Playlist[] = playlists.items.map((playlist) => ({
+    name: playlist.name,
+    description: playlist.description || "",
+    tracks: [],
+    smallImage: playlist.images[0].url,
+  }));
+
+  return transformedPlaylists;
 };

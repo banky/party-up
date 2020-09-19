@@ -114,6 +114,10 @@ class Music {
   setVolume(percentage: number) {
     return getLib(this.platform).setVolume(percentage);
   }
+
+  getPlaylists() {
+    return getLib(this.platform).getPlaylists();
+  }
 }
 
 export default Music;
