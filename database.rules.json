@@ -46,6 +46,11 @@
               ".validate": "(root.child('rooms/'+$roomId+'/owner').val() == auth.uid || $userId === auth.uid) && newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
             }
           }
+        },
+        "history": {
+          "$queueItemId": {
+            ".validate": "(!root.child('rooms/'+$roomId+'/owner').exists() || root.child('rooms/'+$roomId+'/owner').val() == auth.uid) && newData.hasChildren(['album', 'artist', 'name', 'isrc', 'url', 'smallImage', 'mediumImage'])"
+          }
         }
       }
     },

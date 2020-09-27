@@ -15,7 +15,7 @@ export const useDequeueSongFb = () => {
       .once("value");
     if (!currentDjSnapshot.exists())
       return Promise.reject("No current Dj found");
-    const currentDj = currentDjSnapshot.val() as string;
+    const currentDj: string = currentDjSnapshot.val();
 
     const djsSnapshot = await firebase
       .database()

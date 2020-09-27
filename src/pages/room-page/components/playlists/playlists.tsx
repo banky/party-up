@@ -18,9 +18,10 @@ export const Playlists = () => {
     async (playlist: Playlist) => {
       const songs = await music.getSongsForPlaylist(playlist);
 
-      songs.forEach((song) => {
-        enqueueSongFirebase(song);
-      });
+      // Pushing a number of things to firebase makes them get reversed
+      songs.reverse();
+
+      songs.forEach((song) => enqueueSongFirebase(song));
     },
     [music, enqueueSongFirebase]
   );
@@ -33,7 +34,7 @@ export const Playlists = () => {
             <MediaCard
               title={playlist.name}
               subtitle={playlist.description}
-              imageUrl={playlist.image || ""}
+              imageUrl={playlist.image}
               imageAlt={`${playlist.name} playlist cover image`}
               actionIcon="plus"
               actionDisabled={false}
