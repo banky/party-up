@@ -53,6 +53,11 @@ describe("Create Room", () => {
       djs: { [mockUserId]: true },
       title: "Marios room",
       genre: "rock n roll",
+      backgroundColor: {
+        blue: 255,
+        green: 255,
+        red: 255,
+      },
     });
   });
 });
