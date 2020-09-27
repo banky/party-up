@@ -7,20 +7,24 @@ import { MediaCard } from "components/media-card/media-card.component";
 import { useDebouncedCallback } from "hooks/use-debounced-callback";
 import { MediaQueue, MediaQueueItem } from "components/media-queue";
 import { useEnqueueSongFirebase } from "hooks/use-enqueue-song-firebase";
+import { LoadingSpinner } from "components/loading-spinner/loading-spinner";
 
 const SEARCH_DEBOUNCE = 750; // Milliseconds
 
 export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const [queryLoading, setQueryLoading] = useState(false);
   const music = useMusic();
   const enqueueSongFirebase = useEnqueueSongFirebase();
 
   const onSearch = useDebouncedCallback(
     () => {
-      music
-        .search(searchQuery, ["track"])
-        .then((searchResults) => setSearchResults(searchResults));
+      music.search(searchQuery, ["track"]).then((searchResults) => {
+        setQueryLoading(false);
+        setSearchResults(searchResults);
+      });
+      setQueryLoading(true);
     },
     [music, searchQuery],
     SEARCH_DEBOUNCE
@@ -45,21 +49,25 @@ export const Search = () => {
         placeholder="Start typing to search"
       />
       <MediaQueue>
-        {searchResults.map((song) => {
-          return (
-            <MediaQueueItem key={song.url}>
-              <MediaCard
-                title={song.name}
-                subtitle={song.artist}
-                imageUrl={song.smallImage}
-                imageAlt={`${song.name} album art`}
-                actionIcon="plus"
-                actionDisabled={false}
-                onClickActionIcon={() => onClickAddSong(song)}
-              />
-            </MediaQueueItem>
-          );
-        })}
+        {queryLoading ? (
+          <LoadingSpinner />
+        ) : (
+          searchResults.map((song) => {
+            return (
+              <MediaQueueItem key={song.url}>
+                <MediaCard
+                  title={song.name}
+                  subtitle={song.artist}
+                  imageUrl={song.smallImage}
+                  imageAlt={`${song.name} album art`}
+                  actionIcon="plus"
+                  actionDisabled={false}
+                  onClickActionIcon={() => onClickAddSong(song)}
+                />
+              </MediaQueueItem>
+            );
+          })
+        )}
       </MediaQueue>
     </>
   );

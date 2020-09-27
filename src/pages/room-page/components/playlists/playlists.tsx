@@ -4,14 +4,20 @@ import { Playlist } from "lib/music/types";
 import { MediaCard } from "components/media-card/media-card.component";
 import { MediaQueue, MediaQueueItem } from "components/media-queue";
 import { useEnqueueSongFirebase } from "hooks/use-enqueue-song-firebase";
+import { LoadingSpinner } from "components/loading-spinner/loading-spinner";
 
 export const Playlists = () => {
   const music = useMusic();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [queryLoading, setQueryLoading] = useState(false);
   const enqueueSongFirebase = useEnqueueSongFirebase();
 
   useEffect(() => {
-    music.getPlaylists().then((p) => setPlaylists(p));
+    music.getPlaylists().then((p) => {
+      setQueryLoading(false);
+      setPlaylists(p);
+    });
+    setQueryLoading(true);
   }, [music]);
 
   const onClickAddPlaylist = useCallback(
@@ -28,6 +34,7 @@ export const Playlists = () => {
 
   return (
     <MediaQueue>
+      {queryLoading && <LoadingSpinner />}
       {playlists.map((playlist) => {
         return (
           <MediaQueueItem key={playlist.id}>

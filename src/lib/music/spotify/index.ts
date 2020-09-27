@@ -206,8 +206,11 @@ export const play = async (): Promise<any> => {
   });
 };
 
-export const pause = (): Promise<any> => {
+export const pause = async (): Promise<any> => {
   const { playerId } = getPlayerOptions();
+  const state = await window.spotifyPlayer.getCurrentState();
+
+  if (state === null || state.paused === true) return Promise.resolve();
 
   return spotifyWebApi.pause({
     device_id: playerId,

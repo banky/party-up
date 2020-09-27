@@ -1,6 +1,7 @@
 import React from "react";
 import { MusicContext } from "lib/music";
 import { useMusicLoading } from "./use-music-loading";
+import { LoadingSpinner } from "components/loading-spinner/loading-spinner";
 
 type MusicContextWrapperProps = {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ export const MusicContextWrapper = ({ children }: MusicContextWrapperProps) => {
   const { musicInstance, musicLoading } = useMusicLoading();
 
   return musicLoading ? (
-    <div>Loading</div>
+    <LoadingSpinner />
   ) : (
     <MusicContext.Provider value={musicInstance}>
       {children}
