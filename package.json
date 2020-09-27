@@ -7,22 +7,22 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/dom": "^7.22.5",
     "@testing-library/jest-dom": "^5.11.2",
-    "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.1.2",
-    "@types/jest": "^26.0.10",
-    "@types/node": "^14.0.27",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.1.5",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.1",
     "@types/react": "^16.9.47",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
-    "@typescript-eslint/parser": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.1",
     "base64url": "^3.0.1",
     "colorthief": "^2.3.2",
     "crypto-random-string": "^3.2.0",
     "eslint-plugin-react": "^7.20.6",
-    "firebase": "^7.20.0",
+    "firebase": "^7.21.0",
     "firebase-tools": "~8.6.0",
     "js-sha256": "^0.9.0",
     "react": "^16.13.1",
@@ -33,7 +33,7 @@
     "redux-persist": "^6.0.0",
     "spotify-web-api-js": "^1.5.0",
     "styled-components": "^5.1.1",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,8 +57,8 @@
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1"
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.0.2"
   },
   "husky": {
     "hooks": {
