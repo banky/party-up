@@ -13,16 +13,18 @@ import {
   useUserIsOwner,
   useRoomPlaying,
   useCurrentSong,
-  useFirebaseActions,
+  useSetRoomPlayingFB,
   useProgress,
   useDequeueSongFb,
+  useSetCurrentSongFB,
 } from "./hooks";
 import { DjBooth } from "./components/dj-booth";
 import { YourQueue } from "./components/your-queue";
 import { Playlists } from "./components/playlists";
+import { History } from "./components/history";
 
 const TABS = {
-  History: () => null,
+  History: History,
   "Your Queue": YourQueue,
   Playlists: Playlists,
   Search: Search,
@@ -33,15 +35,16 @@ export const RoomPage = () => {
   const music = useMusic();
   const { roomKey } = useParams<{ roomKey: string }>();
   const userPressedNext = useRef(false);
-  const [switcherValue, setSwitcherValue] = useState(2);
+  const [switcherValue, setSwitcherValue] = useState(1);
 
   const roomName = useRoomName();
   const userIsOwner = useUserIsOwner();
   const roomPlaying = useRoomPlaying();
   const currentSong = useCurrentSong();
-  const { setRoomPlayingFB, setCurrentSongFB } = useFirebaseActions();
-  const dequeueSongFB = useDequeueSongFb();
   const progress = useProgress();
+  const setRoomPlayingFB = useSetRoomPlayingFB();
+  const setCurrentSongFB = useSetCurrentSongFB();
+  const dequeueSongFB = useDequeueSongFb();
 
   useUserAuthorized();
 
@@ -68,7 +71,7 @@ export const RoomPage = () => {
     switcherValue,
   ]);
 
-  const onClickPlay = async () => {
+  const onClickPlay = () => {
     // Only set current song if one doesn't exist already
     firebase
       .database()

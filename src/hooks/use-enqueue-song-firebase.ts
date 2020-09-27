@@ -16,13 +16,19 @@ export const useEnqueueSongFirebase = () => {
         .database()
         .ref(`rooms/${roomKey}/queues/${userId}`)
         .once("value");
-      const currentSongs = currentSongsSnapshot.val();
-      const currentSongsArray: Song[] = Object.values(currentSongs);
 
-      const songExists = currentSongsArray.some((s) => s.url === song.url);
-      if (songExists) return;
+      if (currentSongsSnapshot.exists()) {
+        const currentSongs = currentSongsSnapshot.val();
+        const currentSongsArray: Song[] = Object.values(currentSongs);
 
-      firebase.database().ref(`rooms/${roomKey}/queues/${userId}`).push(song);
+        const songExists = currentSongsArray.some((s) => s.url === song.url);
+        if (songExists) return;
+      }
+
+      return firebase
+        .database()
+        .ref(`rooms/${roomKey}/queues/${userId}`)
+        .push(song);
     },
     [firebase, roomKey, userId]
   );

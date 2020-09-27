@@ -3,6 +3,7 @@ export * from "./use-user-is-owner";
 export * from "./use-user-is-dj";
 export * from "./use-room-playing";
 export * from "./use-current-song";
-export * from "./use-firebase-actions";
+export * from "./use-set-room-playing-fb";
 export * from "./use-progress";
 export * from "./use-dequeue-song-fb";
+export * from "./use-set-current-song-fb";
