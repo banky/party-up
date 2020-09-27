@@ -49,22 +49,25 @@ export const Search = () => {
         placeholder="Start typing to search"
       />
       <MediaQueue>
-        {queryLoading && <LoadingSpinner />}
-        {searchResults.map((song) => {
-          return (
-            <MediaQueueItem key={song.url}>
-              <MediaCard
-                title={song.name}
-                subtitle={song.artist}
-                imageUrl={song.smallImage}
-                imageAlt={`${song.name} album art`}
-                actionIcon="plus"
-                actionDisabled={false}
-                onClickActionIcon={() => onClickAddSong(song)}
-              />
-            </MediaQueueItem>
-          );
-        })}
+        {queryLoading ? (
+          <LoadingSpinner />
+        ) : (
+          searchResults.map((song) => {
+            return (
+              <MediaQueueItem key={song.url}>
+                <MediaCard
+                  title={song.name}
+                  subtitle={song.artist}
+                  imageUrl={song.smallImage}
+                  imageAlt={`${song.name} album art`}
+                  actionIcon="plus"
+                  actionDisabled={false}
+                  onClickActionIcon={() => onClickAddSong(song)}
+                />
+              </MediaQueueItem>
+            );
+          })
+        )}
       </MediaQueue>
     </>
   );
