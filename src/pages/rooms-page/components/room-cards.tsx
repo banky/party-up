@@ -15,19 +15,7 @@ export const RoomCards = ({ rooms }: RoomCardsProps) => {
           return null;
         }
 
-        return (
-          <RoomCard
-            key={room.key}
-            roomId={room.key}
-            roomName={room.title}
-            genre={room.genre}
-            roomImageUrl={room.currentSong.mediumImage}
-            nowPlayingSong={room.currentSong.name}
-            nowPlayingArtist={room.currentSong.artist}
-            numListeners={room.listeners._count}
-            numDjs={room.djs._count}
-          />
-        );
+        return <RoomCard key={room.key} room={room} />;
       })}
     </RoomCardsContainer>
   );

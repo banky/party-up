@@ -1,82 +1,42 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
-// @ts-ignore: No types
-import ColorThief from "colorthief";
 import { useHistory } from "react-router-dom";
+import { Room } from "types/room";
 
 type RoomCardProps = {
-  roomId: string;
-  roomName: string;
-  genre: string;
-  roomImageUrl: string;
-  nowPlayingSong: string;
-  nowPlayingArtist: string;
-  numListeners: number;
-  numDjs: number;
+  room: Room;
 };
 
-const colorThief = new ColorThief();
-
 export const RoomCard = ({
-  roomId,
-  roomName,
-  genre,
-  roomImageUrl,
-  nowPlayingSong,
-  nowPlayingArtist,
-  numListeners,
-  numDjs,
+  room: { key, title, genre, currentSong, backgroundColor, listeners, djs },
 }: RoomCardProps) => {
   const history = useHistory();
-  const [cardBackgroundColorStart, setCardBackgroundColorStart] = useState([
-    256,
-    256,
-    256,
-  ]);
-
-  useEffect(() => {
-    // @ts-ignore: HTMLImageElement should extend HTMLElement and I think this is a bug
-    const img: HTMLImageElement = document.getElementById(`img-${roomId}`);
-    if (img === null) return;
-
-    if (img.complete) {
-      setCardBackgroundColorStart(colorThief.getColor(img));
-    } else {
-      img.addEventListener("load", () => {
-        setCardBackgroundColorStart(colorThief.getColor(img));
-      });
-    }
-  }, [roomId, setCardBackgroundColorStart]);
-
-  const cardBackgroundColorEnd = useMemo(
-    () =>
-      cardBackgroundColorStart.map(
-        (channel) => channel + (256 - channel) * 0.9
-      ),
-    [cardBackgroundColorStart]
-  );
-
-  const cardHeaderTextColor = useMemo(() => {
-    // Light if the average of channels is bigger than 128
+  const getCardTextColor = useCallback((background: number[]) => {
     const isLightBackground =
-      cardBackgroundColorStart.reduce((acc, curr) => acc + curr, 0) /
-        cardBackgroundColorStart.length >
-      128;
+      background.reduce((acc, curr) => acc + curr, 0) / background.length > 128;
     const targetColor = isLightBackground ? 0 : 256;
 
     // Try to make the text color contrast with background
-    return cardBackgroundColorStart.map(
-      (channel) => channel + (targetColor - channel) * 0.9
-    );
-  }, [cardBackgroundColorStart]);
+    return background.map((channel) => channel + (targetColor - channel) * 0.9);
+  }, []);
+
+  const cardBackgroundColorStart = [
+    backgroundColor.red,
+    backgroundColor.green,
+    backgroundColor.blue,
+  ];
+  const cardBackgroundColorEnd = cardBackgroundColorStart.map(
+    (channel) => channel + (256 - channel) * 0.9
+  );
+  const cardHeaderTextColor = getCardTextColor(cardBackgroundColorStart);
 
   return (
     <CardContainer
       backgroundColorStart={cardBackgroundColorStart}
       backgroundColorEnd={cardBackgroundColorEnd}
-      onClick={() => history.push(`room/${roomId}`)}
+      onClick={() => history.push(`room/${key}`)}
     >
-      <RoomName textColor={cardHeaderTextColor}>{roomName}</RoomName>
+      <RoomName textColor={cardHeaderTextColor}>{title}</RoomName>
       <GenreContainer textColor={cardHeaderTextColor}>
         <GenreHeader>{"Genre: "}</GenreHeader>
         <Genre>{genre}</Genre>
@@ -86,26 +46,30 @@ export const RoomCard = ({
         <RoomImageStackFrame angle={-10} />
         <RoomImageStackFrame angle={-15} />
         <RoomImage
-          src={roomImageUrl}
-          alt={`${roomName} now playing album art`}
-          id={`img-${roomId}`}
+          src={currentSong.mediumImage}
+          alt={`${title} now playing album art`}
+          id={`img-${key}`}
           crossOrigin="anonymous"
         />
       </RoomImageContainer>
-      <NowPlayingSong>{nowPlayingSong}</NowPlayingSong>
-      <NowPlayingArtist>{nowPlayingArtist}</NowPlayingArtist>
+      <NowPlayingSong>{currentSong.name}</NowPlayingSong>
+      <NowPlayingArtist>{currentSong.artist}</NowPlayingArtist>
       <RoomStatsContainer>
         <RoomStats>
           <RoomStatsHeader>{"Listeners: "}</RoomStatsHeader>
-          <RoomStatsContent>{numListeners}</RoomStatsContent>
+          <RoomStatsContent>{listeners._count}</RoomStatsContent>
         </RoomStats>
         <RoomStats>
           <RoomStatsHeader>{"Djs: "}</RoomStatsHeader>
-          <RoomStatsContent>{numDjs}</RoomStatsContent>
+          <RoomStatsContent>{djs._count}</RoomStatsContent>
         </RoomStats>
       </RoomStatsContainer>
     </CardContainer>
   );
+};
+
+const rgbFromColor = (color: number[]) => {
+  return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 };
 
 const CardContainer = styled.div<{
@@ -115,35 +79,19 @@ const CardContainer = styled.div<{
   height: 450px;
   width: 350px;
   background: linear-gradient(
-    rgb(
-      ${(props) => props.backgroundColorStart[0]},
-      ${(props) => props.backgroundColorStart[1]},
-      ${(props) => props.backgroundColorStart[2]}
-    ),
-    rgb(
-      ${(props) => props.backgroundColorEnd[0]},
-      ${(props) => props.backgroundColorEnd[1]},
-      ${(props) => props.backgroundColorEnd[2]}
-    )
+    ${(props) => rgbFromColor(props.backgroundColorStart)},
+    ${(props) => rgbFromColor(props.backgroundColorEnd)}
   );
   border-radius: 15px;
 `;
 
 const RoomName = styled.h1<{ textColor: Array<number> }>`
-  color: rgb(
-    ${(props) => props.textColor[0]},
-    ${(props) => props.textColor[1]},
-    ${(props) => props.textColor[2]}
-  );
+  color: ${(props) => rgbFromColor(props.textColor)};
   padding-top: 10px;
 `;
 
 const GenreContainer = styled.div<{ textColor: Array<number> }>`
-  color: rgb(
-    ${(props) => props.textColor[0]},
-    ${(props) => props.textColor[1]},
-    ${(props) => props.textColor[2]}
-  );
+  color: ${(props) => rgbFromColor(props.textColor)};
 `;
 
 const GenreHeader = styled.p`

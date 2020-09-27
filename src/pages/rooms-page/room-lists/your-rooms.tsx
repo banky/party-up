@@ -23,6 +23,8 @@ export const YourRooms = () => {
       .orderByChild("listeners/_count")
       .limitToFirst(ROOMS_PER_PAGE)
       .on("value", (snapshot) => {
+        if (!snapshot.exists()) return;
+
         const rooms = roomsWithId(snapshot.val());
         rooms.sort(byMostPopular);
 

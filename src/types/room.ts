@@ -6,6 +6,7 @@ export type Room = {
   genre: string;
   owner: string;
   currentSong: Song;
+  backgroundColor: { red: number; green: number; blue: number };
   listeners: { _count: number };
   djs: { _count: number };
 };

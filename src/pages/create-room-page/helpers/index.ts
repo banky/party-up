@@ -26,5 +26,10 @@ export const createRoomFB = ({
         [userId]: true,
       },
       currentDj: userId,
+      backgroundColor: {
+        red: 255,
+        green: 255,
+        blue: 255,
+      },
     }).key;
 };
