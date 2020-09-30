@@ -33,10 +33,10 @@ export const useUserList = (ref: string) => {
     the users and filtering them in memory
   */
   useEffect(() => {
-    let isCancelled = false;
-    const promises = userIds.map((userId) => {
-      return firebase.database().ref(`users/${userId}`).once("value");
-    }, []);
+    let isCancelled = false; // Used to cancel promises on component unmount
+    const promises = userIds.map((userId) =>
+      firebase.database().ref(`users/${userId}`).once("value")
+    );
 
     Promise.all(promises)
       .then((snapshots) => {
