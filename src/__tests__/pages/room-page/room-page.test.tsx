@@ -95,6 +95,7 @@ mockFirebaseInstance.auth = jest.fn(() => ({
 describe("Room page functionality for DJ", () => {
   beforeEach(async () => {
     await act(async () => {
+      await mockFirebaseInstance.database().ref().set(null);
       await mockFirebaseInstance.database().ref().set(mockDatabaseData);
     });
   });

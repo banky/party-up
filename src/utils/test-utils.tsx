@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
 import Firebase, { FirebaseContext } from "lib/firebase";
 import Music, { MusicContext } from "lib/music";
 import { rootReducer } from "store/reducers";
+import { renderHook } from "@testing-library/react-hooks";
+import { createMemoryHistory } from "history";
 
 jest.mock("lib/music/music");
 
@@ -19,6 +21,8 @@ const mockFirebaseInstance = new Firebase();
 
 const mockPlatform = "apple";
 const mockMusicInstance = new Music(mockPlatform);
+
+const mockHistory = createMemoryHistory();
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
@@ -35,9 +39,18 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
 const customRender = (ui: ReactElement<any>, options?: any) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
+const customRenderHook = (hook: () => any, options?: any) => {
+  return renderHook(hook, {
+    wrapper: AllTheProviders,
+    ...options,
+  });
+};
+
 export * from "@testing-library/react";
 
 export { customRender as render };
+export { customRenderHook as renderHook };
 export { mockStore };
 export { mockFirebaseInstance };
 export { mockMusicInstance };
+export { mockHistory };
