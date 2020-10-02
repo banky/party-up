@@ -20,7 +20,6 @@
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.1",
     "base64url": "^3.0.1",
-    "colorthief": "^2.3.2",
     "crypto-random-string": "^3.2.0",
     "eslint-plugin-react": "^7.20.6",
     "firebase": "^7.21.0",
@@ -40,8 +39,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "./test-local.sh",
-    "test:ci": "yarn firebase emulators:exec --only database \"react-scripts test --runInBand --env=jsdom-fourteen --watchAll=false\"",
+    "test": "./test.sh",
+    "test:ci": "./test.sh --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.ts\""
   },
