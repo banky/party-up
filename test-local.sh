@@ -6,4 +6,4 @@ do
     ARGS+="$arg "
 done
 
-yarn firebase emulators:exec --only database "react-scripts test --env=jsdom-fourteen $ARGS"
+yarn firebase emulators:exec --only database "react-scripts test --runInBand --env=jsdom-fourteen $ARGS"

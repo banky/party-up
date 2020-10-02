@@ -41,7 +41,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "./test-local.sh",
-    "test:ci": "yarn firebase emulators:exec --only database \"react-scripts test --env=jsdom-fourteen --watchAll=false\"",
+    "test:ci": "yarn firebase emulators:exec --only database \"react-scripts test --runInBand --env=jsdom-fourteen --watchAll=false\"",
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.ts\""
   },

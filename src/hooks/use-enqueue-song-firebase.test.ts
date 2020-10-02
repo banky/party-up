@@ -1,13 +1,7 @@
 import { useEnqueueSongFirebase } from "hooks/use-enqueue-song-firebase";
 import { Song } from "lib/music/types";
 import { updateUserId } from "store/actions";
-import {
-  renderHook,
-  mockStore,
-  mockFirebaseInstance,
-  act,
-  mockHistory,
-} from "utils/test-utils";
+import { renderHook, mockStore, mockFirebaseInstance } from "utils/test-utils";
 
 const mockUserId = "fake-user-id";
 
@@ -34,27 +28,17 @@ describe("useEnqueueSongFirebase", () => {
       mediumImage: "fake-img-url",
     };
 
-    let newSongId: string = "";
-    await act(async () => {
-      mockHistory.push(`/room/fake-room-key`);
-      const newSongLocation = await result.current(song);
-      newSongId = newSongLocation?.toString().slice(-20) || "";
-    });
+    const newSongLocation = await result.current(song);
+    const newSongId = newSongLocation?.toString().slice(-20) || "";
 
     const snapshot = await mockFirebaseInstance
       .database()
-      .ref("rooms")
+      .ref("rooms/fake-room-key/queues/fake-user-id")
       .once("value");
 
     await waitFor(() =>
       expect(snapshot.val()).toStrictEqual({
-        "fake-room-key": {
-          queues: {
-            "fake-user-id": {
-              [newSongId]: song,
-            },
-          },
-        },
+        [newSongId]: song,
       })
     );
   });
