@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { User } from "types/user";
 import { useFirebase } from "lib/firebase/hook";
 
+/**
+ * Get full user information for a ref of user IDs
+ * @param ref Firebase room users ref, eg. djs, listeners
+ */
 export const useUserList = (ref: string) => {
   const firebase = useFirebase();
   const [userIds, setUserIds] = useState<string[]>([]);
