@@ -1,4 +1,5 @@
 import { useEnqueueSongFirebase } from "hooks/use-enqueue-song-firebase";
+import { Song } from "lib/music/types";
 import { updateUserId } from "store/actions";
 import {
   renderHook,
@@ -9,15 +10,6 @@ import {
 } from "utils/test-utils";
 
 const mockUserId = "fake-user-id";
-const mockRoomKey = "fake-room-key";
-
-jest.mock("react-router-dom", () => ({
-  // @ts-ignore: Type is unknown
-  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
-  useParams: () => ({
-    roomKey: mockRoomKey,
-  }),
-}));
 
 describe("useEnqueueSongFirebase", () => {
   beforeAll(() => {
@@ -28,16 +20,21 @@ describe("useEnqueueSongFirebase", () => {
   it("pushes a song appropriately to firebase", async () => {
     const { result } = renderHook(() => useEnqueueSongFirebase());
 
-    const song = {
+    const song: Song = {
       artist: "Doja Cat",
       name: "Say so",
+      album: "fake-album",
+      isrc: "fake-isrc",
+      url: "fake-url",
+      smallImage: "fake-img-url",
+      mediumImage: "fake-img-url",
     };
 
-    let newSongId = "";
+    let newSongId: string = "";
     await act(async () => {
-      mockHistory.push(`/room/${mockRoomKey}`);
+      mockHistory.push(`/room/fake-room-key`);
       const newSongLocation = await result.current(song);
-      newSongId = newSongLocation.toString().slice(-20);
+      newSongId = newSongLocation?.toString().slice(-20) || "";
     });
 
     const snapshot = await mockFirebaseInstance
