@@ -39,12 +39,12 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
 const customRender = (ui: ReactElement<any>, options?: any) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
-const customRenderHook = (hook: () => any, options?: any) => {
+function customRenderHook<T>(hook: () => T, options?: any) {
   return renderHook(hook, {
     wrapper: AllTheProviders,
     ...options,
   });
-};
+}
 
 export * from "@testing-library/react";
 

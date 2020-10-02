@@ -1,9 +1,11 @@
+let _isAuthorized = true;
+
 const authorize = jest.fn(() =>
   Promise.resolve({ authToken: "fake-auth-token", expiresIn: 1000000 })
 );
 const configure = jest.fn(() => Promise.resolve());
 const unauthorize = jest.fn();
-const isAuthorized = jest.fn(() => true);
+const isAuthorized = jest.fn(() => _isAuthorized);
 const play = jest.fn(() => Promise.resolve());
 const pause = jest.fn(() => Promise.resolve());
 const queueAndPlay = jest.fn(() => Promise.resolve());
@@ -52,6 +54,8 @@ const getSongsForPlaylist = jest.fn(() =>
   ])
 );
 
+const _setIsAuthorized = (val: boolean) => (_isAuthorized = val);
+
 const mock = jest.fn().mockImplementation(() => {
   return {
     configure,
@@ -69,6 +73,7 @@ const mock = jest.fn().mockImplementation(() => {
     setVolume,
     getPlaylists,
     getSongsForPlaylist,
+    _setIsAuthorized,
   };
 });
 
