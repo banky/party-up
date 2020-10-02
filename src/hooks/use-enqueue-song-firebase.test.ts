@@ -12,13 +12,17 @@ import {
 const mockUserId = "fake-user-id";
 
 describe("useEnqueueSongFirebase", () => {
-  beforeAll(() => {
+  beforeEach(() => {
     mockFirebaseInstance.database().ref().set(null);
     mockStore.dispatch(updateUserId(mockUserId));
   });
 
+  afterAll(() => {
+    mockFirebaseInstance.database().ref().set(null);
+  });
+
   it("pushes a song appropriately to firebase", async () => {
-    const { result } = renderHook(() => useEnqueueSongFirebase());
+    const { result, waitFor } = renderHook(() => useEnqueueSongFirebase());
 
     const song: Song = {
       artist: "Doja Cat",
@@ -42,14 +46,16 @@ describe("useEnqueueSongFirebase", () => {
       .ref("rooms")
       .once("value");
 
-    expect(snapshot.val()).toStrictEqual({
-      "fake-room-key": {
-        queues: {
-          "fake-user-id": {
-            [newSongId]: song,
+    await waitFor(() =>
+      expect(snapshot.val()).toStrictEqual({
+        "fake-room-key": {
+          queues: {
+            "fake-user-id": {
+              [newSongId]: song,
+            },
           },
         },
-      },
-    });
+      })
+    );
   });
 });
