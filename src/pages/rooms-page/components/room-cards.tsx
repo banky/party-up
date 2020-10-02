@@ -24,7 +24,7 @@ export const RoomCards = ({ rooms }: RoomCardsProps) => {
 const RoomCardsContainer = styled.div`
   display: grid;
   gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   justify-items: center;
   margin-top: 20px;
 `;
