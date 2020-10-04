@@ -14,9 +14,12 @@ export const useSetCurrentSongFB = () => {
         .ref(`rooms/${roomKey}/currentSong`)
         .once("value");
       const previousSong = previousSongSnapshot.val();
-      firebase.database().ref(`rooms/${roomKey}/history`).push(previousSong);
+      await firebase
+        .database()
+        .ref(`rooms/${roomKey}/history`)
+        .push(previousSong);
 
-      firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
+      await firebase.database().ref(`rooms/${roomKey}/currentSong`).set(song);
     },
     [firebase, roomKey]
   );

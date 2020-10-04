@@ -3,7 +3,7 @@ import { SearchType, Song, Playlist } from "../types";
 
 type AppleMusicSearchType = "artists" | "songs" | "playlists" | "albums";
 
-const formatImgUrl = (url: string, size: number) => {
+export const formatImgUrl = (url: string, size: number) => {
   const IMAGE_HEIGHT = `${size}`;
   const IMAGE_WIDTH = IMAGE_HEIGHT;
 

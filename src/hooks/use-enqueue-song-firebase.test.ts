@@ -16,7 +16,7 @@ describe("useEnqueueSongFirebase", () => {
   });
 
   it("pushes a song appropriately to firebase", async () => {
-    const { result, waitFor } = renderHook(() => useEnqueueSongFirebase());
+    const { result } = renderHook(() => useEnqueueSongFirebase());
 
     const song: Song = {
       artist: "Doja Cat",
@@ -36,10 +36,8 @@ describe("useEnqueueSongFirebase", () => {
       .ref("rooms/fake-room-key/queues/fake-user-id")
       .once("value");
 
-    await waitFor(() =>
-      expect(snapshot.val()).toStrictEqual({
-        [newSongId]: song,
-      })
-    );
+    expect(snapshot.val()).toStrictEqual({
+      [newSongId]: song,
+    });
   });
 });

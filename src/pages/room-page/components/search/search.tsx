@@ -18,20 +18,16 @@ export const Search = () => {
   const music = useMusic();
   const enqueueSongFirebase = useEnqueueSongFirebase();
 
-  const onSearch = useDebouncedCallback(
-    () => {
-      music.search(searchQuery, ["track"]).then((searchResults) => {
-        setQueryLoading(false);
-        setSearchResults(searchResults);
-      });
-      setQueryLoading(true);
-    },
-    [music, searchQuery],
-    SEARCH_DEBOUNCE
-  );
+  const onSearch = useDebouncedCallback(() => {
+    music.search(searchQuery, ["track"]).then((searchResults) => {
+      setQueryLoading(false);
+      setSearchResults(searchResults);
+    });
+    setQueryLoading(true);
+  }, SEARCH_DEBOUNCE);
 
   useEffect(() => {
-    onSearch();
+    return onSearch();
   }, [searchQuery, onSearch]);
 
   const onClickAddSong = useCallback(

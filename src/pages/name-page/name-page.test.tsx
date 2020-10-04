@@ -6,7 +6,6 @@ import {
   screen,
   mockStore,
   mockFirebaseInstance,
-  waitFor,
 } from "utils/test-utils";
 import { NamePage } from "./name-page";
 
@@ -37,11 +36,9 @@ describe("user name update", () => {
       .ref(`users/${mockUserId}`)
       .once("value");
 
-    waitFor(() =>
-      expect(snapshot.val()).toStrictEqual({
-        imageUrl: "https://image.flaticon.com/icons/png/512/37/37232.png",
-        name: "John Smith",
-      })
-    );
+    expect(snapshot.val()).toStrictEqual({
+      imageUrl: "https://image.flaticon.com/icons/png/512/37/37232.png",
+      name: "John Smith",
+    });
   });
 });
