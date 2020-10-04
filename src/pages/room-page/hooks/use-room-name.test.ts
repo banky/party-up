@@ -20,13 +20,9 @@ describe("useRoomName", () => {
   });
 
   it("handles error for invalid room", async () => {
-    await act(
-      async () =>
-        await mockFirebaseInstance
-          .database()
-          .ref("rooms/some-other-room")
-          .set(roomFixture)
-    );
+    await act(async () => {
+      await mockFirebaseInstance.database().ref().set(null);
+    });
 
     const { result, waitFor } = renderHook(() => useRoomName());
 

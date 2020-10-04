@@ -17,6 +17,7 @@ const mockUserId = "fake-user-id";
 describe("History", () => {
   beforeEach(() => {
     mockFirebaseInstance.database().ref().set(null);
+    mockFirebaseInstance.database().ref("rooms/fake-room-key").set(roomFixture);
     mockStore.dispatch(updateUserId(mockUserId));
   });
 
@@ -25,11 +26,6 @@ describe("History", () => {
   });
 
   it("renders the room history as expected", async () => {
-    await mockFirebaseInstance
-      .database()
-      .ref("rooms/fake-room-key")
-      .set(roomFixture);
-
     render(<History />);
 
     await waitFor(() => expect(screen.getByText("Vance Joy")).toBeTruthy());
@@ -37,11 +33,6 @@ describe("History", () => {
   });
 
   it("adds a song from history to the queue", async () => {
-    await mockFirebaseInstance
-      .database()
-      .ref("rooms/fake-room-key")
-      .set(roomFixture);
-
     render(<History />);
 
     await waitFor(() => expect(screen.getByTitle("Add")).toBeTruthy());
