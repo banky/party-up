@@ -71,8 +71,12 @@ describe("Playlists", () => {
       .ref(`rooms/fake-room-key/queues/${mockUserId}`)
       .on("value", (s) => (snapshot = s));
 
-    await waitFor(() =>
-      expect(Object.values(snapshot?.val())).toStrictEqual(songsFixture)
-    );
+    await waitFor(() => expect(snapshot.val()).not.toBeNull());
+
+    const sortFn = (a: any, b: any) => Number(a.url > b.url);
+    const received = Object.values(snapshot?.val()).sort(sortFn);
+    const expected = songsFixture.sort(sortFn);
+
+    await waitFor(() => expect(received).toStrictEqual(expected));
   });
 });
