@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import Firebase, { FirebaseContext } from "lib/firebase";
 import Music, { MusicContext } from "lib/music";
 import { rootReducer } from "store/reducers";
+import { renderHook } from "@testing-library/react-hooks";
 
 jest.mock("lib/music/music");
 
@@ -35,9 +36,17 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
 const customRender = (ui: ReactElement<any>, options?: any) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
+function customRenderHook<T>(hook: () => T, options?: any) {
+  return renderHook(hook, {
+    wrapper: AllTheProviders,
+    ...options,
+  });
+}
+
 export * from "@testing-library/react";
 
 export { customRender as render };
+export { customRenderHook as renderHook };
 export { mockStore };
 export { mockFirebaseInstance };
 export { mockMusicInstance };

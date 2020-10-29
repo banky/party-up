@@ -4,11 +4,11 @@ import {
   waitFor,
   screen,
   mockStore,
+  fireEvent,
   mockFirebaseInstance,
   mockMusicInstance,
 } from "utils/test-utils";
 import { LoginPage } from "pages/login-page/login-page";
-import { fireEvent } from "@testing-library/react";
 
 const mockUser = {
   user: { uid: "fake-uid" },

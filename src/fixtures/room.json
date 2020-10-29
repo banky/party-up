@@ -1,0 +1,102 @@
+{
+  "backgroundColor": {
+    "blue": 136,
+    "green": 123,
+    "red": 121
+  },
+  "currentDj": "VlMsVUpY4fQJh1SCswAQ9M1QgjE3",
+  "currentSong": {
+    "album": "The Best of... So Far (Deluxe)",
+    "artist": "The Kooks",
+    "isrc": "GBAAA0500835",
+    "mediumImage": "https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/d5/08/e2/d508e22e-1b41-7820-6c60-1197df3c6a48/00602557536300.rgb.jpg/300x300bb.jpeg",
+    "name": "She Moves In Her Own Way",
+    "smallImage": "https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/d5/08/e2/d508e22e-1b41-7820-6c60-1197df3c6a48/00602557536300.rgb.jpg/100x100bb.jpeg",
+    "url": "https://music.apple.com/ca/album/she-moves-in-her-own-way/1442991297?i=1442991307"
+  },
+  "djs": {
+    "VlMsVUpY4fQJh1SCswAQ9M1QgjE3": true,
+    "2DDMK1E5k9TcnmnxsYc5TK0pmCt1": false,
+    "7fWUPY3syZZHU4XNxRg9nEWKRhc2": true,
+    "_count": 3
+  },
+  "genre": "Alternative",
+  "history": {
+    "-MIGYiRkQt3O-ZidLhJa": {
+      "album": "Dream Your Life Away (Special Edition)",
+      "artist": "Vance Joy",
+      "isrc": "USAT21301414",
+      "mediumImage": "https://is2-ssl.mzstatic.com/image/thumb/Music7/v4/f0/88/a0/f088a0fe-e5ab-1213-0e7e-f746fb0f223d/075679920355.jpg/300x300bb.jpeg",
+      "name": "Riptide",
+      "smallImage": "https://is2-ssl.mzstatic.com/image/thumb/Music7/v4/f0/88/a0/f088a0fe-e5ab-1213-0e7e-f746fb0f223d/075679920355.jpg/100x100bb.jpeg",
+      "url": "https://music.apple.com/ca/album/riptide/1022164257?i=1022164261"
+    }
+  },
+  "listeners": {
+    "VlMsVUpY4fQJh1SCswAQ9M1QgjE3": false,
+    "_count": 0
+  },
+  "owner": "VlMsVUpY4fQJh1SCswAQ9M1QgjE3",
+  "playing": true,
+  "queues": {
+    "VlMsVUpY4fQJh1SCswAQ9M1QgjE3": {
+      "-MIGYiFrXnQUTRczynaF": {
+        "album": "Hope",
+        "artist": "The Strumbellas",
+        "isrc": "CA6MD1500001",
+        "mediumImage": "https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/f3/f9/0a/f3f90ae1-7caa-b304-5ca8-9dc89f71f327/00836766009779.rgb.jpg/300x300bb.jpeg",
+        "name": "Spirits",
+        "smallImage": "https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/f3/f9/0a/f3f90ae1-7caa-b304-5ca8-9dc89f71f327/00836766009779.rgb.jpg/100x100bb.jpeg",
+        "url": "https://music.apple.com/ca/album/spirits/1440933254?i=1440933258"
+      },
+      "-MIGYiFsLso4nzV4KfN7": {
+        "album": "Bad Blood (Bonus Track Version)",
+        "artist": "Bastille",
+        "isrc": "GBAAA1200795",
+        "mediumImage": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/c3/f9/60/c3f9609a-28b6-5262-39e5-c869b6f40b08/00602537477357.rgb.jpg/300x300bb.jpeg",
+        "name": "Pompeii",
+        "smallImage": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/c3/f9/60/c3f9609a-28b6-5262-39e5-c869b6f40b08/00602537477357.rgb.jpg/100x100bb.jpeg",
+        "url": "https://music.apple.com/ca/album/pompeii/1440858222?i=1440858321"
+      },
+      "-MIGYiFsLso4nzV4KfN8": {
+        "album": "The Lumineers (Deluxe)",
+        "artist": "The Lumineers",
+        "isrc": "USDMG1260805",
+        "mediumImage": "https://is4-ssl.mzstatic.com/image/thumb/Music123/v4/6a/28/6e/6a286ef6-fb81-ebd6-da66-eec42879aad3/821826005587.jpg/300x300bb.jpeg",
+        "name": "Ho Hey",
+        "smallImage": "https://is4-ssl.mzstatic.com/image/thumb/Music123/v4/6a/28/6e/6a286ef6-fb81-ebd6-da66-eec42879aad3/821826005587.jpg/100x100bb.jpeg",
+        "url": "https://music.apple.com/ca/album/ho-hey/1502532454?i=1502532861"
+      },
+      "-MIGYiFsLso4nzV4KfN9": {
+        "album": "Hôtel de Ville",
+        "artist": "Scott Helman",
+        "isrc": "CAW111700043",
+        "mediumImage": "https://is5-ssl.mzstatic.com/image/thumb/Music122/v4/d3/4b/5f/d34b5f97-4767-2aee-3272-46f48bedbd85/190296968457.jpg/300x300bb.jpeg",
+        "name": "PDA",
+        "smallImage": "https://is5-ssl.mzstatic.com/image/thumb/Music122/v4/d3/4b/5f/d34b5f97-4767-2aee-3272-46f48bedbd85/190296968457.jpg/100x100bb.jpeg",
+        "url": "https://music.apple.com/ca/album/pda/1210878843?i=1210878987"
+      }
+    },
+    "7fWUPY3syZZHU4XNxRg9nEWKRhc2": {
+      "-MIGYiFrXnQUTRczynaF": {
+        "album": "The Kids Are Coming - EP",
+        "artist": "Tones And I",
+        "name": "Dance Monkey",
+        "isrc": "QZES71982312",
+        "url": "https://music.apple.com/ca/album/dance-monkey/1475930038?i=1475930045",
+        "smallImage": "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/40/e2/d1/40e2d103-dcd1-e406-cfe9-90eb3bb4a26b/075679839237.jpg/100x100bb.jpeg",
+        "mediumImage": "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/40/e2/d1/40e2d103-dcd1-e406-cfe9-90eb3bb4a26b/075679839237.jpg/300x300bb.jpeg"
+      },
+      "-MIGYiFsLso4nzV4KfN7": {
+        "album": "Fire on Marzz - EP",
+        "artist": "BENEE",
+        "name": "Glitter",
+        "isrc": "USUM71911687",
+        "url": "https://music.apple.com/ca/album/glitter/1469442495?i=1469442499",
+        "smallImage": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/7c/ea/13/7cea13d4-e921-a9ee-9688-7b0e4a8a85a6/19UMGIM54697.rgb.jpg/100x100bb.jpeg",
+        "mediumImage": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/7c/ea/13/7cea13d4-e921-a9ee-9688-7b0e4a8a85a6/19UMGIM54697.rgb.jpg/300x300bb.jpeg"
+      }
+    }
+  },
+  "title": "Hannah's room"
+}

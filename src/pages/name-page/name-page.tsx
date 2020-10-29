@@ -24,9 +24,9 @@ export const NamePage = () => {
       <Header title="Name" />
       <div>
         <StyledInput
-          placeholder="Enter you rname"
+          placeholder="Enter your name"
           value={name}
-          aria-label="name input"
+          aria-label="name-input"
           onChange={(e) => setName(e.target.value)}
         />
       </div>
