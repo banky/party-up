@@ -5,7 +5,7 @@ describe("useDebouncedCallback", () => {
   let counter = 0;
   const adder = () => (counter += 1);
 
-  const { result } = renderHook(() => useDebouncedCallback(adder, 10));
+  const { result } = renderHook(() => useDebouncedCallback(adder, [], 10));
 
   it("only calls function after specified time", async () => {
     result.current();
