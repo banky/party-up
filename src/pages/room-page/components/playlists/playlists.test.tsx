@@ -73,7 +73,11 @@ describe("Playlists", () => {
 
     await waitFor(() => expect(snapshot.val()).not.toBeNull());
 
-    const sortFn = (a: any, b: any) => Number(a.url > b.url);
+    const sortFn = (a: any, b: any) => {
+      if (a.url < b.url) return -1;
+      if (a.url > b.url) return 1;
+      return 0;
+    };
     const received = Object.values(snapshot?.val()).sort(sortFn);
     const expected = songsFixture.sort(sortFn);
 
