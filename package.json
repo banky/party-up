@@ -17,7 +17,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
-    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.1.1",
     "base64url": "^3.0.1",
     "crypto-random-string": "^3.2.0",
